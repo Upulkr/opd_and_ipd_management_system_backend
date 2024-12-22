@@ -3,7 +3,10 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-export const getUsers = async (req: Request, res: Response): Promise<void> => {
+export const getAllUsers = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   try {
     const users = await prisma.user.findMany();
     res.json(users);
@@ -14,7 +17,10 @@ export const getUsers = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
-export const getUser = async (req: Request, res: Response): Promise<void> => {
+export const getUserByNic = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   try {
     // Extract the NIC from the request query or parameters
     const { nic } = req.params;
@@ -154,5 +160,87 @@ export const updateUser = async (
       error: "An error occurred while updating the user.",
       details: error.message,
     });
+  }
+};
+
+export const deleteUser = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    const { nic } = req.params;
+
+    if (!nic) {
+      res.status(400).json({ error: "NIC is required." });
+      return;
+    }
+
+    await prisma.user.delete({
+      where: { nic: parseInt(nic, 10) },
+    });
+
+    res.status(200).json({ message: "User deleted successfully." });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: `Error deleting user: ${(error as any).message}` });
+  }
+};
+
+export const getAllPatients = async (req: Request, res: Response) => {
+  try {
+    const patients = await prisma.user.findMany({
+      where: {
+        role: "PATIENT",
+      },
+    });
+    res.json(patients);
+  } catch (error: any) {
+    res
+      .status(500)
+      .json({ message: `Error retrieving patients: ${error.message}` });
+  }
+};
+
+export const getAllDoctors = async (req: Request, res: Response) => {
+  try {
+    const doctors = await prisma.user.findMany({
+      where: {
+        role: "DOCTOR",
+      },
+    });
+    res.json(doctors);
+  } catch (error: any) {
+    res
+      .status(500)
+      .json({ message: `Error retrieving doctors: ${error.message}` });
+  }
+};
+
+export const getAllNurses = async (req: Request, res: Response) => {
+  try {
+    const nurses = await prisma.user.findMany({
+      where: {
+        role: "NURSE",
+      },
+    });
+    res.status(200).json(nurses);
+  } catch (error: any) {
+    res
+      .status(500)
+      .json({ message: `Error retrieving nurses: ${error.message}` });
+  }
+};
+
+export const getAllLabTechnicians = async (req: Request, res: Response) => {
+  try {
+    const labTechnicians = await prisma.user.findMany({
+      where: { role: "LABTECHNICIAN" },
+    });
+    res.status(200).json(labTechnicians);
+  } catch (error: any) {
+    res
+      .status(500)
+      .json({ message: `Error retrieving lab technicians: ${error.message}` });
   }
 };

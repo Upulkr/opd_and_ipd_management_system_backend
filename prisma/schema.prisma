@@ -61,7 +61,7 @@ model Ticket {
   bht            Int              @unique
   admissionsheet AdmissionSheet[]
   labtest        Labtest[]
-  drugChart      drugChart[]
+  drugChart      DrugChart[]
 }
 
 model Labtest {
@@ -74,7 +74,7 @@ model Labtest {
   ticket Ticket   @relation(fields: [nic], references: [nic])
 }
 
-model drugChart {
+model DrugChart {
   nic       Int      @id
   bht       Int      @unique
   name      String
@@ -82,4 +82,26 @@ model drugChart {
   frequency String
   date      DateTime
   ticket    Ticket   @relation(fields: [nic], references: [nic])
+}
+
+model Ward {
+  wardId       Int     @id @default(autoincrement())
+  wardNo       Int     @unique
+  wardName     String
+  noOfBeds     Int
+  noOfUsedBeds Int
+  noOfFreeBeds Int
+  noOfPatients Int
+  drugs        Drugs[] @relation("WardDrugs")
+}
+
+model Drugs {
+  drugId            Int    @id @default(autoincrement())
+  drugName          String
+  unit              String
+  totalQuantity     Int?
+  usedQuantity      Int
+  remainingQuantity Int
+
+  wards Ward[] @relation("WardDrugs")
 }

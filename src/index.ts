@@ -10,7 +10,7 @@ import morgan from "morgan";
 import admissionBookRoutes from "./routes/admissionBookRoutes";
 import admissionSheetRoutes from "./routes/admissionSheetRoutes";
 import drugChartRoutes from "./routes/drugChartRoutes";
-
+import userRoutes from "./routes/userRoutes";
 /* CONFIGURATIONS */
 dotenv.config();
 const app = express();
@@ -29,7 +29,7 @@ app.get("/", (req, res) => {
 app.use("/admissionbook", admissionBookRoutes);
 app.use("/admissionSheet", admissionSheetRoutes);
 app.use("/drugChart", drugChartRoutes);
-// app.use("/teams", teamRoutes);
+app.use("/users", userRoutes);
 
 /* SERVER */
 const port = Number(process.env.PORT) || 8000;
