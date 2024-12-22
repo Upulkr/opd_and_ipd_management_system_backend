@@ -1,0 +1,85 @@
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "rhel-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  DOCTOR
+  NURSE
+  PATIENT
+  LABTECHNICIAN
+}
+
+model User {
+  nic      Int    @id @unique
+  name     String
+  email    String @unique
+  password String
+  role     Role
+}
+
+model AdmissionSheet {
+  bht           Int       @unique
+  nic           Int       @id @unique
+  name          String
+  age           Int
+  gender        String
+  address       String
+  phone         Int
+  wardNo        Int
+  reason        String
+  pressure      Int
+  weight        Int
+  ticket        Ticket    @relation(fields: [nic], references: [nic])
+  dischargeDate DateTime?
+}
+
+model Admissionbook {
+  nic           Int       @id
+  bht           Int       @unique
+  name          String
+  dailyno       Int
+  yearlyno      Int
+  address       String
+  age           Int
+  admittedDate  DateTime
+  reason        String
+  allergies     String
+  transin       String
+  transout      String
+  direct        String
+  dischargeDate DateTime?
+}
+
+model Ticket {
+  nic            Int              @id
+  bht            Int              @unique
+  admissionsheet AdmissionSheet[]
+  labtest        Labtest[]
+  drugChart      drugChart[]
+}
+
+model Labtest {
+  nic    Int      @id
+  bht    Int      @unique
+  testno Int
+  date   DateTime
+  test   String
+  result String
+  ticket Ticket   @relation(fields: [nic], references: [nic])
+}
+
+model drugChart {
+  nic       Int      @id
+  bht       Int      @unique
+  name      String
+  dose      String
+  frequency String
+  date      DateTime
+  ticket    Ticket   @relation(fields: [nic], references: [nic])
+}
