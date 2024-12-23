@@ -16,11 +16,13 @@ enum Role {
 }
 
 model User {
-  nic      Int    @id @unique
-  name     String
-  email    String @unique
-  password String
-  role     Role
+  nic       Int      @id @unique
+  name      String
+  email     String   @unique
+  password  String
+  role      Role
+  createdAt DateTime
+  updatedAt DateTime
 }
 
 model AdmissionSheet {
@@ -37,6 +39,8 @@ model AdmissionSheet {
   weight        Int
   ticket        Ticket    @relation(fields: [nic], references: [nic])
   dischargeDate DateTime?
+  createdAt     DateTime
+  updatedAt     DateTime
 }
 
 model Admissionbook {
@@ -54,6 +58,8 @@ model Admissionbook {
   transout      String
   direct        String
   dischargeDate DateTime?
+  createdAt     DateTime
+  updatedAt     DateTime
 }
 
 model Ticket {
@@ -104,4 +110,20 @@ model Drugs {
   remainingQuantity Int
 
   wards Ward[] @relation("WardDrugs")
+}
+
+model Outpatient {
+  nic     Int    @id
+  name    String
+  age     Int
+  gender  String
+  address String
+  phone   Int
+
+  reason   String
+  pressure Int
+  weight   Int
+  diagnose String
+  createAt DateTime
+  updateAt DateTime
 }

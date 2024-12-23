@@ -18,7 +18,7 @@ export const createLabtest = async (req: Request, res: Response) => {
         nic,
         bht,
         testno,
-        date: new Date(date),
+        date,
         test,
         result,
       },

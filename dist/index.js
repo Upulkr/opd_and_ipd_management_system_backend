@@ -10,10 +10,12 @@ const cors_1 = __importDefault(require("cors"));
 const helmet_1 = __importDefault(require("helmet"));
 const morgan_1 = __importDefault(require("morgan"));
 /* ROUTE IMPORTS */
-const projectRoutes_1 = __importDefault(require("./routes/projectRoutes"));
-const taskRoutes_1 = __importDefault(require("./routes/taskRoutes"));
-const searchRoutes_1 = __importDefault(require("./routes/searchRoutes"));
-const teamRoutes_1 = __importDefault(require("./routes/teamRoutes"));
+// import teamRoutes from "./routes/teamRoutes";
+const admissionBookRoutes_1 = __importDefault(require("./routes/admissionBookRoutes"));
+const admissionSheetRoutes_1 = __importDefault(require("./routes/admissionSheetRoutes"));
+const drugChartRoutes_1 = __importDefault(require("./routes/drugChartRoutes"));
+const userRoutes_1 = __importDefault(require("./routes/userRoutes"));
+const outPatientRoutes_1 = __importDefault(require("./routes/outPatientRoutes"));
 /* CONFIGURATIONS */
 dotenv_1.default.config();
 const app = (0, express_1.default)();
@@ -28,10 +30,11 @@ app.use((0, cors_1.default)());
 app.get("/", (req, res) => {
     res.send("This is home route");
 });
-app.use("/projects", projectRoutes_1.default);
-app.use("/tasks", taskRoutes_1.default);
-app.use("/search", searchRoutes_1.default);
-app.use("/teams", teamRoutes_1.default);
+app.use("/admissionbook", admissionBookRoutes_1.default);
+app.use("/admissionSheet", admissionSheetRoutes_1.default);
+app.use("/drugChart", drugChartRoutes_1.default);
+app.use("/users", userRoutes_1.default);
+app.use("/outPatient", outPatientRoutes_1.default);
 /* SERVER */
 const port = Number(process.env.PORT) || 8000;
 app.listen(port, "0.0.0.0", () => {

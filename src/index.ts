@@ -11,6 +11,7 @@ import admissionBookRoutes from "./routes/admissionBookRoutes";
 import admissionSheetRoutes from "./routes/admissionSheetRoutes";
 import drugChartRoutes from "./routes/drugChartRoutes";
 import userRoutes from "./routes/userRoutes";
+import outPatientRoutes from "./routes/outPatientRoutes";
 /* CONFIGURATIONS */
 dotenv.config();
 const app = express();
@@ -30,6 +31,7 @@ app.use("/admissionbook", admissionBookRoutes);
 app.use("/admissionSheet", admissionSheetRoutes);
 app.use("/drugChart", drugChartRoutes);
 app.use("/users", userRoutes);
+app.use("/outPatient", outPatientRoutes);
 
 /* SERVER */
 const port = Number(process.env.PORT) || 8000;

@@ -1,0 +1,12 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const admissionBookController_1 = require("../controllers/admissionBookController");
+const router = (0, express_1.Router)();
+router.get("/", admissionBookController_1.getAdmissionBooks);
+router.post("/", admissionBookController_1.createAdmissionBook);
+router.get("/:nic", admissionBookController_1.getAllAdmissionBooksforNic);
+router.get("/:nic/:bht", admissionBookController_1.getrelatedAdmissionBook);
+router.put("/:nic/:bht", admissionBookController_1.updateAdmissionBook);
+router.delete("/:nic/:bht", admissionBookController_1.deleteAdmissionBook);
+exports.default = router;

@@ -1,0 +1,12 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const drugChartController_1 = require("../controllers/drugChartController");
+const router = (0, express_1.Router)();
+router.get("/", drugChartController_1.getDrugCharts);
+router.get("/:nic", drugChartController_1.getAllDrugChartByNic);
+router.get("/:nic/:bht", drugChartController_1.getrelatedDrugChart);
+router.post("/", drugChartController_1.createDrugChart);
+router.delete("/:nic", drugChartController_1.deleteDrugChart);
+router.put("/:nic", drugChartController_1.updateDrugChart);
+exports.default = router;

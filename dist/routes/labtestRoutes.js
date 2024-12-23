@@ -1,0 +1,12 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const labtestController_1 = require("../controllers/labtestController");
+const router = (0, express_1.Router)();
+router.post("/", labtestController_1.createLabtest);
+router.get("/", labtestController_1.getAllLabtests);
+router.get("/:nic", labtestController_1.getAllLabtestByNic);
+router.get("/:nic/:bht", labtestController_1.getrelatedLabtest);
+router.put("/:nic/:bht", labtestController_1.updateLabtest);
+router.delete("/:nic/:bht", labtestController_1.deleteLabtest);
+exports.default = router;
