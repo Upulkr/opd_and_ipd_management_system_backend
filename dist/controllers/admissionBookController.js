@@ -61,7 +61,7 @@ const getrelatedAdmissionBook = (req, res) => __awaiter(void 0, void 0, void 0, 
     try {
         const admissionBook = yield prisma.admissionbook.findUnique({
             where: {
-                nic: Number(nic),
+                nic,
                 bht: Number(bht),
             },
         });
@@ -79,7 +79,7 @@ const getAllAdmissionBooksforNic = (req, res) => __awaiter(void 0, void 0, void 
     try {
         const admissionBook = yield prisma.admissionbook.findMany({
             where: {
-                nic: Number(nic),
+                nic,
                 bht: Number(bht),
             },
         });
@@ -101,8 +101,8 @@ const updateAdmissionBook = (req, res) => __awaiter(void 0, void 0, void 0, func
         const { bht, name, dailyno, yearlyno, address, age, admittedDate, reason, allergies, transin, transout, direct, } = req.body;
         const updatedAdmissionBook = yield prisma.admissionbook.update({
             where: {
-                nic: Number(nic),
-                bht: Number(bht),
+                nic,
+                bht,
             },
             data: {
                 bht,
@@ -136,7 +136,7 @@ const deleteAdmissionBook = (req, res) => __awaiter(void 0, void 0, void 0, func
     try {
         const deletedAdmissionBook = yield prisma.admissionbook.delete({
             where: {
-                nic: Number(nic),
+                nic,
                 bht: Number(bht),
             },
         });

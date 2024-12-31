@@ -25,7 +25,7 @@ const createLabtest = (req, res) => __awaiter(void 0, void 0, void 0, function* 
                 nic,
                 bht,
                 testno,
-                date: new Date(date),
+                date,
                 test,
                 result,
             },
@@ -72,7 +72,7 @@ const getAllLabtestByNic = (req, res) => __awaiter(void 0, void 0, void 0, funct
         }
         const labtest = yield prisma.labtest.findMany({
             where: {
-                nic: Number(nic),
+                nic,
             },
         });
         res
@@ -94,7 +94,7 @@ const getrelatedLabtest = (req, res) => __awaiter(void 0, void 0, void 0, functi
         }
         const labtest = yield prisma.labtest.findUnique({
             where: {
-                nic: Number(nic),
+                nic,
                 bht: Number(bht),
             },
         });
@@ -117,7 +117,7 @@ const deleteLabtest = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         }
         yield prisma.labtest.deleteMany({
             where: {
-                nic: Number(nic),
+                nic,
                 bht: Number(bht),
             },
         });
@@ -142,7 +142,7 @@ const updateLabtest = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         }
         const labtest = yield prisma.labtest.updateMany({
             where: {
-                nic: Number(nic),
+                nic,
                 bht: Number(bht),
             },
             data: {

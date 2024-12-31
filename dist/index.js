@@ -15,7 +15,8 @@ const admissionBookRoutes_1 = __importDefault(require("./routes/admissionBookRou
 const admissionSheetRoutes_1 = __importDefault(require("./routes/admissionSheetRoutes"));
 const drugChartRoutes_1 = __importDefault(require("./routes/drugChartRoutes"));
 const userRoutes_1 = __importDefault(require("./routes/userRoutes"));
-const outPatientRoutes_1 = __importDefault(require("./routes/outPatientRoutes"));
+const patientRoutes_1 = __importDefault(require("./routes/patientRoutes"));
+// import ticketRoutes from "./routes/ticketRoutes";
 /* CONFIGURATIONS */
 dotenv_1.default.config();
 const app = (0, express_1.default)();
@@ -34,7 +35,8 @@ app.use("/admissionbook", admissionBookRoutes_1.default);
 app.use("/admissionSheet", admissionSheetRoutes_1.default);
 app.use("/drugChart", drugChartRoutes_1.default);
 app.use("/users", userRoutes_1.default);
-app.use("/outPatient", outPatientRoutes_1.default);
+app.use("/patient", patientRoutes_1.default);
+// app.use("/ticket", ticketRoutes);
 /* SERVER */
 const port = Number(process.env.PORT) || 8000;
 app.listen(port, "0.0.0.0", () => {

@@ -65,7 +65,7 @@ export const getAllLabtestByNic = async (req: Request, res: Response) => {
     }
     const labtest = await prisma.labtest.findMany({
       where: {
-        nic: Number(nic),
+        nic,
       },
     });
     res
@@ -85,7 +85,7 @@ export const getrelatedLabtest = async (req: Request, res: Response) => {
     }
     const labtest = await prisma.labtest.findUnique({
       where: {
-        nic: Number(nic),
+        nic,
         bht: Number(bht),
       },
     });
@@ -107,7 +107,7 @@ export const deleteLabtest = async (req: Request, res: Response) => {
     }
     await prisma.labtest.deleteMany({
       where: {
-        nic: Number(nic),
+        nic,
         bht: Number(bht),
       },
     });
@@ -131,7 +131,7 @@ export const updateLabtest = async (req: Request, res: Response) => {
     }
     const labtest = await prisma.labtest.updateMany({
       where: {
-        nic: Number(nic),
+        nic,
         bht: Number(bht),
       },
       data: {

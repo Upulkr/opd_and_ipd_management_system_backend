@@ -16,41 +16,62 @@ enum Role {
 }
 
 model User {
-  nic       Int      @id @unique
+  id        Int      @id @default(autoincrement())
+  nic       String   @unique
   name      String
   email     String   @unique
   password  String
   role      Role
-  createdAt DateTime
-  updatedAt DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Patient {
+  nic     String @id @unique
+  name    String
+  age     String
+  gender  String
+  address String
+  phone   String
+
+  reason String?
+
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  admissionsheet AdmissionSheet[]
+  labtest        Labtest[]
+  drugChart      DrugChart[]
 }
 
 model AdmissionSheet {
+  id            Int       @id @default(autoincrement())
   bht           Int       @unique
-  nic           Int       @id @unique
+  nic           String    @unique
   name          String
-  age           Int
+  age           String
   gender        String
   address       String
-  phone         Int
-  wardNo        Int
+  phone         String
+  wardNo        String
   reason        String
-  pressure      Int
-  weight        Int
-  ticket        Ticket    @relation(fields: [nic], references: [nic])
+  pressure      String
+  weight        String
+  diagnose      String?
+  Patient       Patient?  @relation(fields: [nic], references: [nic])
   dischargeDate DateTime?
-  createdAt     DateTime
-  updatedAt     DateTime
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
 }
 
 model Admissionbook {
-  nic           Int       @id
+  id            Int       @id @default(autoincrement())
   bht           Int       @unique
+  nic           String    @unique
   name          String
   dailyno       Int
   yearlyno      Int
   address       String
-  age           Int
+  age           String
   admittedDate  DateTime
   reason        String
   allergies     String
@@ -58,36 +79,30 @@ model Admissionbook {
   transout      String
   direct        String
   dischargeDate DateTime?
-  createdAt     DateTime
-  updatedAt     DateTime
-}
-
-model Ticket {
-  nic            Int              @id
-  bht            Int              @unique
-  admissionsheet AdmissionSheet[]
-  labtest        Labtest[]
-  drugChart      DrugChart[]
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
 }
 
 model Labtest {
-  nic    Int      @id
-  bht    Int      @unique
-  testno Int
-  date   DateTime
-  test   String
-  result String
-  ticket Ticket   @relation(fields: [nic], references: [nic])
+  id      Int      @id @default(autoincrement())
+  nic     String   @unique
+  bht     Int      @unique
+  testno  Int
+  date    DateTime
+  test    String
+  result  String
+  Patient Patient  @relation(fields: [nic], references: [nic])
 }
 
 model DrugChart {
-  nic       Int      @id
+  id        Int      @id @default(autoincrement())
   bht       Int      @unique
+  nic       String   @unique
   name      String
   dose      String
   frequency String
   date      DateTime
-  ticket    Ticket   @relation(fields: [nic], references: [nic])
+  Patient   Patient  @relation(fields: [nic], references: [nic])
 }
 
 model Ward {
@@ -110,20 +125,4 @@ model Drugs {
   remainingQuantity Int
 
   wards Ward[] @relation("WardDrugs")
-}
-
-model Outpatient {
-  nic     Int    @id
-  name    String
-  age     Int
-  gender  String
-  address String
-  phone   Int
-
-  reason   String
-  pressure Int
-  weight   Int
-  diagnose String
-  createAt DateTime
-  updateAt DateTime
 }

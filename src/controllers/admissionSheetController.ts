@@ -15,7 +15,7 @@ export const createAdmissionSheet = async (req: Request, res: Response) => {
       reason,
       pressure,
       weight,
-      ticket,
+
       bht,
     } = req.body;
 
@@ -31,8 +31,8 @@ export const createAdmissionSheet = async (req: Request, res: Response) => {
         reason,
         pressure,
         weight,
-        ticket,
-        bht,
+
+        bht: Number(bht),
       },
     });
     res.status(201).json({
@@ -76,7 +76,6 @@ export const updateAdmissionSheet = async (req: Request, res: Response) => {
         reason,
         pressure,
         weight,
-        ticket,
       },
     });
     res.status(200).json({
@@ -109,7 +108,7 @@ export const deleteAdmissionSheet = async (req: Request, res: Response) => {
     }
     const deletedAdmissionSheet = await prisma.admissionSheet.delete({
       where: {
-        nic: Number(nic),
+        nic,
         bht: Number(bht),
       },
     });
@@ -135,7 +134,7 @@ export const getAllAdmissionSheetByNic = async (
     }
     const admissionSheet = await prisma.admissionSheet.findMany({
       where: {
-        nic: Number(nic),
+        nic,
       },
     });
     res.status(200).json(admissionSheet);
@@ -153,7 +152,7 @@ export const getrelatedAdmissionSheet = async (req: Request, res: Response) => {
     }
     const admissionSheet = await prisma.admissionSheet.findUnique({
       where: {
-        nic: Number(nic),
+        nic,
         bht: Number(bht),
       },
     });

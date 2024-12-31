@@ -14,7 +14,7 @@ const client_1 = require("@prisma/client");
 const prisma = new client_1.PrismaClient();
 const createAdmissionSheet = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { nic, name, age, gender, address, phone, wardNo, reason, pressure, weight, ticket, bht, } = req.body;
+        const { nic, name, age, gender, address, phone, wardNo, reason, pressure, weight, bht, } = req.body;
         const newAdmissionSheet = yield prisma.admissionSheet.create({
             data: {
                 nic,
@@ -27,8 +27,7 @@ const createAdmissionSheet = (req, res) => __awaiter(void 0, void 0, void 0, fun
                 reason,
                 pressure,
                 weight,
-                ticket,
-                bht,
+                bht: Number(bht),
             },
         });
         res.status(201).json({
@@ -60,7 +59,6 @@ const updateAdmissionSheet = (req, res) => __awaiter(void 0, void 0, void 0, fun
                 reason,
                 pressure,
                 weight,
-                ticket,
             },
         });
         res.status(200).json({
@@ -95,7 +93,7 @@ const deleteAdmissionSheet = (req, res) => __awaiter(void 0, void 0, void 0, fun
         }
         const deletedAdmissionSheet = yield prisma.admissionSheet.delete({
             where: {
-                nic: Number(nic),
+                nic,
                 bht: Number(bht),
             },
         });
@@ -119,7 +117,7 @@ const getAllAdmissionSheetByNic = (req, res) => __awaiter(void 0, void 0, void 0
         }
         const admissionSheet = yield prisma.admissionSheet.findMany({
             where: {
-                nic: Number(nic),
+                nic,
             },
         });
         res.status(200).json(admissionSheet);
@@ -139,7 +137,7 @@ const getrelatedAdmissionSheet = (req, res) => __awaiter(void 0, void 0, void 0,
         }
         const admissionSheet = yield prisma.admissionSheet.findUnique({
             where: {
-                nic: Number(nic),
+                nic,
                 bht: Number(bht),
             },
         });

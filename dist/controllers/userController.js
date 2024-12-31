@@ -35,7 +35,7 @@ const getUserByNic = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         }
         // Fetch the user from the database
         const user = yield prisma.user.findUnique({
-            where: { nic: parseInt(nic, 10) },
+            where: { nic },
         });
         // Check if user exists
         if (!user) {
@@ -122,7 +122,7 @@ const updateUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         }
         // Update the user in the database
         const user = yield prisma.user.update({
-            where: { nic: parseInt(nic, 10) },
+            where: { nic },
             data: {
                 name,
                 email,
@@ -156,7 +156,7 @@ const deleteUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             return;
         }
         yield prisma.user.delete({
-            where: { nic: parseInt(nic, 10) },
+            where: { nic },
         });
         res.status(200).json({ message: "User deleted successfully." });
     }

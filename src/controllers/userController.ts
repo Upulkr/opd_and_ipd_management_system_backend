@@ -33,7 +33,7 @@ export const getUserByNic = async (
 
     // Fetch the user from the database
     const user = await prisma.user.findUnique({
-      where: { nic: parseInt(nic, 10) },
+      where: { nic },
     });
 
     // Check if user exists
@@ -135,7 +135,7 @@ export const updateUser = async (
 
     // Update the user in the database
     const user = await prisma.user.update({
-      where: { nic: parseInt(nic, 10) },
+      where: { nic },
       data: {
         name,
         email,
@@ -176,7 +176,7 @@ export const deleteUser = async (
     }
 
     await prisma.user.delete({
-      where: { nic: parseInt(nic, 10) },
+      where: { nic },
     });
 
     res.status(200).json({ message: "User deleted successfully." });

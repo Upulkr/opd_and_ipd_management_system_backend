@@ -64,7 +64,7 @@ export const getrelatedAdmissionBook = async (req: Request, res: Response) => {
   try {
     const admissionBook = await prisma.admissionbook.findUnique({
       where: {
-        nic: Number(nic),
+        nic,
         bht: Number(bht),
       },
     });
@@ -83,7 +83,7 @@ export const getAllAdmissionBooksforNic = async (
   try {
     const admissionBook = await prisma.admissionbook.findMany({
       where: {
-        nic: Number(nic),
+        nic,
         bht: Number(bht),
       },
     });
@@ -117,8 +117,8 @@ export const updateAdmissionBook = async (req: Request, res: Response) => {
     } = req.body;
     const updatedAdmissionBook = await prisma.admissionbook.update({
       where: {
-        nic: Number(nic),
-        bht: Number(bht),
+        nic,
+        bht,
       },
       data: {
         bht,
@@ -151,7 +151,7 @@ export const deleteAdmissionBook = async (req: Request, res: Response) => {
   try {
     const deletedAdmissionBook = await prisma.admissionbook.delete({
       where: {
-        nic: Number(nic),
+        nic,
         bht: Number(bht),
       },
     });

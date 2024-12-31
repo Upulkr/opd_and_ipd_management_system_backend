@@ -57,7 +57,7 @@ const getrelatedDrugChart = (req, res) => __awaiter(void 0, void 0, void 0, func
         }
         const drugChart = yield prisma.drugChart.findUnique({
             where: {
-                nic: Number(nic),
+                nic,
                 bht: Number(bht),
             },
         });
@@ -78,7 +78,7 @@ const getAllDrugChartByNic = (req, res) => __awaiter(void 0, void 0, void 0, fun
         }
         const drugChart = yield prisma.drugChart.findMany({
             where: {
-                nic: Number(nic),
+                nic,
             },
         });
         res.status(200).json(drugChart);
@@ -98,7 +98,7 @@ const deleteDrugChart = (req, res) => __awaiter(void 0, void 0, void 0, function
         }
         const drugChart = yield prisma.drugChart.delete({
             where: {
-                nic: Number(nic),
+                nic,
                 bht: Number(bht),
             },
         });
@@ -120,7 +120,7 @@ const updateDrugChart = (req, res) => __awaiter(void 0, void 0, void 0, function
         const { dose, frequency, date } = req.body;
         const updatedDrugChart = yield prisma.drugChart.update({
             where: {
-                nic: Number(nic),
+                nic,
                 bht: Number(bht),
             },
             data: {
