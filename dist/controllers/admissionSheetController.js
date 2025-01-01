@@ -14,20 +14,24 @@ const client_1 = require("@prisma/client");
 const prisma = new client_1.PrismaClient();
 const createAdmissionSheet = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { nic, name, age, gender, address, phone, wardNo, reason, pressure, weight, bht, } = req.body;
+        const { nic, name, age, gender, phone, wardNo, reason, pressure, weight, bht, streetAddress, city, stateProvince, postalCode, country, } = req.body;
         const newAdmissionSheet = yield prisma.admissionSheet.create({
             data: {
                 nic,
                 name,
                 age,
                 gender,
-                address,
                 phone,
                 wardNo,
                 reason,
                 pressure,
                 weight,
                 bht: Number(bht),
+                streetAddress,
+                city,
+                stateProvince,
+                postalCode,
+                country,
             },
         });
         res.status(201).json({
@@ -53,7 +57,6 @@ const updateAdmissionSheet = (req, res) => __awaiter(void 0, void 0, void 0, fun
                 age,
                 name,
                 gender,
-                address,
                 phone,
                 wardNo,
                 reason,

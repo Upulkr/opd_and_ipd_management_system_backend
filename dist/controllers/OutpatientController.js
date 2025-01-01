@@ -14,7 +14,7 @@ const client_1 = require("@prisma/client");
 const prisma = new client_1.PrismaClient();
 const createPatient = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { nic, age, name, gender, address, phone, diagnose, reason, pressure, weight, } = req.body;
+        const { nic, age, name, gender, address, phone, diagnose, reason, pressure, weight, city, stateProvince, postalCode, country, streetAddress, } = req.body;
         const patient = yield prisma.patient.findUnique({
             where: {
                 nic,
@@ -29,9 +29,13 @@ const createPatient = (req, res) => __awaiter(void 0, void 0, void 0, function* 
                 age,
                 name,
                 gender,
-                address,
                 phone,
                 reason,
+                streetAddress,
+                city,
+                stateProvince,
+                postalCode,
+                country,
             },
         });
         res

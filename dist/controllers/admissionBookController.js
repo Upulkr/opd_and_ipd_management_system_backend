@@ -14,7 +14,7 @@ const client_1 = require("@prisma/client");
 const prisma = new client_1.PrismaClient();
 const createAdmissionBook = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { nic, bht, name, dailyno, yearlyno, address, age, admittedDate, reason, allergies, transin, transout, direct, } = req.body;
+        const { nic, bht, name, dailyno, yearlyno, city, stateProvince, postalCode, country, streetAddress, age, admittedDate, reason, allergies, transin, transout, direct, } = req.body;
         const newAdmissionBook = yield prisma.admissionbook.create({
             data: {
                 nic,
@@ -22,7 +22,11 @@ const createAdmissionBook = (req, res) => __awaiter(void 0, void 0, void 0, func
                 name,
                 dailyno,
                 yearlyno,
-                address,
+                city,
+                stateProvince,
+                postalCode,
+                country,
+                streetAddress,
                 age,
                 admittedDate,
                 reason,
@@ -98,7 +102,7 @@ const updateAdmissionBook = (req, res) => __awaiter(void 0, void 0, void 0, func
         return res.status(400).json({ message: "nic is required" });
     }
     try {
-        const { bht, name, dailyno, yearlyno, address, age, admittedDate, reason, allergies, transin, transout, direct, } = req.body;
+        const { bht, name, dailyno, yearlyno, city, stateProvince, postalCode, country, streetAddress, age, admittedDate, reason, allergies, transin, transout, direct, } = req.body;
         const updatedAdmissionBook = yield prisma.admissionbook.update({
             where: {
                 nic,
@@ -109,7 +113,11 @@ const updateAdmissionBook = (req, res) => __awaiter(void 0, void 0, void 0, func
                 name,
                 dailyno,
                 yearlyno,
-                address,
+                city,
+                stateProvince,
+                postalCode,
+                country,
+                streetAddress,
                 age,
                 admittedDate,
                 reason,

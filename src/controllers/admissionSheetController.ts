@@ -9,7 +9,7 @@ export const createAdmissionSheet = async (req: Request, res: Response) => {
       name,
       age,
       gender,
-      address,
+
       phone,
       wardNo,
       reason,
@@ -17,6 +17,11 @@ export const createAdmissionSheet = async (req: Request, res: Response) => {
       weight,
 
       bht,
+      streetAddress,
+      city,
+      stateProvince,
+      postalCode,
+      country,
     } = req.body;
 
     const newAdmissionSheet = await prisma.admissionSheet.create({
@@ -25,7 +30,7 @@ export const createAdmissionSheet = async (req: Request, res: Response) => {
         name,
         age,
         gender,
-        address,
+
         phone,
         wardNo,
         reason,
@@ -33,6 +38,11 @@ export const createAdmissionSheet = async (req: Request, res: Response) => {
         weight,
 
         bht: Number(bht),
+        streetAddress,
+        city,
+        stateProvince,
+        postalCode,
+        country,
       },
     });
     res.status(201).json({
@@ -70,7 +80,7 @@ export const updateAdmissionSheet = async (req: Request, res: Response) => {
         age,
         name,
         gender,
-        address,
+
         phone,
         wardNo,
         reason,
