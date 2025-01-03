@@ -146,8 +146,6 @@ exports.getAllAdmissionSheetByNic = getAllAdmissionSheetByNic;
 const getrelatedAdmissionSheetByBht = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { bht } = req.query;
-        console.log("BHT passed to the API:", bht);
-        console.log("BHT type:", typeof bht);
         if (!bht) {
             return res.status(400).json({ message: "BHT is required" });
         }
@@ -157,7 +155,6 @@ const getrelatedAdmissionSheetByBht = (req, res) => __awaiter(void 0, void 0, vo
                 bht: Number(bht),
             },
         });
-        console.log("Database query result:", admissionSheet);
         if (!admissionSheet) {
             return res
                 .status(404)
