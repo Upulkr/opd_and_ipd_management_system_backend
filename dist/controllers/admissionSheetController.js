@@ -9,12 +9,22 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getrelatedAdmissionSheet = exports.getAllAdmissionSheetByNic = exports.deleteAdmissionSheet = exports.getAdmissionSheets = exports.updateAdmissionSheet = exports.createAdmissionSheet = void 0;
+exports.getrelatedAdmissionSheetByBht = exports.getAllAdmissionSheetByNic = exports.deleteAdmissionSheet = exports.getAdmissionSheets = exports.updateAdmissionSheet = exports.createAdmissionSheet = void 0;
 const client_1 = require("@prisma/client");
 const prisma = new client_1.PrismaClient();
 const createAdmissionSheet = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { nic, name, age, gender, phone, wardNo, reason, pressure, weight, bht, streetAddress, city, stateProvince, postalCode, country, } = req.body;
+        // const existingAdmissionSheet = await prisma.admissionSheet.findUnique({
+        //   where: {
+        //     nic,
+        //   },
+        // });
+        // if (existingAdmissionSheet) {
+        //   return res.status(400).json({
+        //     message: "AdmissionSheet already exists",
+        //   });
+        // }
         const newAdmissionSheet = yield prisma.admissionSheet.create({
             data: {
                 nic,
@@ -48,10 +58,11 @@ const createAdmissionSheet = (req, res) => __awaiter(void 0, void 0, void 0, fun
 exports.createAdmissionSheet = createAdmissionSheet;
 const updateAdmissionSheet = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { nic, name, age, gender, address, phone, wardNo, reason, pressure, weight, ticket, } = req.body;
+        const { nic, name, age, gender, bht, phone, wardNo, reason, pressure, weight, } = req.body;
         const updatedAdmissionSheet = yield prisma.admissionSheet.update({
             where: {
                 nic: nic,
+                bht: Number(bht),
             },
             data: {
                 age,
@@ -132,24 +143,33 @@ const getAllAdmissionSheetByNic = (req, res) => __awaiter(void 0, void 0, void 0
     }
 });
 exports.getAllAdmissionSheetByNic = getAllAdmissionSheetByNic;
-const getrelatedAdmissionSheet = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const getrelatedAdmissionSheetByBht = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { nic, bht } = req.params;
-        if (!nic && !bht) {
-            return res.status(400).json({ message: "nic is required" });
+        const { bht } = req.query;
+        console.log("BHT passed to the API:", bht);
+        console.log("BHT type:", typeof bht);
+        if (!bht) {
+            return res.status(400).json({ message: "BHT is required" });
         }
+        // Try findFirst instead of findUnique if bht is not a unique field
         const admissionSheet = yield prisma.admissionSheet.findUnique({
             where: {
-                nic,
                 bht: Number(bht),
             },
         });
-        res.status(200).json(admissionSheet);
+        console.log("Database query result:", admissionSheet);
+        if (!admissionSheet) {
+            return res
+                .status(404)
+                .json({ message: "No admission sheet found for the given BHT" });
+        }
+        res.status(200).json({ admissionSheet });
     }
     catch (error) {
+        console.error("Error fetching admission sheet:", error);
         res.status(500).json({
-            message: `Error getting AdmissionSheet: ${error.message}`,
+            message: `Error getting admission sheet: ${error.message}`,
         });
     }
 });
-exports.getrelatedAdmissionSheet = getrelatedAdmissionSheet;
+exports.getrelatedAdmissionSheetByBht = getrelatedAdmissionSheetByBht;

@@ -24,6 +24,17 @@ export const createAdmissionSheet = async (req: Request, res: Response) => {
       country,
     } = req.body;
 
+    // const existingAdmissionSheet = await prisma.admissionSheet.findUnique({
+    //   where: {
+    //     nic,
+    //   },
+    // });
+
+    // if (existingAdmissionSheet) {
+    //   return res.status(400).json({
+    //     message: "AdmissionSheet already exists",
+    //   });
+    // }
     const newAdmissionSheet = await prisma.admissionSheet.create({
       data: {
         nic,
@@ -63,18 +74,18 @@ export const updateAdmissionSheet = async (req: Request, res: Response) => {
       name,
       age,
       gender,
-      address,
+      bht,
       phone,
       wardNo,
       reason,
       pressure,
       weight,
-      ticket,
     } = req.body;
 
     const updatedAdmissionSheet = await prisma.admissionSheet.update({
       where: {
         nic: nic,
+        bht: Number(bht),
       },
       data: {
         age,
@@ -154,22 +165,36 @@ export const getAllAdmissionSheetByNic = async (
     });
   }
 };
-export const getrelatedAdmissionSheet = async (req: Request, res: Response) => {
+
+export const getrelatedAdmissionSheetByBht = async (
+  req: Request,
+  res: Response
+) => {
   try {
-    const { nic, bht } = req.params;
-    if (!nic && !bht) {
-      return res.status(400).json({ message: "nic is required" });
+    const { bht } = req.query;
+
+    if (!bht) {
+      return res.status(400).json({ message: "BHT is required" });
     }
+
+    // Try findFirst instead of findUnique if bht is not a unique field
     const admissionSheet = await prisma.admissionSheet.findUnique({
       where: {
-        nic,
         bht: Number(bht),
       },
     });
-    res.status(200).json(admissionSheet);
+
+    if (!admissionSheet) {
+      return res
+        .status(404)
+        .json({ message: "No admission sheet found for the given BHT" });
+    }
+
+    res.status(200).json({ admissionSheet });
   } catch (error) {
+    console.error("Error fetching admission sheet:", error);
     res.status(500).json({
-      message: `Error getting AdmissionSheet: ${(error as any).message}`,
+      message: `Error getting admission sheet: ${(error as any).message}`,
     });
   }
 };

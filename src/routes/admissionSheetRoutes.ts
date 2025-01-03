@@ -4,16 +4,16 @@ import {
   deleteAdmissionSheet,
   getAdmissionSheets,
   getAllAdmissionSheetByNic,
-  getrelatedAdmissionSheet,
+  getrelatedAdmissionSheetByBht,
   updateAdmissionSheet,
 } from "../controllers/admissionSheetController";
 
 const router = Router();
-router.get("/", getAdmissionSheets);
+router.get("/bht", getrelatedAdmissionSheetByBht);
 router.post("/", createAdmissionSheet);
 router.delete("/:nic/:bht", deleteAdmissionSheet);
 router.get("/:nic", getAllAdmissionSheetByNic);
-router.get("/:nic/:bht", getrelatedAdmissionSheet);
-router.put("/:nic/:bht", updateAdmissionSheet);
 
+router.put("/:nic/:bht", updateAdmissionSheet);
+router.get("/", getAdmissionSheets);
 export default router;

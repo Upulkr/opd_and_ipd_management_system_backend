@@ -50,7 +50,7 @@ model Patient {
 model AdmissionSheet {
   id            Int       @id @default(autoincrement())
   bht           Int       @unique
-  nic           String    @unique
+  nic           String
   name          String
   age           String
   gender        String
@@ -74,7 +74,7 @@ model AdmissionSheet {
 model Admissionbook {
   id            Int       @id @default(autoincrement())
   bht           Int       @unique
-  nic           String    @unique
+  nic           String
   name          String
   dailyno       Int
   yearlyno      Int
@@ -86,7 +86,7 @@ model Admissionbook {
   age           String
   admittedDate  DateTime
   reason        String
-  allergies     String
+  allergies     String[]
   transin       String
   transout      String
   direct        String
