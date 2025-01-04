@@ -3,6 +3,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const admissionSheetController_1 = require("../controllers/admissionSheetController");
 const router = (0, express_1.Router)();
+router.get("/noOfAdmissionSheetsperyear", admissionSheetController_1.getNumberOfAdmissionSheetsperYear);
+router.get("/noOfAdmissionSheetsperday", admissionSheetController_1.getNumberOfAdmissionSheetsperDay);
 router.get("/bht", admissionSheetController_1.getrelatedAdmissionSheetByBht);
 router.post("/", admissionSheetController_1.createAdmissionSheet);
 router.delete("/:nic/:bht", admissionSheetController_1.deleteAdmissionSheet);

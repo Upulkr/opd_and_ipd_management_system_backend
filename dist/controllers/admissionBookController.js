@@ -14,11 +14,11 @@ const client_1 = require("@prisma/client");
 const prisma = new client_1.PrismaClient();
 const createAdmissionBook = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { nic, bht, name, dailyno, yearlyno, city, stateProvince, postalCode, country, streetAddress, age, admittedDate, reason, allergies, transin, transout, direct, } = req.body;
+        const { nic, bht, name, dailyno, yearlyno, city, stateProvince, postalCode, country, streetAddress, age, admittedDate, reason, allergies, phone, transferCategory, dischargeDate, } = req.body;
         const newAdmissionBook = yield prisma.admissionbook.create({
             data: {
                 nic,
-                bht,
+                bht: Number(bht),
                 name,
                 dailyno,
                 yearlyno,
@@ -28,12 +28,12 @@ const createAdmissionBook = (req, res) => __awaiter(void 0, void 0, void 0, func
                 country,
                 streetAddress,
                 age,
-                admittedDate,
+                admittedDate: new Date(admittedDate),
                 reason,
                 allergies,
-                transin,
-                transout,
-                direct,
+                transferCategory,
+                phone,
+                dischargeDate: new Date(dischargeDate),
             },
         });
         res.status(201).json({
@@ -102,14 +102,15 @@ const updateAdmissionBook = (req, res) => __awaiter(void 0, void 0, void 0, func
         return res.status(400).json({ message: "nic is required" });
     }
     try {
-        const { bht, name, dailyno, yearlyno, city, stateProvince, postalCode, country, streetAddress, age, admittedDate, reason, allergies, transin, transout, direct, } = req.body;
+        const { nic, bht, name, dailyno, yearlyno, city, stateProvince, postalCode, country, streetAddress, age, admittedDate, reason, allergies, phone, transferCategory, dischargeDate, } = req.body;
         const updatedAdmissionBook = yield prisma.admissionbook.update({
             where: {
                 nic,
                 bht,
             },
             data: {
-                bht,
+                nic,
+                bht: Number(bht),
                 name,
                 dailyno,
                 yearlyno,
@@ -119,12 +120,12 @@ const updateAdmissionBook = (req, res) => __awaiter(void 0, void 0, void 0, func
                 country,
                 streetAddress,
                 age,
-                admittedDate,
+                admittedDate: new Date(admittedDate),
                 reason,
                 allergies,
-                transin,
-                transout,
-                direct,
+                transferCategory,
+                phone,
+                dischargeDate: new Date(dischargeDate),
             },
         });
         res.status(200).json(updatedAdmissionBook);

@@ -19,15 +19,15 @@ export const createAdmissionBook = async (req: Request, res: Response) => {
       admittedDate,
       reason,
       allergies,
-      transin,
-      transout,
-      direct,
+      phone,
+      transferCategory,
+      dischargeDate,
     } = req.body;
 
     const newAdmissionBook = await prisma.admissionbook.create({
       data: {
         nic,
-        bht,
+        bht: Number(bht),
         name,
         dailyno,
         yearlyno,
@@ -37,12 +37,12 @@ export const createAdmissionBook = async (req: Request, res: Response) => {
         country,
         streetAddress,
         age,
-        admittedDate,
+        admittedDate: new Date(admittedDate),
         reason,
         allergies,
-        transin,
-        transout,
-        direct,
+        transferCategory,
+        phone,
+        dischargeDate: new Date(dischargeDate),
       },
     });
     res.status(201).json({
@@ -110,6 +110,7 @@ export const updateAdmissionBook = async (req: Request, res: Response) => {
   }
   try {
     const {
+      nic,
       bht,
       name,
       dailyno,
@@ -123,9 +124,9 @@ export const updateAdmissionBook = async (req: Request, res: Response) => {
       admittedDate,
       reason,
       allergies,
-      transin,
-      transout,
-      direct,
+      phone,
+      transferCategory,
+      dischargeDate,
     } = req.body;
     const updatedAdmissionBook = await prisma.admissionbook.update({
       where: {
@@ -133,7 +134,8 @@ export const updateAdmissionBook = async (req: Request, res: Response) => {
         bht,
       },
       data: {
-        bht,
+        nic,
+        bht: Number(bht),
         name,
         dailyno,
         yearlyno,
@@ -143,12 +145,12 @@ export const updateAdmissionBook = async (req: Request, res: Response) => {
         country,
         streetAddress,
         age,
-        admittedDate,
+        admittedDate: new Date(admittedDate),
         reason,
         allergies,
-        transin,
-        transout,
-        direct,
+        transferCategory,
+        phone,
+        dischargeDate: new Date(dischargeDate),
       },
     });
     res.status(200).json(updatedAdmissionBook);

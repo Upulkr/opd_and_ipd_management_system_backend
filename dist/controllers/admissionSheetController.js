@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getrelatedAdmissionSheetByBht = exports.getAllAdmissionSheetByNic = exports.deleteAdmissionSheet = exports.getAdmissionSheets = exports.updateAdmissionSheet = exports.createAdmissionSheet = void 0;
+exports.getNumberOfAdmissionSheetsperDay = exports.getNumberOfAdmissionSheetsperYear = exports.getrelatedAdmissionSheetByBht = exports.getAllAdmissionSheetByNic = exports.deleteAdmissionSheet = exports.getAdmissionSheets = exports.updateAdmissionSheet = exports.createAdmissionSheet = void 0;
 const client_1 = require("@prisma/client");
 const prisma = new client_1.PrismaClient();
 const createAdmissionSheet = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -170,3 +170,38 @@ const getrelatedAdmissionSheetByBht = (req, res) => __awaiter(void 0, void 0, vo
     }
 });
 exports.getrelatedAdmissionSheetByBht = getrelatedAdmissionSheetByBht;
+const getNumberOfAdmissionSheetsperYear = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
+    try {
+        const result = yield prisma.$queryRaw `
+      SELECT count(name) 
+      FROM "AdmissionSheet"
+      WHERE EXTRACT(YEAR FROM "createdAt") = EXTRACT(YEAR FROM CURRENT_DATE);
+    `;
+        // Convert result to handle BigInt
+        const NoOfAdmissionSheetsPerYear = (_a = result[0]) === null || _a === void 0 ? void 0 : _a.count.toString(); // Convert BigInt to string
+        res.status(200).json({ NoOfAdmissionSheetsPerYear });
+    }
+    catch (error) {
+        res.status(500).json({
+            message: `Error getting number of admission sheets per year: ${error.message}`,
+        });
+    }
+});
+exports.getNumberOfAdmissionSheetsperYear = getNumberOfAdmissionSheetsperYear;
+const getNumberOfAdmissionSheetsperDay = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
+    try {
+        const result = yield prisma.$queryRaw `SELECT count(name)
+FROM "AdmissionSheet"
+WHERE DATE_TRUNC('day', "createdAt") =CURRENT_DATE;`;
+        const NoOfAdmissionSheetsPerDay = (_a = result[0]) === null || _a === void 0 ? void 0 : _a.count.toString(); // Convert BigInt to string
+        res.status(200).json({ NoOfAdmissionSheetsPerDay });
+    }
+    catch (error) {
+        res.status(500).json({
+            message: `Error getting number of admission sheets per year: ${error.message}`,
+        });
+    }
+});
+exports.getNumberOfAdmissionSheetsperDay = getNumberOfAdmissionSheetsperDay;

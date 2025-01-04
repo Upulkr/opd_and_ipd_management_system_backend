@@ -43,6 +43,7 @@ model Patient {
   createdAt      DateTime         @default(now())
   updatedAt      DateTime         @updatedAt
   admissionsheet AdmissionSheet[]
+  admissionbook  Admissionbook[]
   labtest        Labtest[]
   drugChart      DrugChart[]
 }
@@ -72,27 +73,27 @@ model AdmissionSheet {
 }
 
 model Admissionbook {
-  id            Int       @id @default(autoincrement())
-  bht           Int       @unique
-  nic           String
-  name          String
-  dailyno       Int
-  yearlyno      Int
-  city          String
-  stateProvince String
-  postalCode    String
-  country       String
-  streetAddress String
-  age           String
-  admittedDate  DateTime
-  reason        String
-  allergies     String[]
-  transin       String
-  transout      String
-  direct        String
-  dischargeDate DateTime?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  id               Int       @id @default(autoincrement())
+  bht              Int       @unique
+  nic              String
+  name             String
+  phone            String
+  dailyno          Int?
+  yearlyno         Int?
+  city             String
+  stateProvince    String
+  postalCode       String
+  country          String
+  streetAddress    String
+  age              String
+  admittedDate     DateTime?
+  reason           String
+  allergies        String[]
+  transferCategory String
+  dischargeDate    DateTime?
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+  Patient          Patient?  @relation(fields: [nic], references: [nic])
 }
 
 model Labtest {

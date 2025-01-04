@@ -198,3 +198,50 @@ export const getrelatedAdmissionSheetByBht = async (
     });
   }
 };
+
+export const getNumberOfAdmissionSheetsperYear = async (
+  req: Request,
+  res: Response
+) => {
+  try {
+    const result = await prisma.$queryRaw`
+      SELECT count(name) 
+      FROM "AdmissionSheet"
+      WHERE EXTRACT(YEAR FROM "createdAt") = EXTRACT(YEAR FROM CURRENT_DATE);
+    `;
+
+    // Convert result to handle BigInt
+    const NoOfAdmissionSheetsPerYear = (
+      result as { count: bigint }[]
+    )[0]?.count.toString(); // Convert BigInt to string
+
+    res.status(200).json({ NoOfAdmissionSheetsPerYear });
+  } catch (error) {
+    res.status(500).json({
+      message: `Error getting number of admission sheets per year: ${
+        (error as any).message
+      }`,
+    });
+  }
+};
+
+export const getNumberOfAdmissionSheetsperDay = async (
+  req: Request,
+  res: Response
+) => {
+  try {
+    const result = await prisma.$queryRaw`SELECT count(name)
+FROM "AdmissionSheet"
+WHERE DATE_TRUNC('day', "createdAt") =CURRENT_DATE;`;
+    const NoOfAdmissionSheetsPerDay = (
+      result as { count: bigint }[]
+    )[0]?.count.toString(); // Convert BigInt to string
+    res.status(200).json({ NoOfAdmissionSheetsPerDay });
+  } catch (error) {
+    res.status(500).json({
+      message: `Error getting number of admission sheets per year: ${
+        (error as any).message
+      }`,
+    });
+  }
+};
