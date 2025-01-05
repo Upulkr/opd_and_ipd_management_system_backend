@@ -67,16 +67,18 @@ export const getAdmissionBooks = async (req: Request, res: Response) => {
   }
 };
 
-export const getrelatedAdmissionBook = async (req: Request, res: Response) => {
-  const { nic, bht } = req.params;
+export const getrelatedAdmissionBookbyBHT = async (
+  req: Request,
+  res: Response
+) => {
+  const { bht } = req.query;
   try {
     const admissionBook = await prisma.admissionbook.findUnique({
       where: {
-        nic,
         bht: Number(bht),
       },
     });
-    res.status(200).json(admissionBook);
+    res.status(200).json({ admissionBook });
   } catch (error: any) {
     res
       .status(500)

@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteAdmissionBook = exports.updateAdmissionBook = exports.getAllAdmissionBooksforNic = exports.getrelatedAdmissionBook = exports.getAdmissionBooks = exports.createAdmissionBook = void 0;
+exports.deleteAdmissionBook = exports.updateAdmissionBook = exports.getAllAdmissionBooksforNic = exports.getrelatedAdmissionBookbyBHT = exports.getAdmissionBooks = exports.createAdmissionBook = void 0;
 const client_1 = require("@prisma/client");
 const prisma = new client_1.PrismaClient();
 const createAdmissionBook = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -60,16 +60,15 @@ const getAdmissionBooks = (req, res) => __awaiter(void 0, void 0, void 0, functi
     }
 });
 exports.getAdmissionBooks = getAdmissionBooks;
-const getrelatedAdmissionBook = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { nic, bht } = req.params;
+const getrelatedAdmissionBookbyBHT = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { bht } = req.query;
     try {
         const admissionBook = yield prisma.admissionbook.findUnique({
             where: {
-                nic,
                 bht: Number(bht),
             },
         });
-        res.status(200).json(admissionBook);
+        res.status(200).json({ admissionBook });
     }
     catch (error) {
         res
@@ -77,7 +76,7 @@ const getrelatedAdmissionBook = (req, res) => __awaiter(void 0, void 0, void 0, 
             .json({ message: `Error getting AdmissionBook: ${error.message}` });
     }
 });
-exports.getrelatedAdmissionBook = getrelatedAdmissionBook;
+exports.getrelatedAdmissionBookbyBHT = getrelatedAdmissionBookbyBHT;
 const getAllAdmissionBooksforNic = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { nic, bht } = req.params;
     try {
