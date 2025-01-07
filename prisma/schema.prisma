@@ -27,12 +27,12 @@ model User {
 }
 
 model Patient {
-  nic    String @id @unique
-  name   String
-  age    String
-  gender String
-
-  phone String
+  nic          String @id @unique
+  name         String
+  age          String
+  gender       String
+  livingStatus String
+  phone        String
 
   reason         String?
   city           String
@@ -52,6 +52,7 @@ model AdmissionSheet {
   id            Int       @id @default(autoincrement())
   bht           Int       @unique
   nic           String
+  livingStatus  String
   name          String
   age           String
   gender        String
@@ -78,6 +79,7 @@ model Admissionbook {
   nic              String
   name             String
   phone            String
+  livingStatus     String
   dailyno          Int?
   yearlyno         Int?
   city             String
@@ -90,6 +92,7 @@ model Admissionbook {
   reason           String
   allergies        String[]
   transferCategory String
+  wardNo           String
   dischargeDate    DateTime?
   createdAt        DateTime  @default(now())
   updatedAt        DateTime  @updatedAt
@@ -126,6 +129,9 @@ model Ward {
   noOfUsedBeds Int
   noOfFreeBeds Int
   noOfPatients Int
+  telephone    String
+  noffdoctors  Int
+  nofNurses    Int
   drugs        Drugs[] @relation("WardDrugs")
 }
 

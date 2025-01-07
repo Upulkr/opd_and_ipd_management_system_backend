@@ -20,6 +20,7 @@ export const createPatient = async (req: Request, res: Response) => {
       postalCode,
       country,
       streetAddress,
+      livingStatus,
     } = req.body;
 
     const patient = await prisma.patient.findUnique({
@@ -37,7 +38,7 @@ export const createPatient = async (req: Request, res: Response) => {
         age,
         name,
         gender,
-
+        livingStatus,
         phone,
         reason,
         streetAddress,

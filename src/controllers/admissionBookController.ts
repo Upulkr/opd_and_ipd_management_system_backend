@@ -22,6 +22,8 @@ export const createAdmissionBook = async (req: Request, res: Response) => {
       phone,
       transferCategory,
       dischargeDate,
+      wardNo,
+      livingStatus,
     } = req.body;
 
     const newAdmissionBook = await prisma.admissionbook.create({
@@ -42,7 +44,9 @@ export const createAdmissionBook = async (req: Request, res: Response) => {
         allergies,
         transferCategory,
         phone,
-        dischargeDate: new Date(dischargeDate),
+        wardNo,
+        livingStatus,
+        dischargeDate: dischargeDate ? new Date(dischargeDate) : null,
       },
     });
     res.status(201).json({
@@ -129,6 +133,8 @@ export const updateAdmissionBook = async (req: Request, res: Response) => {
       phone,
       transferCategory,
       dischargeDate,
+      wardNo,
+      livingStatus,
     } = req.body;
     const updatedAdmissionBook = await prisma.admissionbook.update({
       where: {
@@ -152,6 +158,7 @@ export const updateAdmissionBook = async (req: Request, res: Response) => {
         allergies,
         transferCategory,
         phone,
+        wardNo,
         dischargeDate: new Date(dischargeDate),
       },
     });

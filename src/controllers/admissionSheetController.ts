@@ -22,6 +22,7 @@ export const createAdmissionSheet = async (req: Request, res: Response) => {
       stateProvince,
       postalCode,
       country,
+      livingStatus,
     } = req.body;
 
     // const existingAdmissionSheet = await prisma.admissionSheet.findUnique({
@@ -54,6 +55,7 @@ export const createAdmissionSheet = async (req: Request, res: Response) => {
         stateProvince,
         postalCode,
         country,
+        livingStatus,
       },
     });
     res.status(201).json({
@@ -80,6 +82,7 @@ export const updateAdmissionSheet = async (req: Request, res: Response) => {
       reason,
       pressure,
       weight,
+      livingStatus,
     } = req.body;
 
     const updatedAdmissionSheet = await prisma.admissionSheet.update({
@@ -97,6 +100,7 @@ export const updateAdmissionSheet = async (req: Request, res: Response) => {
         reason,
         pressure,
         weight,
+        livingStatus,
       },
     });
     res.status(200).json({
