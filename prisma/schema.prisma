@@ -123,7 +123,7 @@ model DrugChart {
 
 model Ward {
   wardId       Int     @id @default(autoincrement())
-  wardNo       Int     @unique
+  wardNo       String    @unique
   wardName     String
   noOfBeds     Int
   noOfUsedBeds Int

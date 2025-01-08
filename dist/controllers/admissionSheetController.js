@@ -14,7 +14,7 @@ const client_1 = require("@prisma/client");
 const prisma = new client_1.PrismaClient();
 const createAdmissionSheet = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { nic, name, age, gender, phone, wardNo, reason, pressure, weight, bht, streetAddress, city, stateProvince, postalCode, country, } = req.body;
+        const { nic, name, age, gender, phone, wardNo, reason, pressure, weight, bht, streetAddress, city, stateProvince, postalCode, country, livingStatus, } = req.body;
         // const existingAdmissionSheet = await prisma.admissionSheet.findUnique({
         //   where: {
         //     nic,
@@ -42,6 +42,7 @@ const createAdmissionSheet = (req, res) => __awaiter(void 0, void 0, void 0, fun
                 stateProvince,
                 postalCode,
                 country,
+                livingStatus,
             },
         });
         res.status(201).json({
@@ -58,7 +59,7 @@ const createAdmissionSheet = (req, res) => __awaiter(void 0, void 0, void 0, fun
 exports.createAdmissionSheet = createAdmissionSheet;
 const updateAdmissionSheet = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { nic, name, age, gender, bht, phone, wardNo, reason, pressure, weight, } = req.body;
+        const { nic, name, age, gender, bht, phone, wardNo, reason, pressure, weight, livingStatus, } = req.body;
         const updatedAdmissionSheet = yield prisma.admissionSheet.update({
             where: {
                 nic: nic,
@@ -73,6 +74,7 @@ const updateAdmissionSheet = (req, res) => __awaiter(void 0, void 0, void 0, fun
                 reason,
                 pressure,
                 weight,
+                livingStatus,
             },
         });
         res.status(200).json({

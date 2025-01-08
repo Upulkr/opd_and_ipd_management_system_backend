@@ -12,6 +12,7 @@ import admissionSheetRoutes from "./routes/admissionSheetRoutes";
 import drugChartRoutes from "./routes/drugChartRoutes";
 import userRoutes from "./routes/userRoutes";
 import patientRoutes from "./routes/patientRoutes";
+import currentWardDetails from "./routes/currentWardStatusRoute";
 // import ticketRoutes from "./routes/ticketRoutes";
 /* CONFIGURATIONS */
 dotenv.config();
@@ -33,7 +34,7 @@ app.use("/admissionSheet", admissionSheetRoutes);
 app.use("/drugChart", drugChartRoutes);
 app.use("/users", userRoutes);
 app.use("/patient", patientRoutes);
-
+app.use("/warddetails", currentWardDetails);
 // app.use("/ticket", ticketRoutes);
 
 /* SERVER */
