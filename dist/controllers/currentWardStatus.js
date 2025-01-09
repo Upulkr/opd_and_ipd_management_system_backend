@@ -11,6 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getCurrentWardStatus = void 0;
 const client_1 = require("@prisma/client");
+const client_2 = require("@prisma/client");
 const prisma = new client_1.PrismaClient();
 BigInt.prototype.toJSON = function () {
     const int = Number.parseInt(this.toString());
@@ -29,7 +30,9 @@ WHERE ad."admittedDate"::DATE = CURRENT_DATE;`;
         const getnoOfTodayDischarged = yield prisma.$queryRaw `SELECT COUNT(name)
 FROM "Admissionbook" AS ad
 WHERE ad."dischargeDate"::DATE = CURRENT_DATE;`;
-        const wardDetailsAccordingToWardNo = yield prisma.$queryRaw `SELECT 
+        const wardNos = noOfpatientsUndergoing.map((ward) => ward.wardNo);
+        console.log("wardNos", wardNos);
+        const wardDetails = yield prisma.$queryRaw `SELECT 
   "wardId", 
   "wardNo", 
   "wardName", 
@@ -40,43 +43,27 @@ WHERE ad."dischargeDate"::DATE = CURRENT_DATE;`;
   "telephone", 
   "noffdoctors", 
   "nofNurses" 
-FROM "Ward" as wa
-where wa."wardNo"=${noOfpatientsUndergoing[0].wardNo}`;
-        const wardData = [
-            {
-                wardNumber: noOfpatientsUndergoing.length > 0
-                    ? noOfpatientsUndergoing[0].wardNo
-                    : null,
-                noOfpatientsUndergoing: noOfpatientsUndergoing.length > 0
-                    ? noOfpatientsUndergoing[0].count
-                    : 0,
+FROM "Ward"    WHERE "wardNo" IN (${client_2.Prisma.join(wardNos)});
+`;
+        console.log("wardDetails", wardDetails);
+        const wardData = noOfpatientsUndergoing === null || noOfpatientsUndergoing === void 0 ? void 0 : noOfpatientsUndergoing.map((ward) => {
+            const wardDetailsData = wardDetails.find((detail) => detail.wardNo === ward.wardNo);
+            return {
+                wardNumber: ward.wardNo,
+                noOfpatientsUndergoing: ward.count,
                 getnoOfTodayAdmitted: getnoOfTodayAdmitted.length > 0 ? getnoOfTodayAdmitted[0].count : 0,
-                wardName: wardDetailsAccordingToWardNo.length > 0
-                    ? wardDetailsAccordingToWardNo[0].wardName
-                    : null,
+                wardName: wardDetailsData ? wardDetailsData.wardName : null,
                 noOfDischargedToday: getnoOfTodayDischarged.length > 0
                     ? getnoOfTodayDischarged[0].count
                     : 0,
-                noOfBeds: wardDetailsAccordingToWardNo.length > 0
-                    ? wardDetailsAccordingToWardNo[0].noOfBeds
-                    : 0,
-                noOfUsedBeds: wardDetailsAccordingToWardNo.length > 0
-                    ? wardDetailsAccordingToWardNo[0].noOfUsedBeds
-                    : 0,
-                noOfFreeBeds: wardDetailsAccordingToWardNo.length > 0
-                    ? wardDetailsAccordingToWardNo[0].noOfFreeBeds
-                    : 0,
-                noOfdoctors: wardDetailsAccordingToWardNo.length > 0
-                    ? wardDetailsAccordingToWardNo[0].noffdoctors
-                    : 0,
-                noOfnurses: wardDetailsAccordingToWardNo.length > 0
-                    ? wardDetailsAccordingToWardNo[0].nofNurses
-                    : 0,
-                telephone: wardDetailsAccordingToWardNo.length > 0
-                    ? wardDetailsAccordingToWardNo[0].telephone
-                    : null,
-            },
-        ];
+                noOfBeds: wardDetailsData ? wardDetailsData.noOfBeds : 0,
+                noOfUsedBeds: wardDetailsData ? wardDetailsData.noOfUsedBeds : 0,
+                noOfFreeBeds: wardDetailsData ? wardDetailsData.noOfFreeBeds : 0,
+                noOfdoctors: wardDetailsData ? wardDetailsData.noffdoctors : 0,
+                noOfnurses: wardDetailsData ? wardDetailsData.nofNurses : 0,
+                telephone: wardDetailsData ? wardDetailsData.telephone : null,
+            };
+        });
         // Extract totalBeds and totalNoOfFreeBeds
         const totalBeds = totalAvailableBeds.length > 0 ? totalAvailableBeds[0].totalBeds : 0;
         const totalNoOfFreeBeds = totalAvailableBeds.length > 0

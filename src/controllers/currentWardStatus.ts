@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import { Request, Response } from "express";
-
+import { Prisma } from "@prisma/client";
 const prisma = new PrismaClient();
 (BigInt.prototype as any).toJSON = function () {
   const int = Number.parseInt(this.toString());
@@ -30,8 +30,11 @@ WHERE ad."admittedDate"::DATE = CURRENT_DATE;`;
 FROM "Admissionbook" AS ad
 WHERE ad."dischargeDate"::DATE = CURRENT_DATE;`;
 
-    const wardDetailsAccordingToWardNo: [
+    const wardNos = noOfpatientsUndergoing.map((ward) => ward.wardNo);
+    console.log("wardNos", wardNos);
+    const wardDetails: [
       {
+        wardNo: string;
         wardName: string;
         noOfBeds: number;
         noOfUsedBeds: number;
@@ -52,55 +55,33 @@ WHERE ad."dischargeDate"::DATE = CURRENT_DATE;`;
   "telephone", 
   "noffdoctors", 
   "nofNurses" 
-FROM "Ward" as wa
-where wa."wardNo"=${noOfpatientsUndergoing[0].wardNo as string}`;
+FROM "Ward"    WHERE "wardNo" IN (${Prisma.join(wardNos)});
+`;
 
-    const wardData = [
-      {
-        wardNumber:
-          noOfpatientsUndergoing.length > 0
-            ? noOfpatientsUndergoing[0].wardNo
-            : null,
-        noOfpatientsUndergoing:
-          noOfpatientsUndergoing.length > 0
-            ? noOfpatientsUndergoing[0].count
-            : 0,
+    console.log("wardDetails", wardDetails);
+
+    const wardData = noOfpatientsUndergoing?.map((ward) => {
+      const wardDetailsData = wardDetails.find(
+        (detail) => detail.wardNo === ward.wardNo
+      );
+      return {
+        wardNumber: ward.wardNo,
+        noOfpatientsUndergoing: ward.count,
         getnoOfTodayAdmitted:
           getnoOfTodayAdmitted.length > 0 ? getnoOfTodayAdmitted[0].count : 0,
-        wardName:
-          wardDetailsAccordingToWardNo.length > 0
-            ? wardDetailsAccordingToWardNo[0].wardName
-            : null,
+        wardName: wardDetailsData ? wardDetailsData.wardName : null,
         noOfDischargedToday:
           getnoOfTodayDischarged.length > 0
             ? getnoOfTodayDischarged[0].count
             : 0,
-        noOfBeds:
-          wardDetailsAccordingToWardNo.length > 0
-            ? wardDetailsAccordingToWardNo[0].noOfBeds
-            : 0,
-        noOfUsedBeds:
-          wardDetailsAccordingToWardNo.length > 0
-            ? wardDetailsAccordingToWardNo[0].noOfUsedBeds
-            : 0,
-        noOfFreeBeds:
-          wardDetailsAccordingToWardNo.length > 0
-            ? wardDetailsAccordingToWardNo[0].noOfFreeBeds
-            : 0,
-        noOfdoctors:
-          wardDetailsAccordingToWardNo.length > 0
-            ? wardDetailsAccordingToWardNo[0].noffdoctors
-            : 0,
-        noOfnurses:
-          wardDetailsAccordingToWardNo.length > 0
-            ? wardDetailsAccordingToWardNo[0].nofNurses
-            : 0,
-        telephone:
-          wardDetailsAccordingToWardNo.length > 0
-            ? wardDetailsAccordingToWardNo[0].telephone
-            : null,
-      },
-    ];
+        noOfBeds: wardDetailsData ? wardDetailsData.noOfBeds : 0,
+        noOfUsedBeds: wardDetailsData ? wardDetailsData.noOfUsedBeds : 0,
+        noOfFreeBeds: wardDetailsData ? wardDetailsData.noOfFreeBeds : 0,
+        noOfdoctors: wardDetailsData ? wardDetailsData.noffdoctors : 0,
+        noOfnurses: wardDetailsData ? wardDetailsData.nofNurses : 0,
+        telephone: wardDetailsData ? wardDetailsData.telephone : null,
+      };
+    });
 
     // Extract totalBeds and totalNoOfFreeBeds
     const totalBeds =
