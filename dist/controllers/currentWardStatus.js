@@ -18,6 +18,8 @@ BigInt.prototype.toJSON = function () {
 };
 const getCurrentWardStatus = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
+        const totalAvailableBeds = yield prisma.$queryRaw `select SUM(COALESCE("noOfBeds", 0)) AS "totalBeds", 
+    SUM(COALESCE("noOfFreeBeds", 0)) AS "totalNoOfFreeBeds"  from "Ward"`;
         const noOfpatientsUndergoing = yield prisma.$queryRaw `SELECT ad."wardNo", count(name) AS "count"
 FROM "Admissionbook" AS ad 
 WHERE ad."dischargeDate" IS NULL group by ad."wardNo";`;
@@ -40,21 +42,52 @@ WHERE ad."dischargeDate"::DATE = CURRENT_DATE;`;
   "nofNurses" 
 FROM "Ward" as wa
 where wa."wardNo"=${noOfpatientsUndergoing[0].wardNo}`;
-        res.status(200).json([
+        const wardData = [
             {
-                wardNumber: noOfpatientsUndergoing[0].wardNo,
-                noOfpatientsUndergoing: noOfpatientsUndergoing[0].count,
-                getnoOfTodayAdmitted: getnoOfTodayAdmitted[0].count,
-                wardName: wardDetailsAccordingToWardNo[0].wardName,
-                noOfDischargedToday: getnoOfTodayDischarged[0].count,
-                noOfBeds: wardDetailsAccordingToWardNo[0].noOfBeds,
-                noOfUsedBeds: wardDetailsAccordingToWardNo[0].noOfUsedBeds,
-                noOfFreeBeds: wardDetailsAccordingToWardNo[0].noOfFreeBeds,
-                noOfdoctors: wardDetailsAccordingToWardNo[0].noffdoctors,
-                noOfnurses: wardDetailsAccordingToWardNo[0].nofNurses,
-                telephone: wardDetailsAccordingToWardNo[0].telephone,
-            }
-        ]);
+                wardNumber: noOfpatientsUndergoing.length > 0
+                    ? noOfpatientsUndergoing[0].wardNo
+                    : null,
+                noOfpatientsUndergoing: noOfpatientsUndergoing.length > 0
+                    ? noOfpatientsUndergoing[0].count
+                    : 0,
+                getnoOfTodayAdmitted: getnoOfTodayAdmitted.length > 0 ? getnoOfTodayAdmitted[0].count : 0,
+                wardName: wardDetailsAccordingToWardNo.length > 0
+                    ? wardDetailsAccordingToWardNo[0].wardName
+                    : null,
+                noOfDischargedToday: getnoOfTodayDischarged.length > 0
+                    ? getnoOfTodayDischarged[0].count
+                    : 0,
+                noOfBeds: wardDetailsAccordingToWardNo.length > 0
+                    ? wardDetailsAccordingToWardNo[0].noOfBeds
+                    : 0,
+                noOfUsedBeds: wardDetailsAccordingToWardNo.length > 0
+                    ? wardDetailsAccordingToWardNo[0].noOfUsedBeds
+                    : 0,
+                noOfFreeBeds: wardDetailsAccordingToWardNo.length > 0
+                    ? wardDetailsAccordingToWardNo[0].noOfFreeBeds
+                    : 0,
+                noOfdoctors: wardDetailsAccordingToWardNo.length > 0
+                    ? wardDetailsAccordingToWardNo[0].noffdoctors
+                    : 0,
+                noOfnurses: wardDetailsAccordingToWardNo.length > 0
+                    ? wardDetailsAccordingToWardNo[0].nofNurses
+                    : 0,
+                telephone: wardDetailsAccordingToWardNo.length > 0
+                    ? wardDetailsAccordingToWardNo[0].telephone
+                    : null,
+            },
+        ];
+        // Extract totalBeds and totalNoOfFreeBeds
+        const totalBeds = totalAvailableBeds.length > 0 ? totalAvailableBeds[0].totalBeds : 0;
+        const totalNoOfFreeBeds = totalAvailableBeds.length > 0
+            ? totalAvailableBeds[0].totalNoOfFreeBeds
+            : 0;
+        // Send response with separate data
+        res.status(200).json({
+            wardData,
+            totalBeds,
+            totalNoOfFreeBeds,
+        });
     }
     catch (error) {
         res.status(500).json({
