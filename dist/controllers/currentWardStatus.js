@@ -31,7 +31,6 @@ WHERE ad."admittedDate"::DATE = CURRENT_DATE;`;
 FROM "Admissionbook" AS ad
 WHERE ad."dischargeDate"::DATE = CURRENT_DATE;`;
         const wardNos = noOfpatientsUndergoing.map((ward) => ward.wardNo);
-        console.log("wardNos", wardNos);
         const wardDetails = yield prisma.$queryRaw `SELECT 
   "wardId", 
   "wardNo", 
@@ -45,7 +44,6 @@ WHERE ad."dischargeDate"::DATE = CURRENT_DATE;`;
   "nofNurses" 
 FROM "Ward"    WHERE "wardNo" IN (${client_2.Prisma.join(wardNos)});
 `;
-        console.log("wardDetails", wardDetails);
         const wardData = noOfpatientsUndergoing === null || noOfpatientsUndergoing === void 0 ? void 0 : noOfpatientsUndergoing.map((ward) => {
             const wardDetailsData = wardDetails.find((detail) => detail.wardNo === ward.wardNo);
             return {

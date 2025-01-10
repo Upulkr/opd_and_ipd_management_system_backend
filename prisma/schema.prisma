@@ -46,6 +46,7 @@ model Patient {
   admissionbook  Admissionbook[]
   labtest        Labtest[]
   drugChart      DrugChart[]
+  outPatient     OutPatientFrom[]
 }
 
 model AdmissionSheet {
@@ -123,7 +124,7 @@ model DrugChart {
 
 model Ward {
   wardId       Int     @id @default(autoincrement())
-  wardNo       String    @unique
+  wardNo       String  @unique
   wardName     String
   noOfBeds     Int
   noOfUsedBeds Int
@@ -144,4 +145,25 @@ model Drugs {
   remainingQuantity Int
 
   wards Ward[] @relation("WardDrugs")
+}
+
+model OutPatientFrom {
+  id            Int      @id @default(autoincrement())
+  nic           String
+  name          String
+  age           String?
+  gender        String?
+  livingStatus  String?
+  phone         String?
+  description   String?
+  reason        String?
+  city          String?
+  stateProvince String?
+  postalCode    String?
+  country       String?
+  streetAddress String?
+  prescriptions String[]
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  Patient       Patient? @relation(fields: [nic], references: [nic])
 }

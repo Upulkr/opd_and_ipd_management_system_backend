@@ -9,124 +9,110 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updatePatient = exports.deletePatient = exports.getPatientByNic = exports.getAllPatients = exports.createPatient = void 0;
+exports.getAllOutPatients = exports.createOutPatient = void 0;
 const client_1 = require("@prisma/client");
 const prisma = new client_1.PrismaClient();
-const createPatient = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const createOutPatient = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { nic, age, name, gender, address, phone, diagnose, reason, pressure, weight, city, stateProvince, postalCode, country, streetAddress, livingStatus, } = req.body;
-        const patient = yield prisma.patient.findUnique({
-            where: {
-                nic,
-            },
-        });
-        if (patient) {
-            return res.status(400).json({ message: "Patient already exists" });
-        }
-        const newPatient = yield prisma.patient.create({
+        const { nic, name, age, gender, livingStatus, phone, description, reason, city, stateProvince, postalCode, country, streetAddress, prescriptions, } = req.body;
+        console.log("req.body", req.body);
+        console.log("nic", nic);
+        const newOutPatient = yield prisma.outPatientFrom.create({
             data: {
                 nic,
-                age,
                 name,
+                age,
                 gender,
-                livingStatus,
+                prescriptions,
                 phone,
+                description,
                 reason,
-                streetAddress,
                 city,
                 stateProvince,
                 postalCode,
                 country,
+                streetAddress,
+                livingStatus: "active", // or any default value
             },
         });
-        res
-            .status(200)
-            .json({ message: "Patient Created Successfully", newPatient });
+        res.status(201).json({
+            message: "OutPatient Created Successfully",
+            newOutPatient,
+        });
     }
     catch (error) {
-        res
-            .status(500)
-            .json({ message: `Error creating Patient: ${error.message}` });
+        res.status(400).json({ message: error.message });
     }
 });
-exports.createPatient = createPatient;
-const getAllPatients = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.createOutPatient = createOutPatient;
+const getAllOutPatients = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const Patients = yield prisma.patient.findMany();
-        res
-            .status(200)
-            .json({ message: "Patients fetched successfully!", Patients });
+        const outPatients = yield prisma.outPatientFrom.findMany();
+        res.status(200).json(outPatients);
     }
     catch (error) {
-        res
-            .status(500)
-            .json({ message: `Error getting Patients: ${error.message}` });
+        res.status(400).json({ message: error.message });
     }
 });
-exports.getAllPatients = getAllPatients;
-const getPatientByNic = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { nic } = req.params;
-    try {
-        const Patient = yield prisma.patient.findUnique({
-            where: {
-                nic,
-            },
-        });
-        if (!Patient) {
-            // Respond with a 404 if the patient is not found
-            return res.status(404).json({ message: "Patient not found" });
-        }
-        res.status(200).json({ message: "Patient fetched successfully!", Patient });
-    }
-    catch (error) {
-        res
-            .status(500)
-            .json({ message: `Error getting Patient: ${error.message}` });
-    }
-});
-exports.getPatientByNic = getPatientByNic;
-const deletePatient = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { nic } = req.params;
-    if (!nic) {
-        return res.status(400).json({ message: "nic is required" });
-    }
-    try {
-        const deletedPatient = yield prisma.patient.delete({
-            where: {
-                nic,
-            },
-        });
-        res.status(200).json({
-            message: "Patient Deleted Successfully",
-        });
-    }
-    catch (error) {
-        res
-            .status(500)
-            .json({ message: `Error deleting Patient: ${error.message}` });
-    }
-});
-exports.deletePatient = deletePatient;
-const updatePatient = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { nic } = req.params;
-    if (!nic) {
-        return res.status(400).json({ message: "nic is required" });
-    }
-    try {
-        const updatedPatient = yield prisma.patient.update({
-            where: {
-                nic,
-            },
-            data: req.body,
-        });
-        res.status(200).json({
-            message: "Patient Updated Successfully",
-        });
-    }
-    catch (error) {
-        res
-            .status(500)
-            .json({ message: `Error updating Patient: ${error.message}` });
-    }
-});
-exports.updatePatient = updatePatient;
+exports.getAllOutPatients = getAllOutPatients;
+// export const getOutPatientByNic = async (req: Request, res: Response) => {
+//   try {
+//     const { nic } = req.params;
+//     if (!nic) {
+//       return res.status(400).json({ error: "NIC is required." });
+//     }
+//     const outPatient = await prisma.outPatientFrom.findUnique({
+//       where: {
+//         nic: nic,
+//       },
+//     });
+//     res
+//       .status(200)
+//       .json({ message: "OutPatient fetched successfully!", outPatient });
+//   } catch (error: any) {
+//     res
+//       .status(500)
+//       .json({ message: `Error getting OutPatient: ${error.message}` });
+//   }
+// };
+// export const updateOutPatient = async (req: Request, res: Response) => {
+//   try {
+//     const { nic } = req.params;
+//     if (!nic) {
+//       return res.status(400).json({ error: "NIC is required." });
+//     }
+//     const updatedOutPatient = await prisma.outPatientFrom.update({
+//       where: {
+//         nic,
+//       },
+//       data: req.body,
+//     });
+//     res
+//       .status(200)
+//       .json({ message: "OutPatient updated successfully!", updatedOutPatient });
+//   } catch (error: any) {
+//     res
+//       .status(500)
+//       .json({ message: `Error updating OutPatient: ${error.message}` });
+//   }
+// };
+// export const deleteOutPatient = async (req: Request, res: Response) => {
+//   try {
+//     const { nic } = req.params;
+//     if (!nic) {
+//       return res.status(400).json({ error: "NIC is required." });
+//     }
+//     const deletedOutPatient = await prisma.outPatientFrom.delete({
+//       where: {
+//         nic,
+//       },
+//     });
+//     res
+//       .status(200)
+//       .json({ message: "OutPatient deleted successfully!", deletedOutPatient });
+//   } catch (error: any) {
+//     res
+//       .status(500)
+//       .json({ message: `Error deleting OutPatient: ${error.message}` });
+//   }
+// };

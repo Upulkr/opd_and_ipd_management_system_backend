@@ -4,7 +4,7 @@ import {
   deletePatient,
   getPatientByNic,
   updatePatient,
-} from "../controllers/OutpatientController";
+} from "../controllers/patientController";
 import { getAllPatients } from "../controllers/userController";
 
 const router = Router();

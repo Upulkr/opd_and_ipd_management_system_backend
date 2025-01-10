@@ -31,7 +31,7 @@ FROM "Admissionbook" AS ad
 WHERE ad."dischargeDate"::DATE = CURRENT_DATE;`;
 
     const wardNos = noOfpatientsUndergoing.map((ward) => ward.wardNo);
-    console.log("wardNos", wardNos);
+
     const wardDetails: [
       {
         wardNo: string;
@@ -57,8 +57,6 @@ WHERE ad."dischargeDate"::DATE = CURRENT_DATE;`;
   "nofNurses" 
 FROM "Ward"    WHERE "wardNo" IN (${Prisma.join(wardNos)});
 `;
-
-    console.log("wardDetails", wardDetails);
 
     const wardData = noOfpatientsUndergoing?.map((ward) => {
       const wardDetailsData = wardDetails.find(
