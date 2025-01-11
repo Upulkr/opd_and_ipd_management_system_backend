@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getAllOutPatients = exports.createOutPatient = void 0;
+exports.getAllOutPatientsToday = exports.getAllOutPatients = exports.createOutPatient = void 0;
 const client_1 = require("@prisma/client");
 const prisma = new client_1.PrismaClient();
 const createOutPatient = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -55,6 +55,28 @@ const getAllOutPatients = (req, res) => __awaiter(void 0, void 0, void 0, functi
     }
 });
 exports.getAllOutPatients = getAllOutPatients;
+const getAllOutPatientsToday = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        // Get the start and end of today
+        const startOfDay = new Date();
+        startOfDay.setHours(0, 0, 0, 0);
+        const endOfDay = new Date();
+        endOfDay.setHours(23, 59, 59, 999);
+        const outPatientsToday = yield prisma.outPatientFrom.findMany({
+            where: {
+                createdAt: {
+                    gte: startOfDay, // Greater than or equal to the start of the day
+                    lte: endOfDay, // Less than or equal to the end of the day
+                },
+            },
+        });
+        res.status(200).json(outPatientsToday);
+    }
+    catch (error) {
+        res.status(400).json({ message: error.message });
+    }
+});
+exports.getAllOutPatientsToday = getAllOutPatientsToday;
 // export const getOutPatientByNic = async (req: Request, res: Response) => {
 //   try {
 //     const { nic } = req.params;
