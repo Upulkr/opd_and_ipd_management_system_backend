@@ -83,26 +83,35 @@ export const getAllOutPatientsToday = async (req: Request, res: Response) => {
   }
 };
 
-// export const getOutPatientByNic = async (req: Request, res: Response) => {
-//   try {
-//     const { nic } = req.params;
-//     if (!nic) {
-//       return res.status(400).json({ error: "NIC is required." });
-//     }
-//     const outPatient = await prisma.outPatientFrom.findUnique({
-//       where: {
-//         nic: nic,
-//       },
-//     });
-//     res
-//       .status(200)
-//       .json({ message: "OutPatient fetched successfully!", outPatient });
-//   } catch (error: any) {
-//     res
-//       .status(500)
-//       .json({ message: `Error getting OutPatient: ${error.message}` });
-//   }
-// };
+export const getOutPatientByNic = async (req: Request, res: Response) => {
+  try {
+    const { nic } = req.params;
+    if (!nic) {
+      return res.status(400).json({ error: "NIC is required." });
+    }
+
+    const outPatient = await prisma.outPatientFrom.findMany({
+      where: {
+        nic: nic,
+      },
+      orderBy: {
+        updatedAt: "desc",
+      },
+    });
+
+    if (!outPatient.length) {
+      return res.status(404).json({ message: "OutPatient not found." });
+    }
+
+    res
+      .status(200)
+      .json({ message: "OutPatient fetched successfully!", outPatient });
+  } catch (error: any) {
+    res
+      .status(500)
+      .json({ message: `Error getting OutPatient: ${error.message}` });
+  }
+};
 
 // export const updateOutPatient = async (req: Request, res: Response) => {
 //   try {

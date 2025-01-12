@@ -5,4 +5,5 @@ const OutPatientController_1 = require("../controllers/OutPatientController"); /
 const router = (0, express_1.Router)();
 router.post("/", OutPatientController_1.createOutPatient);
 router.get("/", OutPatientController_1.getAllOutPatientsToday);
+router.get("/:nic", OutPatientController_1.getOutPatientByNic);
 exports.default = router;
