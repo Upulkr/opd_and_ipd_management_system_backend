@@ -7,4 +7,6 @@ router.put("/:drugId", drugController_1.updateDrug);
 router.get("/", drugController_1.getAllDrugs);
 router.post("/", drugController_1.addNewDrug);
 router.delete("/:drugId", drugController_1.deleteDrug);
+router.get("/getdrugallocationbywardname/:wardName", drugController_1.getDrugAllocationbyWardName);
+router.post("/createdrugallocation", drugController_1.createNewDrugAllocation);
 exports.default = router;

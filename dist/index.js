@@ -19,7 +19,8 @@ const patientRoutes_1 = __importDefault(require("./routes/patientRoutes"));
 const currentWardStatusRoute_1 = __importDefault(require("./routes/currentWardStatusRoute"));
 const wardBedsController_1 = __importDefault(require("./routes/wardBedsController"));
 const OutPatientRoutes_1 = __importDefault(require("./routes/OutPatientRoutes"));
-const drugController_1 = __importDefault(require("./routes/drugController"));
+const drugRoutes_1 = __importDefault(require("./routes/drugRoutes"));
+const clinicRoutes_1 = __importDefault(require("./routes/clinicRoutes"));
 // import ticketRoutes from "./routes/ticketRoutes";
 /* CONFIGURATIONS */
 dotenv_1.default.config();
@@ -43,7 +44,8 @@ app.use("/patient", patientRoutes_1.default);
 app.use("/warddetails", currentWardStatusRoute_1.default);
 app.use("/wardBedsController", wardBedsController_1.default);
 app.use("/outPatient", OutPatientRoutes_1.default);
-app.use("/drugs", drugController_1.default);
+app.use("/drugs", drugRoutes_1.default);
+app.use("/clinic", clinicRoutes_1.default);
 // app.use("/ticket", ticketRoutes);
 /* SERVER */
 const port = Number(process.env.PORT) || 8000;

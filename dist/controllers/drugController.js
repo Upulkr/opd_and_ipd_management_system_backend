@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getDrugById = exports.updateDrug = exports.deleteDrug = exports.getAllDrugs = exports.addNewDrug = void 0;
+exports.getDrugAllocationbyWardName = exports.createNewDrugAllocation = exports.getDrugById = exports.updateDrug = exports.deleteDrug = exports.getAllDrugs = exports.addNewDrug = void 0;
 const client_1 = require("@prisma/client");
 const prisma = new client_1.PrismaClient();
 const addNewDrug = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -112,3 +112,49 @@ const getDrugById = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     }
 });
 exports.getDrugById = getDrugById;
+const createNewDrugAllocation = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { drugId, drugName, wardName, totalQuantity, usedQuantity, unit, dateGiven, } = req.body;
+        const newDrugAllocation = yield prisma.drugAllocation.create({
+            data: {
+                drugId,
+                drugName,
+                wardName,
+                totalQuantity,
+                usedQuantity,
+                unit,
+                dateGiven,
+            },
+        });
+        res.status(200).json({
+            newDrugAllocation,
+            message: "Drug Allocation added successfully!",
+        });
+    }
+    catch (error) {
+        res
+            .status(500)
+            .json({ message: `Error adding Drug Allocation: ${error.message}` });
+    }
+});
+exports.createNewDrugAllocation = createNewDrugAllocation;
+const getDrugAllocationbyWardName = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { wardName } = req.params;
+        const allocations = yield prisma.drugAllocation.findMany({
+            where: {
+                wardName,
+            },
+        });
+        res.status(200).json({
+            allocations,
+            message: "Drug Allocations retrieved succssfulley",
+        });
+    }
+    catch (error) {
+        res
+            .status(500)
+            .json({ message: `Error getting Drug Allocations: ${error.message}` });
+    }
+});
+exports.getDrugAllocationbyWardName = getDrugAllocationbyWardName;

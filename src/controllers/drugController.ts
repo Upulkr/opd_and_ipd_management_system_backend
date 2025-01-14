@@ -101,3 +101,60 @@ export const getDrugById = async (req: Request, res: Response) => {
     res.status(400).json({ message: error.message });
   }
 };
+
+export const createNewDrugAllocation = async (req: Request, res: Response) => {
+  try {
+    const {
+      drugId,
+
+      drugName,
+      wardName,
+      totalQuantity,
+      usedQuantity,
+      unit,
+      dateGiven,
+    } = req.body;
+
+    const newDrugAllocation = await prisma.drugAllocation.create({
+      data: {
+        drugId,
+        drugName,
+        wardName,
+        totalQuantity,
+        usedQuantity,
+        unit,
+        dateGiven,
+      },
+    });
+    res.status(200).json({
+      newDrugAllocation,
+      message: "Drug Allocation added successfully!",
+    });
+  } catch (error: any) {
+    res
+      .status(500)
+      .json({ message: `Error adding Drug Allocation: ${error.message}` });
+  }
+};
+
+export const getDrugAllocationbyWardName = async (
+  req: Request,
+  res: Response
+) => {
+  try {
+    const { wardName } = req.params;
+    const allocations = await prisma.drugAllocation.findMany({
+      where: {
+        wardName,
+      },
+    });
+    res.status(200).json({
+      allocations,
+      message: "Drug Allocations retrieved succssfulley",
+    });
+  } catch (error: any) {
+    res
+      .status(500)
+      .json({ message: `Error getting Drug Allocations: ${error.message}` });
+  }
+};

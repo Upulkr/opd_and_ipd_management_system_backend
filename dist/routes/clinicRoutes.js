@@ -1,0 +1,10 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const clinicController_1 = require("../controllers/clinicController");
+const router = (0, express_1.Router)();
+router.get("/", clinicController_1.getAllClinics);
+router.post("/", clinicController_1.createClininc);
+router.put("/:id", clinicController_1.updateClinic);
+router.delete("/:id", clinicController_1.deleteClinic);
+exports.default = router;
