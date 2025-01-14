@@ -5,7 +5,7 @@ import {
   getPatientByNic,
   updatePatient,
 } from "../controllers/patientController";
-import { getAllPatients } from "../controllers/userController";
+import { getAllPatients } from "../controllers/patientController";
 
 const router = Router();
 

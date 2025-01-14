@@ -2,9 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const patientController_1 = require("../controllers/patientController");
-const userController_1 = require("../controllers/userController");
+const patientController_2 = require("../controllers/patientController");
 const router = (0, express_1.Router)();
-router.get("/", userController_1.getAllPatients);
+router.get("/", patientController_2.getAllPatients);
 router.get("/:nic", patientController_1.getPatientByNic);
 router.post("/", patientController_1.createPatient);
 router.delete("/:nic", patientController_1.deletePatient);

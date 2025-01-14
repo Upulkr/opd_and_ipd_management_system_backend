@@ -17,6 +17,7 @@ import wardBedsStatus from "./routes/wardBedsController";
 import outPatientRoutes from "./routes/OutPatientRoutes";
 import drugRoutes from "./routes/drugRoutes";
 import clinincRoutes from "./routes/clinicRoutes";
+import clinincAssignmentRoutes from "./routes/clinicAssigmentRoutes";
 // import ticketRoutes from "./routes/ticketRoutes";
 /* CONFIGURATIONS */
 dotenv.config();
@@ -43,6 +44,7 @@ app.use("/wardBedsController", wardBedsStatus);
 app.use("/outPatient", outPatientRoutes);
 app.use("/drugs", drugRoutes);
 app.use("/clinic", clinincRoutes);
+app.use("/clinicassigmnent", clinincAssignmentRoutes);
 // app.use("/ticket", ticketRoutes);
 
 /* SERVER */

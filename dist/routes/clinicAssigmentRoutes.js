@@ -1,0 +1,11 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const clinicAssigmnentController_1 = require("../controllers/clinicAssigmnentController");
+const router = (0, express_1.Router)();
+router.get("/", clinicAssigmnentController_1.getAllClinicAssigments);
+router.post("/", clinicAssigmnentController_1.createClinicAssigment);
+router.put("/:id", clinicAssigmnentController_1.updateClinicAssigment);
+router.delete("/:id", clinicAssigmnentController_1.deleteClinicAssigment);
+router.get("/getAllClinicAssigmentsfortable", clinicAssigmnentController_1.getAllClinicAssigmentsForTable);
+exports.default = router;
