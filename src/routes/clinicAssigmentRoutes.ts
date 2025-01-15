@@ -4,6 +4,7 @@ import {
   deleteClinicAssigment,
   getAllClinicAssigments,
   getAllClinicAssigmentsForTable,
+  getPatientDetailsByClinicName,
   updateClinicAssigment,
 } from "../controllers/clinicAssigmnentController";
 
@@ -15,5 +16,9 @@ router.put("/:id", updateClinicAssigment);
 router.delete("/:id", deleteClinicAssigment);
 
 router.get("/getAllClinicAssigmentsfortable", getAllClinicAssigmentsForTable);
+router.get(
+  "/getPatientDetailsByClinicName/:clinicName",
+  getPatientDetailsByClinicName
+);
 
 export default router;

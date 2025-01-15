@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getAllClinicAssigmentsForTable = exports.deleteClinicAssigment = exports.updateClinicAssigment = exports.getClinicAssigmentById = exports.getAllClinicAssigments = exports.createClinicAssigment = void 0;
+exports.getPatientDetailsByClinicName = exports.getAllClinicAssigmentsForTable = exports.deleteClinicAssigment = exports.updateClinicAssigment = exports.getClinicAssigmentById = exports.getAllClinicAssigments = exports.createClinicAssigment = void 0;
 const client_1 = require("@prisma/client");
 const prisma = new client_1.PrismaClient();
 BigInt.prototype.toJSON = function () {
@@ -132,3 +132,20 @@ inner join "clinicAssignment" as ca on ca."clinicId" =cl.id group by ca."clinicI
     }
 });
 exports.getAllClinicAssigmentsForTable = getAllClinicAssigmentsForTable;
+const getPatientDetailsByClinicName = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { clinicName } = req.params;
+        if (!clinicName) {
+            return res.status(400).json({ message: "Patient does not registered" });
+        }
+        const patientDetails = yield prisma.$queryRaw `SELECT pa."nic",pa."name",pa."phone", pa."city" FROM "clinicAssignment" as cl inner join "Patient" as pa on pa."nic"=cl."nic"  where "clinicName"=${clinicName}`;
+        res.status(200).json({
+            patientDetails,
+            message: "Patient details retrieved successfully!",
+        });
+    }
+    catch (error) {
+        res.status(500).json({ message: `Error getting clinics:${error.message}` });
+    }
+});
+exports.getPatientDetailsByClinicName = getPatientDetailsByClinicName;

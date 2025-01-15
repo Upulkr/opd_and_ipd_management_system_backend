@@ -125,3 +125,24 @@ inner join "clinicAssignment" as ca on ca."clinicId" =cl.id group by ca."clinicI
     res.status(500).json({ message: `Error getting clinics:${error.message}` });
   }
 };
+
+export const getPatientDetailsByClinicName = async (
+  req: Request,
+  res: Response
+) => {
+  try {
+    const { clinicName } = req.params;
+    if (!clinicName) {
+      return res.status(400).json({ message: "Patient does not registered" });
+    }
+    const patientDetails =
+      await prisma.$queryRaw`SELECT pa."nic",pa."name",pa."phone", pa."city" FROM "clinicAssignment" as cl inner join "Patient" as pa on pa."nic"=cl."nic"  where "clinicName"=${clinicName}`;
+
+    res.status(200).json({
+      patientDetails,
+      message: "Patient details retrieved successfully!",
+    });
+  } catch (error: any) {
+    res.status(500).json({ message: `Error getting clinics:${error.message}` });
+  }
+};

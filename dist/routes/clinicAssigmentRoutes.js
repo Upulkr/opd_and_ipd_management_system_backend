@@ -8,4 +8,5 @@ router.post("/", clinicAssigmnentController_1.createClinicAssigment);
 router.put("/:id", clinicAssigmnentController_1.updateClinicAssigment);
 router.delete("/:id", clinicAssigmnentController_1.deleteClinicAssigment);
 router.get("/getAllClinicAssigmentsfortable", clinicAssigmnentController_1.getAllClinicAssigmentsForTable);
+router.get("/getPatientDetailsByClinicName/:clinicName", clinicAssigmnentController_1.getPatientDetailsByClinicName);
 exports.default = router;
