@@ -16,6 +16,7 @@ BigInt.prototype.toJSON = function () {
     const int = Number.parseInt(this.toString());
     return int !== null && int !== void 0 ? int : this.toString();
 };
+// create clinic
 const createClinicAssigment = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { nic, clinicId, clinicName } = req.body;

@@ -9,6 +9,7 @@ const prisma = new PrismaClient();
   return int ?? this.toString();
 };
 
+// create clinic
 export const createClinicAssigment = async (req: Request, res: Response) => {
   try {
     const { nic, clinicId, clinicName } = req.body;
