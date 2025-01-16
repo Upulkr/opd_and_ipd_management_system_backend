@@ -7,7 +7,7 @@ import utc from "dayjs/plugin/utc";
 dayjs.extend(timezone);
 dayjs.extend(utc);
 const prisma = new PrismaClient();
-
+// clinic controller
 export const createClininc = async (req: Request, res: Response) => {
   try {
     const { name, doctorName, location, sheduledAt } = req.body;
