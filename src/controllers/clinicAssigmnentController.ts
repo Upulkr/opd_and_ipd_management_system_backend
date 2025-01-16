@@ -12,7 +12,9 @@ const prisma = new PrismaClient();
 export const createClinicAssigment = async (req: Request, res: Response) => {
   try {
     const { nic, clinicId, clinicName } = req.body;
-
+    if (!nic || !clinicId || !clinicName) {
+      return res.status(400).json({ message: "All fields are required" });
+    }
     const checkNicexisits = await prisma.patient.findUnique({
       where: {
         nic: nic,
@@ -114,9 +116,27 @@ export const getAllClinicAssigmentsForTable = async (
   res: Response
 ) => {
   try {
-    const clinicAssigments =
-      await prisma.$queryRaw`select count(nic) as noOfpatients,ca."clinicName" ,cl."location",cl."doctorName",cl."sheduledAt" from clinic as cl
-inner join "clinicAssignment" as ca on ca."clinicId" =cl.id group by ca."clinicId",ca."clinicName",cl."location",cl."doctorName",cl."sheduledAt";`;
+    const clinicAssigments = await prisma.$queryRaw`SELECT 
+    count(nic) as noOfpatients,
+    ca."clinicName",
+    cl."location",
+    cl."doctorName",
+    cl."sheduledAt"
+FROM 
+    clinic AS cl
+INNER JOIN 
+    "clinicAssignment" AS ca 
+ON 
+    ca."clinicId" = cl.id
+WHERE 
+    DATE(cl."sheduledAt") >= CURRENT_DATE
+GROUP BY 
+    ca."clinicId", 
+    ca."clinicName", 
+    cl."location", 
+    cl."doctorName", 
+    cl."sheduledAt";
+`;
     res.status(200).json({
       clinicAssigments,
       message: "Clinic Assigments retrieved successfully!",

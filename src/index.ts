@@ -18,6 +18,7 @@ import outPatientRoutes from "./routes/OutPatientRoutes";
 import drugRoutes from "./routes/drugRoutes";
 import clinincRoutes from "./routes/clinicRoutes";
 import clinincAssignmentRoutes from "./routes/clinicAssigmentRoutes";
+import smsRoutes from "./routes/smsRoutes";
 // import ticketRoutes from "./routes/ticketRoutes";
 /* CONFIGURATIONS */
 dotenv.config();
@@ -45,6 +46,7 @@ app.use("/outPatient", outPatientRoutes);
 app.use("/drugs", drugRoutes);
 app.use("/clinic", clinincRoutes);
 app.use("/clinicassigmnent", clinincAssignmentRoutes);
+app.use("/sendsms", smsRoutes);
 // app.use("/ticket", ticketRoutes);
 
 /* SERVER */

@@ -19,6 +19,9 @@ BigInt.prototype.toJSON = function () {
 const createClinicAssigment = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { nic, clinicId, clinicName } = req.body;
+        if (!nic || !clinicId || !clinicName) {
+            return res.status(400).json({ message: "All fields are required" });
+        }
         const checkNicexisits = yield prisma.patient.findUnique({
             where: {
                 nic: nic,
@@ -120,8 +123,27 @@ const deleteClinicAssigment = (req, res) => __awaiter(void 0, void 0, void 0, fu
 exports.deleteClinicAssigment = deleteClinicAssigment;
 const getAllClinicAssigmentsForTable = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const clinicAssigments = yield prisma.$queryRaw `select count(nic) as noOfpatients,ca."clinicName" ,cl."location",cl."doctorName",cl."sheduledAt" from clinic as cl
-inner join "clinicAssignment" as ca on ca."clinicId" =cl.id group by ca."clinicId",ca."clinicName",cl."location",cl."doctorName",cl."sheduledAt";`;
+        const clinicAssigments = yield prisma.$queryRaw `SELECT 
+    count(nic) as noOfpatients,
+    ca."clinicName",
+    cl."location",
+    cl."doctorName",
+    cl."sheduledAt"
+FROM 
+    clinic AS cl
+INNER JOIN 
+    "clinicAssignment" AS ca 
+ON 
+    ca."clinicId" = cl.id
+WHERE 
+    DATE(cl."sheduledAt") >= CURRENT_DATE
+GROUP BY 
+    ca."clinicId", 
+    ca."clinicName", 
+    cl."location", 
+    cl."doctorName", 
+    cl."sheduledAt";
+`;
         res.status(200).json({
             clinicAssigments,
             message: "Clinic Assigments retrieved successfully!",

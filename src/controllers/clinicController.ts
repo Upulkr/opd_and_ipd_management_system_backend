@@ -1,17 +1,27 @@
 import { Request, Response } from "express";
 import { PrismaClient } from "@prisma/client";
+import dayjs from "dayjs";
+import timezone from "dayjs/plugin/timezone";
+import utc from "dayjs/plugin/utc";
+
+dayjs.extend(timezone);
+dayjs.extend(utc);
 const prisma = new PrismaClient();
 
 export const createClininc = async (req: Request, res: Response) => {
   try {
     const { name, doctorName, location, sheduledAt } = req.body;
     const isoSheduledAt = new Date(sheduledAt).toISOString();
+    const utcSheduledAt = dayjs(isoSheduledAt)
+      .tz("Asia/Colombo", true)
+      .utc()
+      .toDate();
     const newClinic = await prisma.clinic.create({
       data: {
         name,
         doctorName,
         location,
-        sheduledAt: isoSheduledAt,
+        sheduledAt: utcSheduledAt,
       },
     });
     res
@@ -24,7 +34,8 @@ export const createClininc = async (req: Request, res: Response) => {
 
 export const getAllClinics = async (req: Request, res: Response) => {
   try {
-    const clinics = await prisma.clinic.findMany();
+    const clinics = await prisma.$queryRaw`SELECT distinct * 
+FROM "clinic" as cl`;
     res
       .status(200)
       .json({ clinics, message: "Clinics retrieved successfully!" });
