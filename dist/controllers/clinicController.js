@@ -20,6 +20,7 @@ const utc_1 = __importDefault(require("dayjs/plugin/utc"));
 dayjs_1.default.extend(timezone_1.default);
 dayjs_1.default.extend(utc_1.default);
 const prisma = new client_1.PrismaClient();
+// clinic controller
 const createClininc = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { name, doctorName, location, sheduledAt } = req.body;
