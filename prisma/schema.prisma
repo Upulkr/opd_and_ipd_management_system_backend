@@ -204,3 +204,14 @@ model clinicAssignment {
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 }
+
+
+
+model MobileclinicAssignment {
+  id         Int      @id @default(autoincrement())
+  clinicId   Int
+  nic        String
+  location   String
+  clinicName String
+  createdAt  DateTime @default(now())
+}
