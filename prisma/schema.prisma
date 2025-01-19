@@ -40,13 +40,15 @@ model Patient {
   postalCode     String
   country        String
   streetAddress  String
-  createdAt      DateTime         @default(now())
-  updatedAt      DateTime         @updatedAt
+  createdAt      DateTime                 @default(now())
+  updatedAt      DateTime                 @updatedAt
   admissionsheet AdmissionSheet[]
   admissionbook  Admissionbook[]
   labtest        Labtest[]
   drugChart      DrugChart[]
   outPatient     OutPatientFrom[]
+  mobileclinic   MobileclinicAssignment[]
+  clinic         clinicAssignment[]
 }
 
 model AdmissionSheet {
@@ -203,9 +205,8 @@ model clinicAssignment {
   clinicName String
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
+  Patient    Patient  @relation(fields: [nic], references: [nic])
 }
-
-
 
 model MobileclinicAssignment {
   id         Int      @id @default(autoincrement())
@@ -213,5 +214,8 @@ model MobileclinicAssignment {
   nic        String
   location   String
   clinicName String
+  sheduledAt DateTime
   createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  patient    Patient  @relation(fields: [nic], references: [nic])
 }

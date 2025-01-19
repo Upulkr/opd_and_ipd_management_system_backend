@@ -1,0 +1,11 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const mobileClinicController_1 = require("../controllers/mobileClinicController");
+const router = (0, express_1.Router)();
+router.get("/", mobileClinicController_1.getAllMobileClinics);
+router.post("/", mobileClinicController_1.createMObileClinic);
+router.delete("/", mobileClinicController_1.deleteMobileClinicAssigment);
+router.put("/id", mobileClinicController_1.updateMobileClinicAssigment);
+router.get("/sheduled", mobileClinicController_1.getAllMobileClinicAssigmentsForTable);
+exports.default = router;
