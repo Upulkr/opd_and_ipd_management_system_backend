@@ -110,7 +110,7 @@ model Labtest {
   date    DateTime
   test    String
   result  String
-  Patient Patient  @relation(fields: [nic], references: [nic])
+  Patient Patient? @relation(fields: [nic], references: [nic])
 }
 
 model DrugChart {
@@ -121,7 +121,7 @@ model DrugChart {
   dose      String
   frequency String
   date      DateTime
-  Patient   Patient  @relation(fields: [nic], references: [nic])
+  Patient   Patient? @relation(fields: [nic], references: [nic])
 }
 
 model Ward {
@@ -205,7 +205,7 @@ model clinicAssignment {
   clinicName String
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
-  Patient    Patient  @relation(fields: [nic], references: [nic])
+  Patient    Patient? @relation(fields: [nic], references: [nic])
 }
 
 model MobileclinicAssignment {
@@ -217,5 +217,5 @@ model MobileclinicAssignment {
   sheduledAt DateTime
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
-  patient    Patient  @relation(fields: [nic], references: [nic])
+  Patient    Patient? @relation(fields: [nic], references: [nic])
 }

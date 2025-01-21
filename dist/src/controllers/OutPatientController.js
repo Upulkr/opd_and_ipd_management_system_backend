@@ -15,8 +15,14 @@ const prisma = new client_1.PrismaClient();
 const createOutPatient = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { nic, name, age, gender, livingStatus, phone, description, reason, city, stateProvince, postalCode, country, streetAddress, prescriptions, } = req.body;
-        console.log("req.body", req.body);
-        console.log("nic", nic);
+        const checkNIC = yield prisma.patient.findUnique({
+            where: {
+                nic,
+            },
+        });
+        if (!checkNIC) {
+            return res.status(400).json({ message: "NIC is not available" });
+        }
         const newOutPatient = yield prisma.outPatientFrom.create({
             data: {
                 nic,

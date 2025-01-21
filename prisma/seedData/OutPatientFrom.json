@@ -1,0 +1,202 @@
+[
+  {
+    "id": 1,
+    "nic": "945678123V",
+    "name": "Michael Thompson",
+    "age": "45",
+    "gender": "Male",
+    "livingStatus": "Married",
+    "phone": "+94771234567",
+    "description": "Follow-up for hypertension",
+    "reason": "Monthly blood pressure monitoring",
+    "city": "Colombo",
+    "stateProvince": "Western",
+    "postalCode": "10500",
+    "country": "Sri Lanka",
+    "streetAddress": "123 Temple Road",
+    "prescriptions": {
+      "medications": [
+        {
+          "name": "Amlodipine",
+          "dosage": "5mg",
+          "frequency": "Once daily",
+          "duration": "30 days",
+          "notes": "Take in the morning"
+        },
+        {
+          "name": "Hydrochlorothiazide",
+          "dosage": "12.5mg",
+          "frequency": "Once daily",
+          "duration": "30 days",
+          "notes": "Take with breakfast"
+        }
+      ],
+      "tests": ["Blood Pressure", "Serum Electrolytes"],
+      "followUp": "1 month",
+      "lifestyle": "Reduce salt intake, regular exercise",
+      "nextAppointment": "2024-02-20"
+    },
+    "createdAt": "2024-01-20T08:30:00Z",
+    "updatedAt": "2024-01-20T08:30:00Z"
+  },
+  {
+    "id": 2,
+    "nic": "856974123V",
+    "name": "Sarah Williams",
+    "age": "32",
+    "gender": "Female",
+    "livingStatus": "Single",
+    "phone": "+94777654321",
+    "description": "Acute bronchitis",
+    "reason": "Cough and fever for 5 days",
+    "city": "Kandy",
+    "stateProvince": "Central",
+    "postalCode": "20000",
+    "country": "Sri Lanka",
+    "streetAddress": "45 Hill Street",
+    "prescriptions": {
+      "medications": [
+        {
+          "name": "Azithromycin",
+          "dosage": "500mg",
+          "frequency": "Once daily",
+          "duration": "3 days",
+          "notes": "Take with or without food"
+        },
+        {
+          "name": "Salbutamol Inhaler",
+          "dosage": "2 puffs",
+          "frequency": "As needed",
+          "duration": "7 days",
+          "notes": "Use when wheezing occurs"
+        }
+      ],
+      "tests": ["Chest X-ray if symptoms persist"],
+      "followUp": "1 week if not improving",
+      "lifestyle": "Rest, increased fluid intake",
+      "nextAppointment": "2024-01-27"
+    },
+    "createdAt": "2024-01-20T09:15:00Z",
+    "updatedAt": "2024-01-20T09:15:00Z"
+  },
+  {
+    "id": 3,
+    "nic": "901234567V",
+    "name": "Kumar Perera",
+    "age": "58",
+    "gender": "Male",
+    "livingStatus": "Married",
+    "phone": "+94762345678",
+    "description": "Diabetes follow-up",
+    "reason": "Routine blood sugar check",
+    "city": "Galle",
+    "stateProvince": "Southern",
+    "postalCode": "80000",
+    "country": "Sri Lanka",
+    "streetAddress": "78 Beach Road",
+    "prescriptions": {
+      "medications": [
+        {
+          "name": "Metformin",
+          "dosage": "1000mg",
+          "frequency": "Twice daily",
+          "duration": "30 days",
+          "notes": "Take with meals"
+        },
+        {
+          "name": "Gliclazide",
+          "dosage": "80mg",
+          "frequency": "Once daily",
+          "duration": "30 days",
+          "notes": "Take before breakfast"
+        }
+      ],
+      "tests": ["HbA1c", "Fasting Blood Sugar", "Lipid Profile"],
+      "followUp": "3 months",
+      "lifestyle": "Regular exercise, low carb diet",
+      "nextAppointment": "2024-04-20"
+    },
+    "createdAt": "2024-01-20T10:30:00Z",
+    "updatedAt": "2024-01-20T10:30:00Z"
+  },
+  {
+    "id": 4,
+    "nic": "878901234V",
+    "name": "Amara Silva",
+    "age": "28",
+    "gender": "Female",
+    "livingStatus": "Married",
+    "phone": "+94783456789",
+    "description": "Antenatal check-up",
+    "reason": "Routine pregnancy follow-up",
+    "city": "Negombo",
+    "stateProvince": "Western",
+    "postalCode": "11500",
+    "country": "Sri Lanka",
+    "streetAddress": "156 Sea Street",
+    "prescriptions": {
+      "medications": [
+        {
+          "name": "Folic Acid",
+          "dosage": "5mg",
+          "frequency": "Once daily",
+          "duration": "30 days",
+          "notes": "Continue throughout pregnancy"
+        },
+        {
+          "name": "Iron sulfate",
+          "dosage": "200mg",
+          "frequency": "Once daily",
+          "duration": "30 days",
+          "notes": "Take after meals"
+        }
+      ],
+      "tests": ["Complete Blood Count", "Glucose Challenge Test"],
+      "followUp": "Monthly",
+      "lifestyle": "Regular walks, balanced diet",
+      "nextAppointment": "2024-02-20"
+    },
+    "createdAt": "2024-01-20T11:45:00Z",
+    "updatedAt": "2024-01-20T11:45:00Z"
+  },
+  {
+    "id": 5,
+    "nic": "934567890V",
+    "name": "John Fernando",
+    "age": "62",
+    "gender": "Male",
+    "livingStatus": "Married",
+    "phone": "+94724567890",
+    "description": "Osteoarthritis",
+    "reason": "Joint pain follow-up",
+    "city": "Matara",
+    "stateProvince": "Southern",
+    "postalCode": "81000",
+    "country": "Sri Lanka",
+    "streetAddress": "34 Main Street",
+    "prescriptions": {
+      "medications": [
+        {
+          "name": "Diclofenac",
+          "dosage": "50mg",
+          "frequency": "Twice daily",
+          "duration": "14 days",
+          "notes": "Take after meals"
+        },
+        {
+          "name": "Calcium + Vitamin D3",
+          "dosage": "500mg/400IU",
+          "frequency": "Once daily",
+          "duration": "30 days",
+          "notes": "Take in the morning"
+        }
+      ],
+      "tests": ["X-ray of affected joints"],
+      "followUp": "2 weeks",
+      "lifestyle": "Weight management, gentle exercise",
+      "nextAppointment": "2024-02-03"
+    },
+    "createdAt": "2024-01-20T13:00:00Z",
+    "updatedAt": "2024-01-20T13:00:00Z"
+  }
+]

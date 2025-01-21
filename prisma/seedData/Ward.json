@@ -1,0 +1,57 @@
+[
+  {
+    "wardNo": "W001",
+    "wardName": "General Medicine",
+    "noOfBeds": 30,
+    "noOfUsedBeds": 25,
+    "noOfFreeBeds": 5,
+    "noOfPatients": 25,
+    "telephone": "+94112345678",
+    "noffdoctors": 4,
+    "nofNurses": 8
+  },
+  {
+    "wardNo": "W002",
+    "wardName": "Cardiology",
+    "noOfBeds": 20,
+    "noOfUsedBeds": 15,
+    "noOfFreeBeds": 5,
+    "noOfPatients": 15,
+    "telephone": "+94112345679",
+    "noffdoctors": 3,
+    "nofNurses": 6
+  },
+  {
+    "wardNo": "W003",
+    "wardName": "Maternity",
+    "noOfBeds": 25,
+    "noOfUsedBeds": 20,
+    "noOfFreeBeds": 5,
+    "noOfPatients": 20,
+    "telephone": "+94112345680",
+    "noffdoctors": 3,
+    "nofNurses": 10
+  },
+  {
+    "wardNo": "W004",
+    "wardName": "Surgery",
+    "noOfBeds": 25,
+    "noOfUsedBeds": 18,
+    "noOfFreeBeds": 7,
+    "noOfPatients": 18,
+    "telephone": "+94112345681",
+    "noffdoctors": 5,
+    "nofNurses": 10
+  },
+  {
+    "wardNo": "W005",
+    "wardName": "Pediatrics",
+    "noOfBeds": 20,
+    "noOfUsedBeds": 12,
+    "noOfFreeBeds": 8,
+    "noOfPatients": 12,
+    "telephone": "+94112345682",
+    "noffdoctors": 3,
+    "nofNurses": 8
+  }
+]

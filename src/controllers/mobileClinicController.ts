@@ -86,7 +86,7 @@ export const getAllMobileClinicAssigmentsForTable = async (
           },
         },
         include: {
-          patient: {
+          Patient: {
             select: {
               name: true, // Only select the name field
               phone: true,
@@ -99,7 +99,7 @@ export const getAllMobileClinicAssigmentsForTable = async (
 
     // If needed, filter assignments to only those where patients exist
     const filteredAssignments = mobileclinicAssigments.filter(
-      (assignment) => assignment.patient && assignment.patient.nic
+      (assignment) => assignment.Patient && assignment.Patient.nic
     );
 
     res.status(200).json({

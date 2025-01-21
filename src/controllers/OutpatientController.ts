@@ -21,8 +21,16 @@ export const createOutPatient = async (req: Request, res: Response) => {
       streetAddress,
       prescriptions,
     } = req.body;
-    console.log("req.body", req.body);
-    console.log("nic", nic);
+
+    const checkNIC = await prisma.patient.findUnique({
+      where: {
+        nic,
+      },
+    });
+
+    if (!checkNIC) {
+      return res.status(400).json({ message: "NIC is not available" });
+    }
     const newOutPatient = await prisma.outPatientFrom.create({
       data: {
         nic,

@@ -1,0 +1,62 @@
+[
+  {
+    "id": 1,
+    "drugId": 1,
+    "drugName": "Paracetamol",
+    "totalQuantity": 1000,
+    "wardName": "General Medicine",
+    "unit": "500mg",
+    "usedQuantity": 250,
+    "dateGiven": "2024-01-15T09:00:00Z",
+    "createdAt": "2024-01-15T09:00:00Z",
+    "updatedAt": "2024-01-15T09:00:00Z"
+  },
+  {
+    "id": 2,
+    "drugId": 2,
+    "drugName": "Amoxicillin",
+    "totalQuantity": 500,
+    "wardName": "Pediatrics",
+    "unit": "250mg",
+    "usedQuantity": 100,
+    "dateGiven": "2024-01-15T10:30:00Z",
+    "createdAt": "2024-01-15T10:30:00Z",
+    "updatedAt": "2024-01-15T10:30:00Z"
+  },
+  {
+    "id": 3,
+    "drugId": 3,
+    "drugName": "Omeprazole",
+    "totalQuantity": 300,
+    "wardName": "Surgery",
+    "unit": "20mg",
+    "usedQuantity": 75,
+    "dateGiven": "2024-01-16T08:15:00Z",
+    "createdAt": "2024-01-16T08:15:00Z",
+    "updatedAt": "2024-01-16T08:15:00Z"
+  },
+  {
+    "id": 4,
+    "drugId": 4,
+    "drugName": "Metformin",
+    "totalQuantity": 600,
+    "wardName": "General Medicine",
+    "unit": "500mg",
+    "usedQuantity": 150,
+    "dateGiven": "2024-01-16T11:45:00Z",
+    "createdAt": "2024-01-16T11:45:00Z",
+    "updatedAt": "2024-01-16T11:45:00Z"
+  },
+  {
+    "id": 5,
+    "drugId": 5,
+    "drugName": "Amlodipine",
+    "totalQuantity": 400,
+    "wardName": "Cardiology",
+    "unit": "5mg",
+    "usedQuantity": 100,
+    "dateGiven": "2024-01-17T09:30:00Z",
+    "createdAt": "2024-01-17T09:30:00Z",
+    "updatedAt": "2024-01-17T09:30:00Z"
+  }
+]

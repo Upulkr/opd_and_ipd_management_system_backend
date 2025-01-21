@@ -1,0 +1,52 @@
+[
+  {
+    "drugName": "Paracetamol",
+    "unit": "500mg",
+    "totalQuantity": 5000,
+    "usedQuantity": 1200,
+    "remainingQuantity": 3800,
+    "expiryDate": "2025-12-31T00:00:00Z",
+    "createdAt": "2024-01-15T08:00:00Z",
+    "updatedAt": "2024-01-15T08:00:00Z"
+  },
+  {
+    "drugName": "Amoxicillin",
+    "unit": "250mg",
+    "totalQuantity": 3000,
+    "usedQuantity": 800,
+    "remainingQuantity": 2200,
+    "expiryDate": "2025-06-30T00:00:00Z",
+    "createdAt": "2024-01-15T08:00:00Z",
+    "updatedAt": "2024-01-15T08:00:00Z"
+  },
+  {
+    "drugName": "Omeprazole",
+    "unit": "20mg",
+    "totalQuantity": 2000,
+    "usedQuantity": 500,
+    "remainingQuantity": 1500,
+    "expiryDate": "2025-09-30T00:00:00Z",
+    "createdAt": "2024-01-15T08:00:00Z",
+    "updatedAt": "2024-01-15T08:00:00Z"
+  },
+  {
+    "drugName": "Metformin",
+    "unit": "500mg",
+    "totalQuantity": 4000,
+    "usedQuantity": 1000,
+    "remainingQuantity": 3000,
+    "expiryDate": "2025-08-31T00:00:00Z",
+    "createdAt": "2024-01-15T08:00:00Z",
+    "updatedAt": "2024-01-15T08:00:00Z"
+  },
+  {
+    "drugName": "Amlodipine",
+    "unit": "5mg",
+    "totalQuantity": 2500,
+    "usedQuantity": 600,
+    "remainingQuantity": 1900,
+    "expiryDate": "2025-07-31T00:00:00Z",
+    "createdAt": "2024-01-15T08:00:00Z",
+    "updatedAt": "2024-01-15T08:00:00Z"
+  }
+]

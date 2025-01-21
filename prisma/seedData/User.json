@@ -1,0 +1,47 @@
+[
+  {
+    "nic": "856941237V",
+    "name": "Dr. Sarah Williams",
+    "email": "sarah.williams@hospital.com",
+    "password": "$2a$10$xxxxxxxxxxx",
+    "role": "DOCTOR",
+    "createdAt": "2024-01-15T08:00:00Z",
+    "updatedAt": "2024-01-15T08:00:00Z"
+  },
+  {
+    "nic": "912375648V",
+    "name": "Dr. James Anderson",
+    "email": "james.anderson@hospital.com",
+    "password": "$2a$10$xxxxxxxxxxx",
+    "role": "DOCTOR",
+    "createdAt": "2024-01-15T08:00:00Z",
+    "updatedAt": "2024-01-15T08:00:00Z"
+  },
+  {
+    "nic": "897456321V",
+    "name": "Nurse Mary Johnson",
+    "email": "mary.johnson@hospital.com",
+    "password": "$2a$10$xxxxxxxxxxx",
+    "role": "NURSE",
+    "createdAt": "2024-01-15T08:00:00Z",
+    "updatedAt": "2024-01-15T08:00:00Z"
+  },
+  {
+    "nic": "865432198V",
+    "name": "Tech Robert Smith",
+    "email": "robert.smith@hospital.com",
+    "password": "$2a$10$xxxxxxxxxxx",
+    "role": "LABTECHNICIAN",
+    "createdAt": "2024-01-15T08:00:00Z",
+    "updatedAt": "2024-01-15T08:00:00Z"
+  },
+  {
+    "nic": "923456789V",
+    "name": "Nurse Emma Davis",
+    "email": "emma.davis@hospital.com",
+    "password": "$2a$10$xxxxxxxxxxx",
+    "role": "NURSE",
+    "createdAt": "2024-01-15T08:00:00Z",
+    "updatedAt": "2024-01-15T08:00:00Z"
+  }
+]

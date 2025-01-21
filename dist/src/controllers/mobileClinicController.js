@@ -89,7 +89,7 @@ const getAllMobileClinicAssigmentsForTable = (req, res) => __awaiter(void 0, voi
                 },
             },
             include: {
-                patient: {
+                Patient: {
                     select: {
                         name: true, // Only select the name field
                         phone: true,
@@ -99,7 +99,7 @@ const getAllMobileClinicAssigmentsForTable = (req, res) => __awaiter(void 0, voi
             },
         });
         // If needed, filter assignments to only those where patients exist
-        const filteredAssignments = mobileclinicAssigments.filter((assignment) => assignment.patient && assignment.patient.nic);
+        const filteredAssignments = mobileclinicAssigments.filter((assignment) => assignment.Patient && assignment.Patient.nic);
         res.status(200).json({
             mobileclinicAssigments: filteredAssignments,
             message: "Mobile Clinic Assigments retrieved successfully!",
