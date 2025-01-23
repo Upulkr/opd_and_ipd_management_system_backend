@@ -8,4 +8,5 @@ router.post("/", mobileClinicController_1.createMObileClinic);
 router.delete("/", mobileClinicController_1.deleteMobileClinicAssigment);
 router.put("/id", mobileClinicController_1.updateMobileClinicAssigment);
 router.get("/sheduled", mobileClinicController_1.getAllMobileClinicAssigmentsForTable);
+router.put("/markascompleted", mobileClinicController_1.updateMobileClinincCompletedStatus);
 exports.default = router;

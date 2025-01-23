@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getAllMobileClinicAssigmentsForTable = exports.updateMobileClinicAssigment = exports.deleteMobileClinicAssigment = exports.getAllMobileClinics = exports.createMObileClinic = void 0;
+exports.updateMobileClinincCompletedStatus = exports.getAllMobileClinicAssigmentsForTable = exports.updateMobileClinicAssigment = exports.deleteMobileClinicAssigment = exports.getAllMobileClinics = exports.createMObileClinic = void 0;
 const client_1 = require("@prisma/client");
 const prisma = new client_1.PrismaClient();
 const createMObileClinic = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -84,8 +84,8 @@ const getAllMobileClinicAssigmentsForTable = (req, res) => __awaiter(void 0, voi
         // Fetch mobileclinic assignments and include only patient name and phone
         const mobileclinicAssigments = yield prisma.mobileclinicAssignment.findMany({
             where: {
-                sheduledAt: {
-                    gte: new Date(), // Filter assignments for upcoming dates
+                status: {
+                    equals: "pending",
                 },
             },
             include: {
@@ -112,3 +112,43 @@ const getAllMobileClinicAssigmentsForTable = (req, res) => __awaiter(void 0, voi
     }
 });
 exports.getAllMobileClinicAssigmentsForTable = getAllMobileClinicAssigmentsForTable;
+const updateMobileClinincCompletedStatus = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { selectedRows } = req.body;
+        // Validate that selectedRows is an array
+        if (!Array.isArray(selectedRows) || selectedRows.length === 0) {
+            return res.status(400).json({
+                message: "'selectedRows' must be a non-empty array.",
+            });
+        }
+        // Map over the array and ensure each entry has `nic` and `id`
+        const validRows = selectedRows.filter((row) => row.nic && row.id && !isNaN(Number(row.id)));
+        if (validRows.length === 0) {
+            return res.status(400).json({
+                message: "'selectedRows' contains invalid data.",
+            });
+        }
+        // Update each record in the database
+        const updatePromises = validRows.map((row) => prisma.mobileclinicAssignment.updateMany({
+            where: {
+                nic: row.nic,
+                id: Number(row.id),
+            },
+            data: {
+                status: "completed",
+            },
+        }));
+        const updatedMobileClinics = yield Promise.all(updatePromises);
+        res.status(200).json({
+            updatedMobileClinics,
+            message: "Mobile clinics updated successfully!",
+        });
+    }
+    catch (error) {
+        console.error("Error updating mobile clinics:", error);
+        res
+            .status(500)
+            .json({ message: `Error updating mobile clinics: ${error.message}` });
+    }
+});
+exports.updateMobileClinincCompletedStatus = updateMobileClinincCompletedStatus;

@@ -215,6 +215,7 @@ model MobileclinicAssignment {
   location   String
   clinicName String
   sheduledAt DateTime
+  status     String   @default("pending")
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
   Patient    Patient? @relation(fields: [nic], references: [nic])
