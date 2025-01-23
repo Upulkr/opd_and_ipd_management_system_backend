@@ -4,6 +4,8 @@ import {
   deleteMobileClinicAssigment,
   getAllMobileClinicAssigmentsForTable,
   getAllMobileClinics,
+  getCountOfCompletedMobileClinicsFor30days,
+  getMothlyMobileClinicCount,
   updateMobileClinicAssigment,
   updateMobileClinincCompletedStatus,
 } from "../controllers/mobileClinicController";
@@ -16,5 +18,10 @@ router.delete("/", deleteMobileClinicAssigment);
 router.put("/id", updateMobileClinicAssigment);
 router.get("/sheduled", getAllMobileClinicAssigmentsForTable);
 router.put("/markascompleted", updateMobileClinincCompletedStatus);
+router.get(
+  "/getcountofcompletedmobileclinincs",
+  getCountOfCompletedMobileClinicsFor30days
+);
+router.get("/monthlyhomevisits", getMothlyMobileClinicCount);
 
 export default router;

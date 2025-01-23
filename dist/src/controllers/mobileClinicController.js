@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateMobileClinincCompletedStatus = exports.getAllMobileClinicAssigmentsForTable = exports.updateMobileClinicAssigment = exports.deleteMobileClinicAssigment = exports.getAllMobileClinics = exports.createMObileClinic = void 0;
+exports.getMothlyMobileClinicCount = exports.getCountOfCompletedMobileClinicsFor30days = exports.updateMobileClinincCompletedStatus = exports.getAllMobileClinicAssigmentsForTable = exports.updateMobileClinicAssigment = exports.deleteMobileClinicAssigment = exports.getAllMobileClinics = exports.createMObileClinic = void 0;
 const client_1 = require("@prisma/client");
 const prisma = new client_1.PrismaClient();
 const createMObileClinic = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -152,3 +152,58 @@ const updateMobileClinincCompletedStatus = (req, res) => __awaiter(void 0, void 
     }
 });
 exports.updateMobileClinincCompletedStatus = updateMobileClinincCompletedStatus;
+const getCountOfCompletedMobileClinicsFor30days = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        // Calculate the date 30 days ago from today
+        const thirtyDaysAgo = new Date();
+        thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+        // Query Prisma for completed mobile clinics with a scheduled date 30 days ago
+        const completedMobileClinics = yield prisma.mobileclinicAssignment.count({
+            where: {
+                status: "completed",
+                sheduledAt: {
+                    gte: thirtyDaysAgo, // Filter clinics scheduled from 30 days ago onwards
+                },
+            },
+        });
+        const totalcompletedMobileClinics = yield prisma.mobileclinicAssignment.count({
+            where: {
+                status: "completed",
+            },
+        });
+        res
+            .status(200)
+            .json({ completedMobileClinics, totalcompletedMobileClinics });
+    }
+    catch (error) {
+        console.error("Error updating mobile clinics:", error);
+        res
+            .status(500)
+            .json({ message: `Error updating mobile clinics: ${error.message}` });
+    }
+});
+exports.getCountOfCompletedMobileClinicsFor30days = getCountOfCompletedMobileClinicsFor30days;
+const getMothlyMobileClinicCount = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const monthlyhomevisits = yield prisma.$queryRaw `SELECT 
+    TO_CHAR("updatedAt", 'Month') AS month,  -- Format the date as full month name
+    COUNT("id") AS count                     -- Count the number of rows for each month
+FROM 
+    "MobileclinicAssignment" AS mb
+WHERE 
+    mb.status = 'completed' AND
+    EXTRACT(YEAR FROM "updatedAt") = EXTRACT(YEAR FROM CURRENT_DATE)  -- Filter for the current year
+GROUP BY 
+    TO_CHAR("updatedAt", 'Month')           -- Group by the full month name
+ORDER BY 
+    MIN("updatedAt");  `;
+        res.status(200).json({ monthlyhomevisits });
+    }
+    catch (error) {
+        console.error("Error updating mobile clinics:", error);
+        res
+            .status(500)
+            .json({ message: `Error updating mobile clinics: ${error.message}` });
+    }
+});
+exports.getMothlyMobileClinicCount = getMothlyMobileClinicCount;
