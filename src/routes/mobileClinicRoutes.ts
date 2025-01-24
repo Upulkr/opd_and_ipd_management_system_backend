@@ -6,6 +6,7 @@ import {
   getAllMobileClinics,
   getCountOfCompletedMobileClinicsFor30days,
   getMothlyMobileClinicCount,
+  getPatientsByage,
   updateMobileClinicAssigment,
   updateMobileClinincCompletedStatus,
 } from "../controllers/mobileClinicController";
@@ -23,5 +24,6 @@ router.get(
   getCountOfCompletedMobileClinicsFor30days
 );
 router.get("/monthlyhomevisits", getMothlyMobileClinicCount);
+router.get(`/getpatientsbyage`, getPatientsByage);
 
 export default router;

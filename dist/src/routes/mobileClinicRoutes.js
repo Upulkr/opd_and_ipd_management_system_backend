@@ -11,4 +11,5 @@ router.get("/sheduled", mobileClinicController_1.getAllMobileClinicAssigmentsFor
 router.put("/markascompleted", mobileClinicController_1.updateMobileClinincCompletedStatus);
 router.get("/getcountofcompletedmobileclinincs", mobileClinicController_1.getCountOfCompletedMobileClinicsFor30days);
 router.get("/monthlyhomevisits", mobileClinicController_1.getMothlyMobileClinicCount);
+router.get(`/getpatientsbyage`, mobileClinicController_1.getPatientsByage);
 exports.default = router;

@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getMothlyMobileClinicCount = exports.getCountOfCompletedMobileClinicsFor30days = exports.updateMobileClinincCompletedStatus = exports.getAllMobileClinicAssigmentsForTable = exports.updateMobileClinicAssigment = exports.deleteMobileClinicAssigment = exports.getAllMobileClinics = exports.createMObileClinic = void 0;
+exports.getPatientsByage = exports.getMothlyMobileClinicCount = exports.getCountOfCompletedMobileClinicsFor30days = exports.updateMobileClinincCompletedStatus = exports.getAllMobileClinicAssigmentsForTable = exports.updateMobileClinicAssigment = exports.deleteMobileClinicAssigment = exports.getAllMobileClinics = exports.createMObileClinic = void 0;
 const client_1 = require("@prisma/client");
 const prisma = new client_1.PrismaClient();
 const createMObileClinic = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -207,3 +207,38 @@ ORDER BY
     }
 });
 exports.getMothlyMobileClinicCount = getMothlyMobileClinicCount;
+const getPatientsByage = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const ageGroupCounts = yield prisma.$queryRaw `SELECT 'Infants' AS age_group, COUNT(*) AS total_count
+FROM "MobileclinicAssignment" AS mb
+INNER JOIN "Patient" AS pa ON mb."nic" = pa."nic"
+WHERE pa."age"::INTEGER <= 2 AND mb."status" = 'completed' and mb."updatedAt" ::DATE BETWEEN (NOW() - INTERVAL '30 days')::DATE AND NOW()::DATE
+
+UNION ALL
+
+SELECT 'Children' AS age_group, COUNT(*) AS total_count
+FROM "MobileclinicAssignment" AS mb
+INNER JOIN "Patient" AS pa ON mb."nic" = pa."nic"
+WHERE pa."age"::INTEGER BETWEEN 3 AND 12 AND mb."status" = 'completed' and mb."updatedAt" ::DATE BETWEEN (NOW() - INTERVAL '30 days')::DATE AND NOW()::DATE
+
+UNION ALL
+
+SELECT 'Adults' AS age_group, COUNT(*) AS total_count
+FROM "MobileclinicAssignment" AS mb
+INNER JOIN "Patient" AS pa ON mb."nic" = pa."nic"
+WHERE pa."age"::INTEGER BETWEEN 13 AND 59 AND mb."status" = 'completed' and mb."updatedAt" ::DATE BETWEEN (NOW() - INTERVAL '30 days')::DATE AND NOW()::DATE
+
+UNION ALL
+
+SELECT 'Elderly' AS age_group, COUNT(*) AS total_count
+FROM "MobileclinicAssignment" AS mb
+INNER JOIN "Patient" AS pa ON mb."nic" = pa."nic"
+WHERE pa."age"::INTEGER >= 60 AND mb."status" = 'completed' and mb."updatedAt" ::DATE BETWEEN (NOW() - INTERVAL '30 days')::DATE AND NOW()::DATE;
+`;
+        res.status(200).json({ ageGroupCounts });
+    }
+    catch (error) {
+        res.status(500).json({ message: `Error getting clinics:${error}` });
+    }
+});
+exports.getPatientsByage = getPatientsByage;

@@ -226,3 +226,39 @@ ORDER BY
       .json({ message: `Error updating mobile clinics: ${error.message}` });
   }
 };
+
+export const getPatientsByage = async (req: Request, res: Response) => {
+  try {
+    const ageGroupCounts =
+      await prisma.$queryRaw`SELECT 'Infants' AS age_group, COUNT(*) AS total_count
+FROM "MobileclinicAssignment" AS mb
+INNER JOIN "Patient" AS pa ON mb."nic" = pa."nic"
+WHERE pa."age"::INTEGER <= 2 AND mb."status" = 'completed' and mb."updatedAt" ::DATE BETWEEN (NOW() - INTERVAL '30 days')::DATE AND NOW()::DATE
+
+UNION ALL
+
+SELECT 'Children' AS age_group, COUNT(*) AS total_count
+FROM "MobileclinicAssignment" AS mb
+INNER JOIN "Patient" AS pa ON mb."nic" = pa."nic"
+WHERE pa."age"::INTEGER BETWEEN 3 AND 12 AND mb."status" = 'completed' and mb."updatedAt" ::DATE BETWEEN (NOW() - INTERVAL '30 days')::DATE AND NOW()::DATE
+
+UNION ALL
+
+SELECT 'Adults' AS age_group, COUNT(*) AS total_count
+FROM "MobileclinicAssignment" AS mb
+INNER JOIN "Patient" AS pa ON mb."nic" = pa."nic"
+WHERE pa."age"::INTEGER BETWEEN 13 AND 59 AND mb."status" = 'completed' and mb."updatedAt" ::DATE BETWEEN (NOW() - INTERVAL '30 days')::DATE AND NOW()::DATE
+
+UNION ALL
+
+SELECT 'Elderly' AS age_group, COUNT(*) AS total_count
+FROM "MobileclinicAssignment" AS mb
+INNER JOIN "Patient" AS pa ON mb."nic" = pa."nic"
+WHERE pa."age"::INTEGER >= 60 AND mb."status" = 'completed' and mb."updatedAt" ::DATE BETWEEN (NOW() - INTERVAL '30 days')::DATE AND NOW()::DATE;
+`;
+
+    res.status(200).json({ ageGroupCounts });
+  } catch (error) {
+    res.status(500).json({ message: `Error getting clinics:${error}` });
+  }
+};
