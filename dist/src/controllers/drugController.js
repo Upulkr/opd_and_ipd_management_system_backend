@@ -32,7 +32,6 @@ const addNewDrug = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
                 unit,
                 totalQuantity,
                 expiryDate,
-                remainingQuantity: totalQuantity,
             },
         });
         res.status(200).json({ newDrug, message: "Drug added successfully!" });
@@ -115,15 +114,68 @@ exports.getDrugById = getDrugById;
 const createNewDrugAllocation = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { drugId, drugName, wardName, totalQuantity, usedQuantity, unit, dateGiven, } = req.body;
+        if (!drugId || !drugName || !wardName || !totalQuantity) {
+            return res.status(400).json({
+                message: "Missing required fields: drugId, drugName, wardName, or totalQuantity.",
+            });
+        }
+        const existingAllocation = yield prisma.drugAllocation.findFirst({
+            where: {
+                drugId,
+                wardName,
+            },
+        });
+        if (existingAllocation) {
+            const updatedAllocation = yield prisma.drugAllocation.update({
+                where: {
+                    id: existingAllocation.id,
+                },
+                data: {
+                    totalQuantity: {
+                        increment: Number(totalQuantity),
+                    },
+                },
+            });
+            yield prisma.drugs.update({
+                where: {
+                    drugId: Number(drugId),
+                },
+                data: {
+                    totalQuantity: {
+                        decrement: Number(totalQuantity),
+                    },
+                    usedQuantity: {
+                        increment: Number(totalQuantity),
+                    },
+                },
+            });
+            return res.status(200).json({
+                updatedAllocation,
+                message: "Drug Allocation updated successfully!",
+            });
+        }
         const newDrugAllocation = yield prisma.drugAllocation.create({
             data: {
                 drugId,
                 drugName,
                 wardName,
-                totalQuantity,
+                totalQuantity: Number(totalQuantity),
                 usedQuantity,
                 unit,
                 dateGiven,
+            },
+        });
+        yield prisma.drugs.update({
+            where: {
+                drugId: Number(drugId),
+            },
+            data: {
+                totalQuantity: {
+                    decrement: Number(totalQuantity),
+                },
+                usedQuantity: {
+                    increment: Number(totalQuantity),
+                },
             },
         });
         res.status(200).json({

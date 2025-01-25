@@ -139,15 +139,15 @@ model Ward {
 }
 
 model Drugs {
-  drugId            Int       @id @default(autoincrement())
-  drugName          String
-  unit              String
-  totalQuantity     Int
-  usedQuantity      Int?
-  remainingQuantity Int?
-  expiryDate        DateTime?
-  createdAt         DateTime  @default(now())
-  updatedAt         DateTime  @updatedAt
+  drugId        Int    @id @default(autoincrement())
+  drugName      String
+  unit          String
+  totalQuantity Int
+  usedQuantity  Int?
+
+  expiryDate DateTime?
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
 
   wards Ward[] @relation("WardDrugs")
 }
@@ -181,7 +181,7 @@ model DrugAllocation {
   wardName      String
   unit          String?
 
-  usedQuantity Int?
+  usedQuantity Int?      @default(0)
   dateGiven    DateTime?
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt

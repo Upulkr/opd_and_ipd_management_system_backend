@@ -1,3 +1,4 @@
+import { DrugAllocation } from "./../../node_modules/.prisma/client/index.d";
 import { Request, Response } from "express";
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
@@ -26,7 +27,6 @@ export const addNewDrug = async (req: Request, res: Response) => {
         unit,
         totalQuantity,
         expiryDate,
-        remainingQuantity: totalQuantity,
       },
     });
     res.status(200).json({ newDrug, message: "Drug added successfully!" });
@@ -115,15 +115,71 @@ export const createNewDrugAllocation = async (req: Request, res: Response) => {
       dateGiven,
     } = req.body;
 
+    if (!drugId || !drugName || !wardName || !totalQuantity) {
+      return res.status(400).json({
+        message:
+          "Missing required fields: drugId, drugName, wardName, or totalQuantity.",
+      });
+    }
+
+    const existingAllocation = await prisma.drugAllocation.findFirst({
+      where: {
+        drugId,
+        wardName,
+      },
+    });
+
+    if (existingAllocation) {
+      const updatedAllocation = await prisma.drugAllocation.update({
+        where: {
+          id: existingAllocation.id,
+        },
+        data: {
+          totalQuantity: {
+            increment: Number(totalQuantity),
+          },
+        },
+      });
+      await prisma.drugs.update({
+        where: {
+          drugId: Number(drugId),
+        },
+        data: {
+          totalQuantity: {
+            decrement: Number(totalQuantity),
+          },
+          usedQuantity: {
+            increment: Number(totalQuantity),
+          },
+        },
+      });
+      return res.status(200).json({
+        updatedAllocation,
+        message: "Drug Allocation updated successfully!",
+      });
+    }
     const newDrugAllocation = await prisma.drugAllocation.create({
       data: {
         drugId,
         drugName,
         wardName,
-        totalQuantity,
+        totalQuantity: Number(totalQuantity),
         usedQuantity,
         unit,
         dateGiven,
+      },
+    });
+    await prisma.drugs.update({
+      where: {
+        drugId: Number(drugId),
+      },
+      data: {
+        totalQuantity: {
+          decrement: Number(totalQuantity),
+        },
+        usedQuantity: {
+          increment: Number(totalQuantity),
+        },
       },
     });
     res.status(200).json({
