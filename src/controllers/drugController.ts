@@ -1,4 +1,4 @@
-import { DrugAllocation } from "./../../node_modules/.prisma/client/index.d";
+import { DrugAllocation } from ".prisma/client";
 import { Request, Response } from "express";
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
