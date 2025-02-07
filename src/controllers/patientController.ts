@@ -136,3 +136,25 @@ export const updatePatient = async (req: Request, res: Response) => {
       .json({ message: `Error updating Patient: ${error.message}` });
   }
 };
+
+export const isPatientExist = async (req: Request, res: Response) => {
+  const { nic } = req.params;
+  if (!nic) {
+    return res.status(400).json({ error: "NIC is required." });
+  }
+  try {
+    const patient = await prisma.patient.findUnique({
+      where: {
+        nic,
+      },
+    });
+    if (!patient) {
+      return res.json({ message: "Patient not found.", patientExist: false });
+    }
+    return res
+      .status(200)
+      .json({ message: "Patient found.", patientExist: true });
+  } catch (error: any) {
+    res.status(500).json({ error: "Error checking Patient existence." });
+  }
+};

@@ -3,6 +3,7 @@ import {
   createPatient,
   deletePatient,
   getPatientByNic,
+  isPatientExist,
   updatePatient,
 } from "../controllers/patientController";
 import { getAllPatients } from "../controllers/patientController";
@@ -17,5 +18,7 @@ router.post("/", createPatient);
 router.delete("/:nic", deletePatient);
 
 router.put("/:nic", updatePatient);
+
+router.get("/isPatientexist/:nic", isPatientExist);
 
 export default router;

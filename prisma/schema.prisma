@@ -34,21 +34,33 @@ model Patient {
   livingStatus String
   phone        String
 
-  reason         String?
-  city           String
-  stateProvince  String
-  postalCode     String
-  country        String
-  streetAddress  String
-  createdAt      DateTime                 @default(now())
-  updatedAt      DateTime                 @updatedAt
-  admissionsheet AdmissionSheet[]
-  admissionbook  Admissionbook[]
-  labtest        Labtest[]
-  drugChart      DrugChart[]
-  outPatient     OutPatientFrom[]
-  mobileclinic   MobileclinicAssignment[]
-  clinic         clinicAssignment[]
+  reason        String?
+  city          String
+  stateProvince String
+  postalCode    String
+  country       String
+  streetAddress String
+
+  createdAt         DateTime                 @default(now())
+  updatedAt         DateTime                 @updatedAt
+  admissionsheet    AdmissionSheet[]
+  admissionbook     Admissionbook[]
+  labtest           Labtest[]
+  drugChart         DrugChart[]
+  outPatient        OutPatientFrom[]
+  mobileclinic      MobileclinicAssignment[]
+  clinic            clinicAssignment[]
+  diseasePrediction DiseasePrediction[]
+}
+
+model DiseasePrediction {
+  id         Int      @id @default(autoincrement())
+  nic        String
+  disease    String
+  prediction String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  Patient    Patient  @relation(fields: [nic], references: [nic])
 }
 
 model AdmissionSheet {

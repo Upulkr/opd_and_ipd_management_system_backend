@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updatePatient = exports.deletePatient = exports.getPatientByNic = exports.getAllPatients = exports.createPatient = void 0;
+exports.isPatientExist = exports.updatePatient = exports.deletePatient = exports.getPatientByNic = exports.getAllPatients = exports.createPatient = void 0;
 const client_1 = require("@prisma/client");
 const prisma = new client_1.PrismaClient();
 const createPatient = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -130,3 +130,26 @@ const updatePatient = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     }
 });
 exports.updatePatient = updatePatient;
+const isPatientExist = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { nic } = req.params;
+    if (!nic) {
+        return res.status(400).json({ error: "NIC is required." });
+    }
+    try {
+        const patient = yield prisma.patient.findUnique({
+            where: {
+                nic,
+            },
+        });
+        if (!patient) {
+            return res.json({ message: "Patient not found.", patientExist: false });
+        }
+        return res
+            .status(200)
+            .json({ message: "Patient found.", patientExist: true });
+    }
+    catch (error) {
+        res.status(500).json({ error: "Error checking Patient existence." });
+    }
+});
+exports.isPatientExist = isPatientExist;

@@ -9,4 +9,5 @@ router.get("/:nic", patientController_1.getPatientByNic);
 router.post("/", patientController_1.createPatient);
 router.delete("/:nic", patientController_1.deletePatient);
 router.put("/:nic", patientController_1.updatePatient);
+router.get("/isPatientexist/:nic", patientController_1.isPatientExist);
 exports.default = router;
