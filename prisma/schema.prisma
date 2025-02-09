@@ -232,3 +232,12 @@ model MobileclinicAssignment {
   updatedAt  DateTime @updatedAt
   Patient    Patient? @relation(fields: [nic], references: [nic])
 }
+
+model WardAssignment {
+  id             Int      @id @default(autoincrement())
+  registrationId Int
+  nic            Int?     @unique
+  ward           String
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
