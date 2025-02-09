@@ -21,6 +21,7 @@ import clinincAssignmentRoutes from "./routes/clinicAssigmentRoutes";
 import smsRoutes from "./routes/smsRoutes";
 import mobileclinicRoutes from "./routes/mobileClinicRoutes";
 import diseasePredictionRoutes from "./routes/diseasePredictionRoutes";
+import staffwardassignment from "./routes/staffWardAssignmemtRoute";
 // import ticketRoutes from "./routes/ticketRoutes";
 /* CONFIGURATIONS */
 dotenv.config();
@@ -51,6 +52,7 @@ app.use("/clinicassigmnent", clinincAssignmentRoutes);
 app.use("/sendsms", smsRoutes);
 app.use("/mobileclinic", mobileclinicRoutes);
 app.use("/diseaseprediction", diseasePredictionRoutes);
+app.use("/staffwardassignment", staffwardassignment);
 // app.use("/ticket", ticketRoutes);
 
 /* SERVER */

@@ -25,6 +25,7 @@ const clinicAssigmentRoutes_1 = __importDefault(require("./routes/clinicAssigmen
 const smsRoutes_1 = __importDefault(require("./routes/smsRoutes"));
 const mobileClinicRoutes_1 = __importDefault(require("./routes/mobileClinicRoutes"));
 const diseasePredictionRoutes_1 = __importDefault(require("./routes/diseasePredictionRoutes"));
+const staffWardAssignmemtRoute_1 = __importDefault(require("./routes/staffWardAssignmemtRoute"));
 // import ticketRoutes from "./routes/ticketRoutes";
 /* CONFIGURATIONS */
 dotenv_1.default.config();
@@ -54,6 +55,7 @@ app.use("/clinicassigmnent", clinicAssigmentRoutes_1.default);
 app.use("/sendsms", smsRoutes_1.default);
 app.use("/mobileclinic", mobileClinicRoutes_1.default);
 app.use("/diseaseprediction", diseasePredictionRoutes_1.default);
+app.use("/staffwardassignment", staffWardAssignmemtRoute_1.default);
 // app.use("/ticket", ticketRoutes);
 /* SERVER */
 const port = Number(process.env.PORT) || 8000;
