@@ -4,7 +4,7 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 export const createStaffAssignment = async (req: Request, res: Response) => {
   try {
-    const { registrationId, nic, ward, role } = req.body.staff[0];
+    const { registrationId, nic, ward, role } = req.body;
     console.log("registrationId", registrationId);
     const isRegistrationIdExists = await prisma.wardAssignment.findFirst({
       where: {
@@ -84,6 +84,23 @@ export const getAllStaffAssignments = async (req: Request, res: Response) => {
   try {
     const staffAssignments = await prisma.wardAssignment.findMany();
     res.status(200).json({ staffAssignments });
+  } catch (error) {
+    res.status(500).json({ error: "Error getting StaffAssignments." });
+  }
+};
+
+export const getStaffCountGroupByWard = async (req: Request, res: Response) => {
+  try {
+    const staffCountGroupByWard = await prisma.$queryRaw`
+ SELECT ward, 
+       COUNT(*) FILTER (WHERE role = 'doctor') AS "noofdoctors",
+       COUNT(*) FILTER (WHERE role = 'nurse') AS "noofnurses",
+	        COUNT(*) FILTER (WHERE role = 'pharmacist') AS "noofpharmacist"
+FROM public."WardAssignment"
+GROUP BY ward;
+`;
+    console.log("staffCountGroupByWard", staffCountGroupByWard);
+    res.status(200).json({ staffCountGroupByWard });
   } catch (error) {
     res.status(500).json({ error: "Error getting StaffAssignments." });
   }

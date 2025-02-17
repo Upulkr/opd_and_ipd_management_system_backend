@@ -9,12 +9,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getAllStaffAssignments = exports.getStaffAssignmentsByRegisterId = exports.deleteStaffAssignment = exports.updateStaffAssignment = exports.createStaffAssignment = void 0;
+exports.getStaffCountGroupByWard = exports.getAllStaffAssignments = exports.getStaffAssignmentsByRegisterId = exports.deleteStaffAssignment = exports.updateStaffAssignment = exports.createStaffAssignment = void 0;
 const client_1 = require("@prisma/client");
 const prisma = new client_1.PrismaClient();
 const createStaffAssignment = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { registrationId, nic, ward, role } = req.body.staff[0];
+        const { registrationId, nic, ward, role } = req.body;
         console.log("registrationId", registrationId);
         const isRegistrationIdExists = yield prisma.wardAssignment.findFirst({
             where: {
@@ -101,3 +101,21 @@ const getAllStaffAssignments = (req, res) => __awaiter(void 0, void 0, void 0, f
     }
 });
 exports.getAllStaffAssignments = getAllStaffAssignments;
+const getStaffCountGroupByWard = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const staffCountGroupByWard = yield prisma.$queryRaw `
+ SELECT ward, 
+       COUNT(*) FILTER (WHERE role = 'doctor') AS "noofdoctors",
+       COUNT(*) FILTER (WHERE role = 'nurse') AS "noofnurses",
+	        COUNT(*) FILTER (WHERE role = 'pharmacist') AS "noofpharmacist"
+FROM public."WardAssignment"
+GROUP BY ward;
+`;
+        console.log("staffCountGroupByWard", staffCountGroupByWard);
+        res.status(200).json({ staffCountGroupByWard });
+    }
+    catch (error) {
+        res.status(500).json({ error: "Error getting StaffAssignments." });
+    }
+});
+exports.getStaffCountGroupByWard = getStaffCountGroupByWard;
