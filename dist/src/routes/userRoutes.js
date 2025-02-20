@@ -1,16 +1,26 @@
 "use strict";
+// import { Router } from "express";
+// import {
+//   createUser,
+//   deleteUser,
+//   getAllDoctors,
+//   getAllLabTechnicians,
+//   getAllNurses,
+//   getAllPatients,
+//   getAllUsers,
+//   getUserByNic,
+//   updateUser,
+// } from "../controllers/userController";
 Object.defineProperty(exports, "__esModule", { value: true });
-const express_1 = require("express");
-const userController_1 = require("../controllers/userController");
-const router = (0, express_1.Router)();
-router.get("/", userController_1.getAllUsers);
-router.post("/", userController_1.getUserByNic);
-router.post("/", userController_1.createUser);
-router.get("/:nic", userController_1.updateUser);
-router.put("/:nic", userController_1.updateUser);
-router.delete("/:nic", userController_1.deleteUser);
-router.get("/", userController_1.getAllLabTechnicians);
-router.get("/", userController_1.getAllNurses);
-router.get("/", userController_1.getAllDoctors);
-router.get("/", userController_1.getAllPatients);
-exports.default = router;
+// const router = Router();
+// router.get("/", getAllUsers);
+// router.post("/", getUserByNic);
+// router.post("/", createUser);
+// router.get("/:nic", updateUser);
+// router.put("/:nic", updateUser);
+// router.delete("/:nic", deleteUser);
+// router.get("/", getAllLabTechnicians);
+// router.get("/", getAllNurses);
+// router.get("/", getAllDoctors);
+// router.get("/", getAllPatients);
+// export default router;

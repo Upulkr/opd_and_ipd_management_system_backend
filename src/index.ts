@@ -10,7 +10,7 @@ import morgan from "morgan";
 import admissionBookRoutes from "./routes/admissionBookRoutes";
 import admissionSheetRoutes from "./routes/admissionSheetRoutes";
 import drugChartRoutes from "./routes/drugChartRoutes";
-import userRoutes from "./routes/userRoutes";
+// import userRoutes from "./routes/userRoutes";
 import patientRoutes from "./routes/patientRoutes";
 import currentWardDetails from "./routes/currentWardStatusRoute";
 import wardBedsStatus from "./routes/wardBedsController";
@@ -41,7 +41,7 @@ app.get("/", (req, res) => {
 app.use("/admissionbook", admissionBookRoutes);
 app.use("/admissionSheet", admissionSheetRoutes);
 app.use("/drugChart", drugChartRoutes);
-app.use("/users", userRoutes);
+// app.use("/users", userRoutes);
 app.use("/patient", patientRoutes);
 app.use("/warddetails", currentWardDetails);
 app.use("/wardBedsController", wardBedsStatus);

@@ -14,7 +14,7 @@ const morgan_1 = __importDefault(require("morgan"));
 const admissionBookRoutes_1 = __importDefault(require("./routes/admissionBookRoutes"));
 const admissionSheetRoutes_1 = __importDefault(require("./routes/admissionSheetRoutes"));
 const drugChartRoutes_1 = __importDefault(require("./routes/drugChartRoutes"));
-const userRoutes_1 = __importDefault(require("./routes/userRoutes"));
+// import userRoutes from "./routes/userRoutes";
 const patientRoutes_1 = __importDefault(require("./routes/patientRoutes"));
 const currentWardStatusRoute_1 = __importDefault(require("./routes/currentWardStatusRoute"));
 const wardBedsController_1 = __importDefault(require("./routes/wardBedsController"));
@@ -44,7 +44,7 @@ app.get("/", (req, res) => {
 app.use("/admissionbook", admissionBookRoutes_1.default);
 app.use("/admissionSheet", admissionSheetRoutes_1.default);
 app.use("/drugChart", drugChartRoutes_1.default);
-app.use("/users", userRoutes_1.default);
+// app.use("/users", userRoutes);
 app.use("/patient", patientRoutes_1.default);
 app.use("/warddetails", currentWardStatusRoute_1.default);
 app.use("/wardBedsController", wardBedsController_1.default);

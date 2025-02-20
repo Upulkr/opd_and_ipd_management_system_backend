@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getOutPatientByNic = exports.getAllOutPatientsToday = exports.getAllOutPatients = exports.createOutPatient = void 0;
+exports.getStaffMemebers = exports.getOutPatientByNic = exports.getAllOutPatientsToday = exports.getAllOutPatients = exports.createOutPatient = void 0;
 const client_1 = require("@prisma/client");
 const prisma = new client_1.PrismaClient();
 const createOutPatient = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -111,6 +111,28 @@ const getOutPatientByNic = (req, res) => __awaiter(void 0, void 0, void 0, funct
     }
 });
 exports.getOutPatientByNic = getOutPatientByNic;
+const getStaffMemebers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const staffOutPatient = yield prisma.wardAssignment.findMany({
+            where: {
+                ward: "Outpatient",
+            },
+        });
+        if (!staffOutPatient.length) {
+            return res.status(404).json({ message: "staffOutPatient not found." });
+        }
+        res.status(200).json({
+            message: "staffOutPatient fetched successfully!",
+            staffOutPatient,
+        });
+    }
+    catch (error) {
+        res
+            .status(500)
+            .json({ message: `Error getting OutPatient: ${error.message}` });
+    }
+});
+exports.getStaffMemebers = getStaffMemebers;
 // export const updateOutPatient = async (req: Request, res: Response) => {
 //   try {
 //     const { nic } = req.params;

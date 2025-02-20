@@ -121,6 +121,26 @@ export const getOutPatientByNic = async (req: Request, res: Response) => {
   }
 };
 
+export const getStaffMemebers = async (req: Request, res: Response) => {
+  try {
+    const staffOutPatient = await prisma.wardAssignment.findMany({
+      where: {
+        ward: "Outpatient",
+      },
+    });
+    if (!staffOutPatient.length) {
+      return res.status(404).json({ message: "staffOutPatient not found." });
+    }
+    res.status(200).json({
+      message: "staffOutPatient fetched successfully!",
+      staffOutPatient,
+    });
+  } catch (error: any) {
+    res
+      .status(500)
+      .json({ message: `Error getting OutPatient: ${error.message}` });
+  }
+};
 // export const updateOutPatient = async (req: Request, res: Response) => {
 //   try {
 //     const { nic } = req.params;
