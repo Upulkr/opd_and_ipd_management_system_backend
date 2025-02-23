@@ -1,13 +1,20 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const patientController_1 = require("../controllers/patientController");
 const patientController_2 = require("../controllers/patientController");
+const authMiddleware_1 = __importDefault(require("../middleware/authMiddleware"));
+const permissionMiddleware_1 = __importDefault(require("../middleware/permissionMiddleware"));
 const router = (0, express_1.Router)();
-router.get("/", patientController_2.getAllPatients);
-router.get("/:nic", patientController_1.getPatientByNic);
-router.post("/", patientController_1.createPatient);
-router.delete("/:nic", patientController_1.deletePatient);
-router.put("/:nic", patientController_1.updatePatient);
-router.get("/isPatientexist/:nic", patientController_1.isPatientExist);
+const { hasPermission, canAccessPatient } = permissionMiddleware_1.default;
+const { verifyToken } = authMiddleware_1.default;
+router.get("/", verifyToken, hasPermission(["getAllPatients"]), patientController_2.getAllPatients);
+router.get("/:nic", verifyToken, hasPermission(["getPatientByNic"]), patientController_1.getPatientByNic);
+router.post("/", verifyToken, hasPermission(["createPatient"]), patientController_1.createPatient);
+router.delete("/:nic", verifyToken, hasPermission(["deletePatient"]), patientController_1.deletePatient);
+router.put("/:nic", verifyToken, hasPermission(["updatePatient"]), patientController_1.updatePatient);
+router.get("/isPatientexist/:nic", verifyToken, hasPermission(["isPatientExist"]), patientController_1.isPatientExist);
 exports.default = router;

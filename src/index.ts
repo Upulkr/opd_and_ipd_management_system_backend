@@ -22,7 +22,8 @@ import smsRoutes from "./routes/smsRoutes";
 import mobileclinicRoutes from "./routes/mobileClinicRoutes";
 import diseasePredictionRoutes from "./routes/diseasePredictionRoutes";
 import staffwardassignment from "./routes/staffWardAssignmemtRoute";
-// import ticketRoutes from "./routes/ticketRoutes";
+import session from "express-session";
+import authRoutes from "./routes/authRoutes";
 /* CONFIGURATIONS */
 dotenv.config();
 const app = express();
@@ -33,6 +34,14 @@ app.use(morgan("common"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cors());
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET || "default_secret",
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: false, maxAge: 24 * 60 * 60 * 1000 },
+  })
+);
 
 /* ROUTES */
 app.get("/", (req, res) => {
@@ -53,6 +62,7 @@ app.use("/sendsms", smsRoutes);
 app.use("/mobileclinic", mobileclinicRoutes);
 app.use("/diseaseprediction", diseasePredictionRoutes);
 app.use("/staffwardassignment", staffwardassignment);
+app.use("/auth", authRoutes);
 // app.use("/ticket", ticketRoutes);
 
 /* SERVER */

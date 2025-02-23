@@ -26,7 +26,8 @@ const smsRoutes_1 = __importDefault(require("./routes/smsRoutes"));
 const mobileClinicRoutes_1 = __importDefault(require("./routes/mobileClinicRoutes"));
 const diseasePredictionRoutes_1 = __importDefault(require("./routes/diseasePredictionRoutes"));
 const staffWardAssignmemtRoute_1 = __importDefault(require("./routes/staffWardAssignmemtRoute"));
-// import ticketRoutes from "./routes/ticketRoutes";
+const express_session_1 = __importDefault(require("express-session"));
+const authRoutes_1 = __importDefault(require("./routes/authRoutes"));
 /* CONFIGURATIONS */
 dotenv_1.default.config();
 const app = (0, express_1.default)();
@@ -37,6 +38,12 @@ app.use((0, morgan_1.default)("common"));
 app.use(body_parser_1.default.json());
 app.use(body_parser_1.default.urlencoded({ extended: false }));
 app.use((0, cors_1.default)());
+app.use((0, express_session_1.default)({
+    secret: process.env.SESSION_SECRET || "default_secret",
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: false, maxAge: 24 * 60 * 60 * 1000 },
+}));
 /* ROUTES */
 app.get("/", (req, res) => {
     res.send("This is home route");
@@ -56,6 +63,7 @@ app.use("/sendsms", smsRoutes_1.default);
 app.use("/mobileclinic", mobileClinicRoutes_1.default);
 app.use("/diseaseprediction", diseasePredictionRoutes_1.default);
 app.use("/staffwardassignment", staffWardAssignmemtRoute_1.default);
+app.use("/auth", authRoutes_1.default);
 // app.use("/ticket", ticketRoutes);
 /* SERVER */
 const port = Number(process.env.PORT) || 8000;
