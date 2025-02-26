@@ -1,14 +1,21 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const admissionSheetController_1 = require("../controllers/admissionSheetController");
+const authMiddleware_1 = __importDefault(require("../middleware/authMiddleware"));
+const permissionMiddleware_1 = __importDefault(require("../middleware/permissionMiddleware"));
+const { hasPermission, canAccessPatient } = permissionMiddleware_1.default;
+const { verifyToken } = authMiddleware_1.default;
 const router = (0, express_1.Router)();
-router.get("/noOfAdmissionSheetsperyear", admissionSheetController_1.getNumberOfAdmissionSheetsperYear);
-router.get("/noOfAdmissionSheetsperday", admissionSheetController_1.getNumberOfAdmissionSheetsperDay);
-router.get("/bht", admissionSheetController_1.getrelatedAdmissionSheetByBht);
-router.post("/", admissionSheetController_1.createAdmissionSheet);
-router.delete("/:nic/:bht", admissionSheetController_1.deleteAdmissionSheet);
+router.get("/noOfAdmissionSheetsperyear", verifyToken, hasPermission(["getNumberOfAdmissionSheetsperYear"]), admissionSheetController_1.getNumberOfAdmissionSheetsperYear);
+router.get("/noOfAdmissionSheetsperday", verifyToken, hasPermission(["getNumberOfAdmissionSheetsperDay"]), admissionSheetController_1.getNumberOfAdmissionSheetsperDay);
+router.get("/bht", verifyToken, hasPermission(["getrelatedAdmissionSheetByBht"]), admissionSheetController_1.getrelatedAdmissionSheetByBht);
+router.post("/", verifyToken, hasPermission(["createAdmissionSheet"]), admissionSheetController_1.createAdmissionSheet);
+router.delete("/:nic/:bht", verifyToken, hasPermission(["deleteAdmissionSheet"]), admissionSheetController_1.deleteAdmissionSheet);
 router.get("/:nic", admissionSheetController_1.getAllAdmissionSheetByNic);
-router.put("/:nic/:bht", admissionSheetController_1.updateAdmissionSheet);
-router.get("/", admissionSheetController_1.getAdmissionSheets);
+router.put("/:nic/:bht", verifyToken, hasPermission(["updateAdmissionSheet"]), admissionSheetController_1.updateAdmissionSheet);
+router.get("/", verifyToken, hasPermission(["getAdmissionSheets"]), admissionSheetController_1.getAdmissionSheets);
 exports.default = router;

@@ -10,20 +10,65 @@ import {
   updateMobileClinicAssigment,
   updateMobileClinincCompletedStatus,
 } from "../controllers/mobileClinicController";
-
+import permissionMiddleware from "../middleware/permissionMiddleware";
+import authMiddleware from "../middleware/authMiddleware";
+const { hasPermission, canAccessPatient } = permissionMiddleware;
+const { verifyToken } = authMiddleware;
 const router = Router();
 
-router.get("/", getAllMobileClinics);
-router.post("/", createMObileClinic);
-router.delete("/", deleteMobileClinicAssigment);
-router.put("/id", updateMobileClinicAssigment);
-router.get("/sheduled", getAllMobileClinicAssigmentsForTable);
-router.put("/markascompleted", updateMobileClinincCompletedStatus);
+router.get(
+  "/",
+  verifyToken,
+  hasPermission(["getAllMobileClinics"]),
+  getAllMobileClinics
+);
+router.post(
+  "/",
+  verifyToken,
+  hasPermission(["createMObileClinic"]),
+  createMObileClinic
+);
+router.delete(
+  "/",
+  verifyToken,
+  hasPermission(["deleteMobileClinicAssigment"]),
+  deleteMobileClinicAssigment
+);
+router.put(
+  "/id",
+  verifyToken,
+  hasPermission(["updateMobileClinicAssigment"]),
+  updateMobileClinicAssigment
+);
+router.get(
+  "/sheduled",
+  verifyToken,
+  hasPermission(["getAllMobileClinicAssigmentsForTable"]),
+  getAllMobileClinicAssigmentsForTable
+);
+router.put(
+  "/markascompleted",
+  verifyToken,
+  hasPermission(["updateMobileClinincCompletedStatus"]),
+  updateMobileClinincCompletedStatus
+);
 router.get(
   "/getcountofcompletedmobileclinincs",
+  verifyToken,
+  hasPermission(["getCountOfCompletedMobileClinicsFor30days"]),
   getCountOfCompletedMobileClinicsFor30days
 );
-router.get("/monthlyhomevisits", getMothlyMobileClinicCount);
-router.get(`/getpatientsbyage`, getPatientsByage);
+router.get(
+  "/monthlyhomevisits",
+  verifyToken,
+  hasPermission(["getMothlyMobileClinicCount"]),
+  getMothlyMobileClinicCount
+);
+router.get(
+  `/getpatientsbyage`,
+  verifyToken,
+  hasPermission(["getPatientsByage"]),
+  getPatientsByage
+);
 
 export default router;

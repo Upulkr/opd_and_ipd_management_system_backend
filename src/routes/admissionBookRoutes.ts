@@ -7,14 +7,47 @@ import {
   getrelatedAdmissionBookbyBHT,
   updateAdmissionBook,
 } from "../controllers/admissionBookController";
-
+import authMiddleware from "../middleware/authMiddleware";
+import permissionMiddleware from "../middleware/permissionMiddleware";
+const { hasPermission, canAccessPatient } = permissionMiddleware;
+const { verifyToken } = authMiddleware;
 const router = Router();
-router.get("/bht", getrelatedAdmissionBookbyBHT);
-router.get("/", getAdmissionBooks);
-router.post("/", createAdmissionBook);
-router.get("/:nic", getAllAdmissionBooksforNic);
+router.get(
+  "/bht",
+  verifyToken,
+  hasPermission(["getrelatedAdmissionBookbyBHT"]),
+  getrelatedAdmissionBookbyBHT
+);
+router.get(
+  "/",
+  verifyToken,
+  hasPermission(["getAdmissionBooks"]),
+  getAdmissionBooks
+);
+router.post(
+  "/",
+  verifyToken,
+  hasPermission(["createAdmissionBook"]),
+  createAdmissionBook
+);
+router.get(
+  "/:nic",
+  verifyToken,
+  hasPermission(["getAllAdmissionBooksforNic"]),
+  getAllAdmissionBooksforNic
+);
 
-router.put("/:nic/:bht", updateAdmissionBook);
-router.delete("/:nic/:bht", deleteAdmissionBook);
+router.put(
+  "/:nic/:bht",
+  verifyToken,
+  hasPermission(["updateAdmissionBook"]),
+  updateAdmissionBook
+);
+router.delete(
+  "/:nic/:bht",
+  verifyToken,
+  hasPermission(["deleteAdmissionBook"]),
+  deleteAdmissionBook
+);
 
 export default router;

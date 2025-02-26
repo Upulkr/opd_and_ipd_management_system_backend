@@ -17,8 +17,102 @@ const rolePermissions = {
     "getAllAdmissionBooksforNic",
     "updateAdmissionBook",
     "createAdmissionBook",
+
+    //admission sheet related
+    "getNumberOfAdmissionSheetsperYear",
+    "getrelatedAdmissionSheetByBht",
+    "getAdmissionSheets",
+    "getAllAdmissionSheetByNic",
+    "updateAdmissionSheet",
+    "createAdmissionSheet",
+    "getNumberOfAdmissionSheetsperDay",
+
+    //clinic assignment related
+    "createClinicAssigment",
+    "deleteClinicAssigment",
+    "getAllClinicAssigments",
+    "getAllClinicAssigmentsForTable",
+    "getPatientDetailsByClinicName",
+    "updateClinicAssigment",
+
+    //clinic
+    "createClininc",
+    "deleteClinic",
+    "getAllClinics",
+    "updateClinic",
+
+    //wardStatus
+    "getCurrentWardStatus",
+
+    //disease prediction
+    "createDisasePrediction",
+    "deleteDiseasePredictionByNic",
+    "getDiseasePredictionByNic",
+    "updateDiseasePredictionByNic",
+
+    //drugChart
+    "createDrugChart",
+    "deleteDrugChart",
+    "getAllDrugChartByNic",
+    "getDrugCharts",
+    "getrelatedDrugChart",
+    "updateDrugChart",
+
+    //drug related
+    "addNewDrug",
+    "createNewDrugAllocation",
+    "deleteDrug",
+    "getAllDrugs",
+    "getDrugAllocationbyWardName",
+    "updateDrug",
+    //labtestRelated
+    "createLabtest",
+    "deleteLabtest",
+    "getAllLabtestByNic",
+    "getAllLabtests",
+    "getrelatedLabtest",
+    "updateLabtest",
+    //mobile clinic related
+    "createMObileClinic",
+    "deleteMobileClinicAssigment",
+    "getAllMobileClinicAssigmentsForTable",
+    "getAllMobileClinics",
+    "getCountOfCompletedMobileClinicsFor30days",
+    "getMothlyMobileClinicCount",
+    "getPatientsByage",
+    "updateMobileClinicAssigment",
+    "updateMobileClinincCompletedStatus",
+    //outpatient related
+    "createOutPatient",
+    "getAllOutPatientsToday",
+    "getOutPatientByNic",
+    "getStaffMemebers",
+    //sms routes
+    "cancelScheduledSMS",
+    "getScheduledSMS",
+    "scheduleSMS",
+
+    //staff assignment related
+    "createStaffAssignment",
+    "deleteStaffAssignment",
+    "getAllStaffAssignments",
+    "getStaffAssignmentsByRegisterId",
+    "getStaffCountGroupByWard",
+    "updateStaffAssignment",
+
+    //wards beds related
+    "changeBedStatusForInpatientTable",
   ],
   NURSE: [
+    //wards beds related
+    "changeBedStatusForInpatientTable",
+    //staff assignment related
+    "createStaffAssignment",
+    "deleteStaffAssignment",
+    "getAllStaffAssignments",
+    "getStaffAssignmentsByRegisterId",
+    "getStaffCountGroupByWard",
+    "updateStaffAssignment",
     //patient related
     "getAllPatients",
     "getPatientByNic",
@@ -33,6 +127,84 @@ const rolePermissions = {
     "getAllAdmissionBooksforNic",
     "updateAdmissionBook",
     "createAdmissionBook",
+
+    //admission sheet related
+    "getNumberOfAdmissionSheetsperYear",
+    "getrelatedAdmissionSheetByBht",
+    "getAdmissionSheets",
+    "getAllAdmissionSheetByNic",
+    "updateAdmissionSheet",
+    "createAdmissionSheet",
+    "getNumberOfAdmissionSheetsperDay",
+
+    //clinic assignment related
+    "createClinicAssigment",
+    "deleteClinicAssigment",
+    "getAllClinicAssigments",
+    "getAllClinicAssigmentsForTable",
+    "getPatientDetailsByClinicName",
+    "updateClinicAssigment",
+
+    //clinic
+    "createClininc",
+    "deleteClinic",
+    "getAllClinics",
+    "updateClinic",
+
+    //wardStatus
+    "getCurrentWardStatus",
+
+    //disease prediction
+    "createDisasePrediction",
+    "deleteDiseasePredictionByNic",
+    "getDiseasePredictionByNic",
+    "updateDiseasePredictionByNic",
+
+    //drugChart
+    "createDrugChart",
+    "deleteDrugChart",
+    "getAllDrugChartByNic",
+    "getDrugCharts",
+    "getrelatedDrugChart",
+    "updateDrugChart",
+
+    //drug related
+    "addNewDrug",
+    "createNewDrugAllocation",
+    "deleteDrug",
+    "getAllDrugs",
+    "getDrugAllocationbyWardName",
+    "updateDrug",
+
+    //labtestRelated
+    "createLabtest",
+    "deleteLabtest",
+    "getAllLabtestByNic",
+    "getAllLabtests",
+    "getrelatedLabtest",
+    "updateLabtest",
+
+    //mobile clinic related
+    "createMObileClinic",
+    "deleteMobileClinicAssigment",
+    "getAllMobileClinicAssigmentsForTable",
+    "getAllMobileClinics",
+    "getCountOfCompletedMobileClinicsFor30days",
+    "getMothlyMobileClinicCount",
+    "getPatientsByage",
+    "updateMobileClinicAssigment",
+    "updateMobileClinincCompletedStatus",
+
+    //outpatient related
+    "createOutPatient",
+    "getAllOutPatientsToday",
+    "getOutPatientByNic",
+    "getStaffMemebers",
+
+    //sms routes
+    "cancelScheduledSMS",
+    "getScheduledSMS",
+    "scheduleSMS",
   ],
   PHARMACIST: [
     "view_prescriptions",

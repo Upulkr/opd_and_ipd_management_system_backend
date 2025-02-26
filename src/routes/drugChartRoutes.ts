@@ -7,14 +7,42 @@ import {
   getrelatedDrugChart,
   updateDrugChart,
 } from "../controllers/drugChartController";
-
+import permissionMiddleware from "../middleware/permissionMiddleware";
+import authMiddleware from "../middleware/authMiddleware";
+const { hasPermission, canAccessPatient } = permissionMiddleware;
+const { verifyToken } = authMiddleware;
 const router = Router();
 
-router.get("/", getDrugCharts);
-router.get("/:nic", getAllDrugChartByNic);
-router.get("/:nic/:bht", getrelatedDrugChart);
-router.post("/", createDrugChart);
-router.delete("/:nic", deleteDrugChart);
-router.put("/:nic", updateDrugChart);
+router.get("/", verifyToken, hasPermission(["getDrugCharts"]), getDrugCharts);
+router.get(
+  "/:nic",
+  verifyToken,
+  hasPermission(["getAllDrugChartByNic"]),
+  getAllDrugChartByNic
+);
+router.get(
+  "/:nic/:bht",
+  verifyToken,
+  hasPermission(["getrelatedDrugChart"]),
+  getrelatedDrugChart
+);
+router.post(
+  "/",
+  verifyToken,
+  hasPermission(["createDrugChart"]),
+  createDrugChart
+);
+router.delete(
+  "/:nic",
+  verifyToken,
+  hasPermission(["deleteDrugChart"]),
+  deleteDrugChart
+);
+router.put(
+  "/:nic",
+  verifyToken,
+  hasPermission(["updateDrugChart"]),
+  updateDrugChart
+);
 
 export default router;
