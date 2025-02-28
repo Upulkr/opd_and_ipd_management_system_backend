@@ -83,7 +83,7 @@ const authController = {
         },
       });
       // Send verification email
-      const verificationLink = `${process.env.BASE_URL}/auth/verify-email/${verificationToken}`;
+      const verificationLink = `${process.env.FRONTEND_URL}/auth/verify-email/${verificationToken}`;
       const mailOptions = {
         from: process.env.EMAIL_USER,
         to: email,
@@ -97,7 +97,7 @@ const authController = {
         `,
       };
       await transporter.sendMail(mailOptions);
-      res.status(201).json({
+      res.status(200).json({
         message:
           "User created successfully. Please check your email for verification.",
         userId: user.id,
@@ -116,7 +116,7 @@ const authController = {
   verifyEmail: async (req: Request, res: Response) => {
     try {
       const { token } = req.params;
-
+      console.log("token++++++++", token);
       const user = await prisma.user.findUnique({
         where: { emailVerificationToken: token },
       });
@@ -179,7 +179,7 @@ const authController = {
         },
       });
 
-      const verificationLink = `${process.env.BASE_URL}/auth/verify-email/${verificationToken}`;
+      const verificationLink = `${process.env.FRONTEND_URL}/auth/verify-email/${verificationToken}`;
       const mailOptions = {
         from: process.env.EMAIL_USER,
         to: email,
@@ -236,7 +236,7 @@ const authController = {
         username: user.username,
       };
 
-      res.json({
+      res.status(200).json({
         token,
         user: {
           id: user.id,
