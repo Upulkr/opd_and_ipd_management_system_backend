@@ -28,6 +28,7 @@ const diseasePredictionRoutes_1 = __importDefault(require("./routes/diseasePredi
 const staffWardAssignmemtRoute_1 = __importDefault(require("./routes/staffWardAssignmemtRoute"));
 const express_session_1 = __importDefault(require("express-session"));
 const authRoutes_1 = __importDefault(require("./routes/authRoutes"));
+const getMonthlyPatientVisitRoute_1 = __importDefault(require("./routes/getMonthlyPatientVisitRoute"));
 /* CONFIGURATIONS */
 dotenv_1.default.config();
 const app = (0, express_1.default)();
@@ -64,6 +65,7 @@ app.use("/mobileclinic", mobileClinicRoutes_1.default);
 app.use("/diseaseprediction", diseasePredictionRoutes_1.default);
 app.use("/staffwardassignment", staffWardAssignmemtRoute_1.default);
 app.use("/auth", authRoutes_1.default);
+app.use("/getmonthlypatientvisit", getMonthlyPatientVisitRoute_1.default);
 // app.use("/ticket", ticketRoutes);
 /* SERVER */
 const port = Number(process.env.PORT) || 8000;

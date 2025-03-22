@@ -13,5 +13,6 @@ const router = (0, express_1.Router)();
 router.get("/getstaff", verifyToken, hasPermission(["getStaffMemebers"]), OutPatientController_1.getStaffMemebers);
 router.post("/", verifyToken, hasPermission(["createOutPatient"]), OutPatientController_1.createOutPatient);
 router.get("/", verifyToken, hasPermission(["getAllOutPatientsToday"]), OutPatientController_1.getAllOutPatientsToday);
+router.get("/outpatientscount", OutPatientController_1.getNumberOfOutPatientsToday);
 router.get("/:nic", verifyToken, hasPermission(["getOutPatientByNic"]), OutPatientController_1.getOutPatientByNic);
 exports.default = router;

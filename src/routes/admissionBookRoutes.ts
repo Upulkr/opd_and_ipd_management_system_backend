@@ -4,6 +4,7 @@ import {
   deleteAdmissionBook,
   getAdmissionBooks,
   getAllAdmissionBooksforNic,
+  getNumberOfAdmissionBooksToday,
   getrelatedAdmissionBookbyBHT,
   updateAdmissionBook,
 } from "../controllers/admissionBookController";
@@ -35,6 +36,11 @@ router.get(
   verifyToken,
   hasPermission(["getAllAdmissionBooksforNic"]),
   getAllAdmissionBooksforNic
+);
+router.get(
+  "/noofadmissionbookstoday",
+
+  getNumberOfAdmissionBooksToday
 );
 
 router.put(

@@ -2,6 +2,7 @@ import { Router } from "express";
 import {
   createOutPatient,
   getAllOutPatientsToday,
+  getNumberOfOutPatientsToday,
   getOutPatientByNic,
   getStaffMemebers,
 } from "../controllers/OutPatientController"; // Ensure the casing matches the actual file name
@@ -27,6 +28,11 @@ router.get(
   verifyToken,
   hasPermission(["getAllOutPatientsToday"]),
   getAllOutPatientsToday
+);
+router.get(
+  "/outpatientscount",
+
+  getNumberOfOutPatientsToday
 );
 router.get(
   "/:nic",

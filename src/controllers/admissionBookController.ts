@@ -189,3 +189,29 @@ export const deleteAdmissionBook = async (req: Request, res: Response) => {
       .json({ message: `Error deleting AdmissionBook: ${error.message}` });
   }
 };
+
+export const getNumberOfAdmissionBooksToday = async (
+  req: Request,
+  res: Response
+) => {
+  try {
+    // Get the start and end of today
+    const startOfDay = new Date();
+    startOfDay.setHours(0, 0, 0, 0);
+
+    const endOfDay = new Date();
+    endOfDay.setHours(23, 59, 59, 999);
+    const outPatientsTodayCount = await prisma.admissionbook.count({
+      where: {
+        createdAt: {
+          gte: startOfDay, // Greater than or equal to the start of the day
+          lte: endOfDay, // Less than or equal to the end of the day
+        },
+      },
+    });
+
+    res.status(200).json(outPatientsTodayCount);
+  } catch (error: any) {
+    res.status(400).json({ message: error.message });
+  }
+};

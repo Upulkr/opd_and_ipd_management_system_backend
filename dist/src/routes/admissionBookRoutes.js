@@ -14,6 +14,7 @@ router.get("/bht", verifyToken, hasPermission(["getrelatedAdmissionBookbyBHT"]),
 router.get("/", verifyToken, hasPermission(["getAdmissionBooks"]), admissionBookController_1.getAdmissionBooks);
 router.post("/", verifyToken, hasPermission(["createAdmissionBook"]), admissionBookController_1.createAdmissionBook);
 router.get("/:nic", verifyToken, hasPermission(["getAllAdmissionBooksforNic"]), admissionBookController_1.getAllAdmissionBooksforNic);
+router.get("/noofadmissionbookstoday", admissionBookController_1.getNumberOfAdmissionBooksToday);
 router.put("/:nic/:bht", verifyToken, hasPermission(["updateAdmissionBook"]), admissionBookController_1.updateAdmissionBook);
 router.delete("/:nic/:bht", verifyToken, hasPermission(["deleteAdmissionBook"]), admissionBookController_1.deleteAdmissionBook);
 exports.default = router;

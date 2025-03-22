@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteAdmissionBook = exports.updateAdmissionBook = exports.getAllAdmissionBooksforNic = exports.getrelatedAdmissionBookbyBHT = exports.getAdmissionBooks = exports.createAdmissionBook = void 0;
+exports.getNumberOfAdmissionBooksToday = exports.deleteAdmissionBook = exports.updateAdmissionBook = exports.getAllAdmissionBooksforNic = exports.getrelatedAdmissionBookbyBHT = exports.getAdmissionBooks = exports.createAdmissionBook = void 0;
 const client_1 = require("@prisma/client");
 const prisma = new client_1.PrismaClient();
 const createAdmissionBook = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -160,3 +160,25 @@ const deleteAdmissionBook = (req, res) => __awaiter(void 0, void 0, void 0, func
     }
 });
 exports.deleteAdmissionBook = deleteAdmissionBook;
+const getNumberOfAdmissionBooksToday = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        // Get the start and end of today
+        const startOfDay = new Date();
+        startOfDay.setHours(0, 0, 0, 0);
+        const endOfDay = new Date();
+        endOfDay.setHours(23, 59, 59, 999);
+        const outPatientsTodayCount = yield prisma.admissionbook.count({
+            where: {
+                createdAt: {
+                    gte: startOfDay, // Greater than or equal to the start of the day
+                    lte: endOfDay, // Less than or equal to the end of the day
+                },
+            },
+        });
+        res.status(200).json(outPatientsTodayCount);
+    }
+    catch (error) {
+        res.status(400).json({ message: error.message });
+    }
+});
+exports.getNumberOfAdmissionBooksToday = getNumberOfAdmissionBooksToday;
