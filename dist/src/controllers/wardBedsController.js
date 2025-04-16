@@ -19,7 +19,14 @@ BigInt.prototype.toJSON = function () {
 const changeBedStatusForInpatientTable = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { wardNo } = req.params;
-        console.log("wardNo", wardNo);
+        const wardIsExist = yield prisma.ward.findUnique({
+            where: {
+                wardNo: wardNo,
+            },
+        });
+        if (!wardIsExist) {
+            return res.status(404).json({ message: "Ward not found" });
+        }
         const wardDetails = yield prisma.$queryRaw `select "noOfBeds","noOfPatients","noOfUsedBeds","noOfFreeBeds" from "Ward" where "wardNo" = ${wardNo}`;
         console.log("wardDetails", wardDetails[0]);
         yield prisma.$queryRaw `update "Ward" set "noOfFreeBeds"=${wardDetails[0].noOfFreeBeds - 1} where "wardNo" = ${wardNo}`;

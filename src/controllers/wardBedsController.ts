@@ -14,7 +14,16 @@ export const changeBedStatusForInpatientTable = async (
 ) => {
   try {
     const { wardNo } = req.params;
-    console.log("wardNo", wardNo);
+
+    const wardIsExist = await prisma.ward.findUnique({
+      where: {
+        wardNo: wardNo,
+      },
+    });
+    if (!wardIsExist) {
+      return res.status(404).json({ message: "Ward not found" });
+    }
+
     const wardDetails: [
       {
         noOfBeds: number;

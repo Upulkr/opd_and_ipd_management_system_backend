@@ -50,7 +50,7 @@ const getMonthlyPatientVisit = (req, res) => __awaiter(void 0, void 0, void 0, f
             // Find the existing month in the array and update the visits count
             const monthData = monthlyPatientData.find((m) => m.month_year === month_year);
             if (monthData) {
-                monthData.visits += visits; // Corrected property reference
+                monthData.visits += Number(visits); // Corrected property reference
             }
         });
         // Step 3: Aggregate Inpatient Data
@@ -58,7 +58,7 @@ const getMonthlyPatientVisit = (req, res) => __awaiter(void 0, void 0, void 0, f
             // Find the existing month in the array and update the visits count
             const monthData = monthlyPatientData.find((m) => m.month_year === month_year);
             if (monthData) {
-                monthData.visits += visits; // Sum up visits correctly
+                monthData.visits += Number(visits); // Sum up visits correctly
             }
         });
         return res.json(monthlyPatientData);

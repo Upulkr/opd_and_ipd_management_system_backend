@@ -51,7 +51,7 @@ export const getMonthlyPatientVisit = async (req: Request, res: Response) => {
         (m) => m.month_year === month_year
       );
       if (monthData) {
-        monthData.visits += visits; // Corrected property reference
+        monthData.visits += Number(visits); // Corrected property reference
       }
     });
 
@@ -62,7 +62,7 @@ export const getMonthlyPatientVisit = async (req: Request, res: Response) => {
         (m) => m.month_year === month_year
       );
       if (monthData) {
-        monthData.visits += visits; // Sum up visits correctly
+        monthData.visits += Number(visits); // Sum up visits correctly
       }
     });
 

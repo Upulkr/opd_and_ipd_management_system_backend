@@ -31,7 +31,10 @@ FROM "Admissionbook" AS ad
 WHERE ad."dischargeDate"::DATE = CURRENT_DATE;`;
 
     const wardNos = noOfpatientsUndergoing.map((ward) => ward.wardNo);
-
+    if (wardNos.length === 0) {
+      console.log("No ward numbers found, skipping query");
+      return [];
+    }
     const wardDetails: [
       {
         wardNo: string;

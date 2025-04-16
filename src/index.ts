@@ -49,12 +49,12 @@ app.get("/", (req, res) => {
   res.send("This is home route");
 });
 app.use("/admissionbook", admissionBookRoutes);
-app.use("/admissionSheet", admissionSheetRoutes);
+app.use("/admissionsheet", admissionSheetRoutes);
 app.use("/drugChart", drugChartRoutes);
 // app.use("/users", userRoutes);
 app.use("/patient", patientRoutes);
 app.use("/warddetails", currentWardDetails);
-app.use("/wardBedsController", wardBedsStatus);
+app.use("/wardbedscontroller", wardBedsStatus);
 app.use("/outPatient", outPatientRoutes);
 app.use("/drugs", drugRoutes);
 app.use("/clinic", clinincRoutes);

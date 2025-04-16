@@ -50,12 +50,12 @@ app.get("/", (req, res) => {
     res.send("This is home route");
 });
 app.use("/admissionbook", admissionBookRoutes_1.default);
-app.use("/admissionSheet", admissionSheetRoutes_1.default);
+app.use("/admissionsheet", admissionSheetRoutes_1.default);
 app.use("/drugChart", drugChartRoutes_1.default);
 // app.use("/users", userRoutes);
 app.use("/patient", patientRoutes_1.default);
 app.use("/warddetails", currentWardStatusRoute_1.default);
-app.use("/wardBedsController", wardBedsController_1.default);
+app.use("/wardbedscontroller", wardBedsController_1.default);
 app.use("/outPatient", OutPatientRoutes_1.default);
 app.use("/drugs", drugRoutes_1.default);
 app.use("/clinic", clinicRoutes_1.default);
