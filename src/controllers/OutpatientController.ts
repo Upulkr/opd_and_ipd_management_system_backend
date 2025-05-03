@@ -29,6 +29,7 @@ export const createOutPatient = async (req: Request, res: Response) => {
     });
 
     if (!checkNIC) {
+      console.log("NIC is not available");
       return res.status(400).json({ message: "NIC is not available" });
     }
     const newOutPatient = await prisma.outPatientFrom.create({
@@ -62,6 +63,10 @@ export const createOutPatient = async (req: Request, res: Response) => {
 export const getAllOutPatients = async (req: Request, res: Response) => {
   try {
     const outPatients = await prisma.outPatientFrom.findMany();
+    if (!outPatients.length) {
+      return res.status(404).json({ message: "No OutPatients found." });
+    }
+    console.log("outPatients", outPatients);
     res.status(200).json(outPatients);
   } catch (error: any) {
     res.status(400).json({ message: error.message });
@@ -76,21 +81,20 @@ export const getAllOutPatientsToday = async (req: Request, res: Response) => {
     const endOfDay = new Date();
     endOfDay.setHours(23, 59, 59, 999);
 
-    const outPatientsToday = await prisma.outPatientFrom.findMany({
-      where: {
-        createdAt: {
-          gte: startOfDay, // Greater than or equal to the start of the day
-          lte: endOfDay, // Less than or equal to the end of the day
-        },
-      },
-    });
-
+    const outPatientsToday = await prisma.outPatientFrom.findMany();
+    if (!outPatientsToday.length) {
+      return res.status(404).json({ message: "No OutPatients found." });
+    }
+    console.log("outPatientsToday", outPatientsToday);
     res.status(200).json(outPatientsToday);
   } catch (error: any) {
     res.status(400).json({ message: error.message });
   }
 };
-export const getNumberOfOutPatientsToday = async (req: Request, res: Response) => {
+export const getNumberOfOutPatientsToday = async (
+  req: Request,
+  res: Response
+) => {
   try {
     // Get the start and end of today
     const startOfDay = new Date();
@@ -100,10 +104,10 @@ export const getNumberOfOutPatientsToday = async (req: Request, res: Response) =
     endOfDay.setHours(23, 59, 59, 999);
     const outPatientsTodayCount = await prisma.outPatientFrom.count({
       where: {
-      createdAt: {
-        gte: startOfDay, // Greater than or equal to the start of the day
-        lte: endOfDay, // Less than or equal to the end of the day
-      },
+        createdAt: {
+          gte: startOfDay, // Greater than or equal to the start of the day
+          lte: endOfDay, // Less than or equal to the end of the day
+        },
       },
     });
 

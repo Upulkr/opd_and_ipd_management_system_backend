@@ -29,8 +29,8 @@ router.delete(
 );
 router.get(
   "/getstaffcount",
-  verifyToken,
-  hasPermission(["getStaffCountGroupByWard"]),
+  // verifyToken,
+  // hasPermission(["getStaffCountGroupByWard"]),
   getStaffCountGroupByWard
 ); // Specific first
 router.get(

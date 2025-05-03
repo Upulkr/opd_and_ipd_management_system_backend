@@ -21,6 +21,7 @@ const createOutPatient = (req, res) => __awaiter(void 0, void 0, void 0, functio
             },
         });
         if (!checkNIC) {
+            console.log("NIC is not available");
             return res.status(400).json({ message: "NIC is not available" });
         }
         const newOutPatient = yield prisma.outPatientFrom.create({
@@ -54,6 +55,10 @@ exports.createOutPatient = createOutPatient;
 const getAllOutPatients = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const outPatients = yield prisma.outPatientFrom.findMany();
+        if (!outPatients.length) {
+            return res.status(404).json({ message: "No OutPatients found." });
+        }
+        console.log("outPatients", outPatients);
         res.status(200).json(outPatients);
     }
     catch (error) {
@@ -68,14 +73,11 @@ const getAllOutPatientsToday = (req, res) => __awaiter(void 0, void 0, void 0, f
         startOfDay.setHours(0, 0, 0, 0);
         const endOfDay = new Date();
         endOfDay.setHours(23, 59, 59, 999);
-        const outPatientsToday = yield prisma.outPatientFrom.findMany({
-            where: {
-                createdAt: {
-                    gte: startOfDay, // Greater than or equal to the start of the day
-                    lte: endOfDay, // Less than or equal to the end of the day
-                },
-            },
-        });
+        const outPatientsToday = yield prisma.outPatientFrom.findMany();
+        if (!outPatientsToday.length) {
+            return res.status(404).json({ message: "No OutPatients found." });
+        }
+        console.log("outPatientsToday", outPatientsToday);
         res.status(200).json(outPatientsToday);
     }
     catch (error) {

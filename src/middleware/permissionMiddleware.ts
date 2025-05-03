@@ -97,7 +97,7 @@ const rolePermissions = {
     "deleteStaffAssignment",
     "getAllStaffAssignments",
     "getStaffAssignmentsByRegisterId",
-    "getStaffCountGroupByWard",
+
     "updateStaffAssignment",
 
     //wards beds related
@@ -111,7 +111,7 @@ const rolePermissions = {
     "deleteStaffAssignment",
     "getAllStaffAssignments",
     "getStaffAssignmentsByRegisterId",
-    "getStaffCountGroupByWard",
+
     "updateStaffAssignment",
     //patient related
     "getAllPatients",

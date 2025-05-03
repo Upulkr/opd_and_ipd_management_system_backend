@@ -25,6 +25,7 @@ import staffwardassignment from "./routes/staffWardAssignmemtRoute";
 import session from "express-session";
 import authRoutes from "./routes/authRoutes";
 import getMonthlyPatientVisit from "./routes/getMonthlyPatientVisitRoute";
+import getWardBedsDetails from "./routes/wardDetailsDashboardRoute";
 /* CONFIGURATIONS */
 dotenv.config();
 const app = express();
@@ -65,6 +66,7 @@ app.use("/diseaseprediction", diseasePredictionRoutes);
 app.use("/staffwardassignment", staffwardassignment);
 app.use("/auth", authRoutes);
 app.use("/getmonthlypatientvisit", getMonthlyPatientVisit);
+app.use("/getwardbedstatus", getWardBedsDetails);
 // app.use("/ticket", ticketRoutes);
 
 /* SERVER */
