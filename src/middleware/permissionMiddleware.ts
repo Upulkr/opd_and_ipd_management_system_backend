@@ -102,6 +102,14 @@ const rolePermissions = {
 
     //wards beds related
     "changeBedStatusForInpatientTable",
+
+    //sugery related
+    "getAllDoctors",
+    "createSurgeriesSchedule",
+    "updateSurgeriesSchedule",
+    "deleteSurgeriesSchedule",
+    "getSurgeriesSchedule",
+    "getSurgeryScheduleById",
   ],
   NURSE: [
     //wards beds related
@@ -205,6 +213,13 @@ const rolePermissions = {
     "cancelScheduledSMS",
     "getScheduledSMS",
     "scheduleSMS",
+    //sugery related
+    "getAllDoctors",
+    " getSurgeriesSchedule",
+    "createSurgeriesSchedule",
+    "updateSurgeriesSchedule",
+    "deleteSurgeriesSchedule",
+    "getSurgeryScheduleById",
   ],
   PHARMACIST: [
     "view_prescriptions",

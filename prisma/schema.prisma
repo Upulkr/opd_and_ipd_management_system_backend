@@ -247,3 +247,15 @@ model WardAssignment {
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 }
+
+model surgery {
+  id                 Int      @id @default(autoincrement())
+  patientName        String
+  PatientNic         String
+  AssignedDoctor     String
+  ScheduledDate      DateTime
+  PatientPhonenUmber String
+  surgeryName        String
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+}

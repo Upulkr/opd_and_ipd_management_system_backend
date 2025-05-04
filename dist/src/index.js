@@ -30,6 +30,8 @@ const express_session_1 = __importDefault(require("express-session"));
 const authRoutes_1 = __importDefault(require("./routes/authRoutes"));
 const getMonthlyPatientVisitRoute_1 = __importDefault(require("./routes/getMonthlyPatientVisitRoute"));
 const wardDetailsDashboardRoute_1 = __importDefault(require("./routes/wardDetailsDashboardRoute"));
+const userRoutes_1 = __importDefault(require("./routes/userRoutes"));
+const surgeriesScheduleRoute_1 = __importDefault(require("./routes/surgeriesScheduleRoute"));
 /* CONFIGURATIONS */
 dotenv_1.default.config();
 const app = (0, express_1.default)();
@@ -68,6 +70,8 @@ app.use("/staffwardassignment", staffWardAssignmemtRoute_1.default);
 app.use("/auth", authRoutes_1.default);
 app.use("/getmonthlypatientvisit", getMonthlyPatientVisitRoute_1.default);
 app.use("/getwardbedstatus", wardDetailsDashboardRoute_1.default);
+app.use("/getusers", userRoutes_1.default);
+app.use("/surgery", surgeriesScheduleRoute_1.default);
 // app.use("/ticket", ticketRoutes);
 /* SERVER */
 const port = Number(process.env.PORT) || 8000;

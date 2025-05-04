@@ -1,8 +1,17 @@
 "use strict";
-// import { Request, Response } from "express";
-// import { PrismaClient } from "@prisma/client";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-// const prisma = new PrismaClient();
+exports.getAllDoctors = void 0;
+const client_1 = require("@prisma/client");
+const prisma = new client_1.PrismaClient();
 // export const getAllUsers = async (
 //   req: Request,
 //   res: Response
@@ -177,20 +186,27 @@ Object.defineProperty(exports, "__esModule", { value: true });
 //       .json({ message: `Error retrieving patients: ${error.message}` });
 //   }
 // };
-// export const getAllDoctors = async (req: Request, res: Response) => {
-//   try {
-//     const doctors = await prisma.user.findMany({
-//       where: {
-//         role: "DOCTOR",
-//       },
-//     });
-//     res.json(doctors);
-//   } catch (error: any) {
-//     res
-//       .status(500)
-//       .json({ message: `Error retrieving doctors: ${error.message}` });
-//   }
-// };
+const getAllDoctors = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const doctors = yield prisma.user.findMany({
+            where: {
+                role: "DOCTOR",
+            },
+            select: {
+                id: true,
+                role: true,
+                username: true,
+            },
+        });
+        res.json(doctors);
+    }
+    catch (error) {
+        res
+            .status(500)
+            .json({ message: `Error retrieving doctors: ${error.message}` });
+    }
+});
+exports.getAllDoctors = getAllDoctors;
 // export const getAllNurses = async (req: Request, res: Response) => {
 //   try {
 //     const nurses = await prisma.user.findMany({

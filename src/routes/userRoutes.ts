@@ -1,4 +1,7 @@
-// import { Router } from "express";
+import { Router } from "express";
+import { getAllDoctors } from "../controllers/userController";
+import permissionMiddleware from "../middleware/permissionMiddleware";
+import authMiddleware from "../middleware/authMiddleware";
 // import {
 //   createUser,
 //   deleteUser,
@@ -10,8 +13,9 @@
 //   getUserByNic,
 //   updateUser,
 // } from "../controllers/userController";
-
-// const router = Router();
+const { hasPermission, canAccessPatient } = permissionMiddleware;
+const { verifyToken } = authMiddleware;
+const router = Router();
 // router.get("/", getAllUsers);
 // router.post("/", getUserByNic);
 // router.post("/", createUser);
@@ -21,7 +25,12 @@
 
 // router.get("/", getAllLabTechnicians);
 // router.get("/", getAllNurses);
-// router.get("/", getAllDoctors);
+router.get(
+  "/getalldoctors",
+  verifyToken,
+  hasPermission(["getAllDoctors"]),
+  getAllDoctors
+);
 // router.get("/", getAllPatients);
 
-// export default router;
+export default router;

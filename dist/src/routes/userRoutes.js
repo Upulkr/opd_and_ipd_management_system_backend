@@ -1,5 +1,12 @@
 "use strict";
-// import { Router } from "express";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const userController_1 = require("../controllers/userController");
+const permissionMiddleware_1 = __importDefault(require("../middleware/permissionMiddleware"));
+const authMiddleware_1 = __importDefault(require("../middleware/authMiddleware"));
 // import {
 //   createUser,
 //   deleteUser,
@@ -11,8 +18,9 @@
 //   getUserByNic,
 //   updateUser,
 // } from "../controllers/userController";
-Object.defineProperty(exports, "__esModule", { value: true });
-// const router = Router();
+const { hasPermission, canAccessPatient } = permissionMiddleware_1.default;
+const { verifyToken } = authMiddleware_1.default;
+const router = (0, express_1.Router)();
 // router.get("/", getAllUsers);
 // router.post("/", getUserByNic);
 // router.post("/", createUser);
@@ -21,6 +29,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // router.delete("/:nic", deleteUser);
 // router.get("/", getAllLabTechnicians);
 // router.get("/", getAllNurses);
-// router.get("/", getAllDoctors);
+router.get("/getalldoctors", verifyToken, hasPermission(["getAllDoctors"]), userController_1.getAllDoctors);
 // router.get("/", getAllPatients);
-// export default router;
+exports.default = router;

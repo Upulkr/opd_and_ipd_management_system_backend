@@ -1,3 +1,4 @@
+import { isPatientExist } from "./patientController";
 import { Request, Response } from "express";
 import { PrismaClient } from "@prisma/client";
 
@@ -21,16 +22,19 @@ export const createOutPatient = async (req: Request, res: Response) => {
       streetAddress,
       prescriptions,
     } = req.body;
-
-    const checkNIC = await prisma.patient.findUnique({
+    console.log("req.body", req.body);
+    if (!nic) {
+      return res.status(400).json({ message: "NIC is required" });
+    }
+    const isPatientExistResult = await prisma.patient.findUnique({
       where: {
-        nic,
+        nic: nic,
       },
     });
-
-    if (!checkNIC) {
-      console.log("NIC is not available");
-      return res.status(400).json({ message: "NIC is not available" });
+    if (!isPatientExistResult) {
+      return res
+        .status(400)
+        .json({ message: "Patient does not exist , please register first" });
     }
     const newOutPatient = await prisma.outPatientFrom.create({
       data: {

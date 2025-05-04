@@ -33,7 +33,7 @@ exports.authMiddleware = {
                 }
                 // Fetch the user from the database using the decoded user ID
                 if (!decoded.userId) {
-                    return res.status(401).json({ message: "Unauthorized" });
+                    return res.status(401).json({ message: "Unauthorized decoded" });
                 }
                 const user = yield prisma.user.findUnique({
                     where: { id: decoded.userId },

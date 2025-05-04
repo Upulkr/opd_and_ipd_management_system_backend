@@ -26,6 +26,8 @@ import session from "express-session";
 import authRoutes from "./routes/authRoutes";
 import getMonthlyPatientVisit from "./routes/getMonthlyPatientVisitRoute";
 import getWardBedsDetails from "./routes/wardDetailsDashboardRoute";
+import userRoutes from "./routes/userRoutes";
+import surgerySchedule from "./routes/surgeriesScheduleRoute";
 /* CONFIGURATIONS */
 dotenv.config();
 const app = express();
@@ -67,6 +69,8 @@ app.use("/staffwardassignment", staffwardassignment);
 app.use("/auth", authRoutes);
 app.use("/getmonthlypatientvisit", getMonthlyPatientVisit);
 app.use("/getwardbedstatus", getWardBedsDetails);
+app.use("/getusers", userRoutes);
+app.use("/surgery", surgerySchedule);
 // app.use("/ticket", ticketRoutes);
 
 /* SERVER */
