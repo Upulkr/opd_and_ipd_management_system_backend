@@ -106,6 +106,12 @@ const rolePermissions = {
         "deleteSurgeriesSchedule",
         "getSurgeriesSchedule",
         "getSurgeryScheduleById",
+        //medical report related
+        "getMedicalReports",
+        "getAllMedicalReportbyNic",
+        "getMEdicalRportbyNicandId",
+        "createMedicalReport",
+        "getMedicalReportByNicandType",
     ],
     NURSE: [
         //wards beds related
@@ -203,6 +209,12 @@ const rolePermissions = {
         "updateSurgeriesSchedule",
         "deleteSurgeriesSchedule",
         "getSurgeryScheduleById",
+        //medical report related
+        "getMedicalReports",
+        "getAllMedicalReportbyNic",
+        "getMEdicalRportbyNicandId",
+        "createMedicalReport",
+        "getMedicalReportByNicandType",
     ],
     PHARMACIST: [
         "view_prescriptions",

@@ -28,6 +28,7 @@ import getMonthlyPatientVisit from "./routes/getMonthlyPatientVisitRoute";
 import getWardBedsDetails from "./routes/wardDetailsDashboardRoute";
 import userRoutes from "./routes/userRoutes";
 import surgerySchedule from "./routes/surgeriesScheduleRoute";
+import medicalReports from "./routes/medicalReportRoutes";
 /* CONFIGURATIONS */
 dotenv.config();
 const app = express();
@@ -71,6 +72,7 @@ app.use("/getmonthlypatientvisit", getMonthlyPatientVisit);
 app.use("/getwardbedstatus", getWardBedsDetails);
 app.use("/getusers", userRoutes);
 app.use("/surgery", surgerySchedule);
+app.use("/medicalreports", medicalReports);
 // app.use("/ticket", ticketRoutes);
 
 /* SERVER */

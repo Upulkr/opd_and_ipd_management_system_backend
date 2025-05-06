@@ -32,6 +32,7 @@ const getMonthlyPatientVisitRoute_1 = __importDefault(require("./routes/getMonth
 const wardDetailsDashboardRoute_1 = __importDefault(require("./routes/wardDetailsDashboardRoute"));
 const userRoutes_1 = __importDefault(require("./routes/userRoutes"));
 const surgeriesScheduleRoute_1 = __importDefault(require("./routes/surgeriesScheduleRoute"));
+const medicalReportRoutes_1 = __importDefault(require("./routes/medicalReportRoutes"));
 /* CONFIGURATIONS */
 dotenv_1.default.config();
 const app = (0, express_1.default)();
@@ -72,6 +73,7 @@ app.use("/getmonthlypatientvisit", getMonthlyPatientVisitRoute_1.default);
 app.use("/getwardbedstatus", wardDetailsDashboardRoute_1.default);
 app.use("/getusers", userRoutes_1.default);
 app.use("/surgery", surgeriesScheduleRoute_1.default);
+app.use("/medicalreports", medicalReportRoutes_1.default);
 // app.use("/ticket", ticketRoutes);
 /* SERVER */
 const port = Number(process.env.PORT) || 8000;
