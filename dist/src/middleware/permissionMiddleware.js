@@ -24,6 +24,9 @@ const rolePermissions = {
         "getAllAdmissionBooksforNic",
         "updateAdmissionBook",
         "createAdmissionBook",
+        "getadmiisionsGeneralDetails",
+        "admissionbookById",
+        "admissionSheeetById",
         //admission sheet related
         "getNumberOfAdmissionSheetsperYear",
         "getrelatedAdmissionSheetByBht",
@@ -135,6 +138,9 @@ const rolePermissions = {
         "getAllAdmissionBooksforNic",
         "updateAdmissionBook",
         "createAdmissionBook",
+        "getadmiisionsGeneralDetails",
+        "admissionbookById",
+        "admissionSheeetById",
         //admission sheet related
         "getNumberOfAdmissionSheetsperYear",
         "getrelatedAdmissionSheetByBht",

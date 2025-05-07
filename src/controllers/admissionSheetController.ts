@@ -25,17 +25,6 @@ export const createAdmissionSheet = async (req: Request, res: Response) => {
       livingStatus,
     } = req.body;
 
-    // const existingAdmissionSheet = await prisma.admissionSheet.findUnique({
-    //   where: {
-    //     nic,
-    //   },
-    // });
-
-    // if (existingAdmissionSheet) {
-    //   return res.status(400).json({
-    //     message: "AdmissionSheet already exists",
-    //   });
-    // }
     const newAdmissionSheet = await prisma.admissionSheet.create({
       data: {
         nic,

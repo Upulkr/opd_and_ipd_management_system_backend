@@ -29,6 +29,7 @@ import getWardBedsDetails from "./routes/wardDetailsDashboardRoute";
 import userRoutes from "./routes/userRoutes";
 import surgerySchedule from "./routes/surgeriesScheduleRoute";
 import medicalReports from "./routes/medicalReportRoutes";
+import admissiongeneral from "./routes/admiisionRoutes";
 /* CONFIGURATIONS */
 dotenv.config();
 const app = express();
@@ -73,6 +74,7 @@ app.use("/getwardbedstatus", getWardBedsDetails);
 app.use("/getusers", userRoutes);
 app.use("/surgery", surgerySchedule);
 app.use("/medicalreports", medicalReports);
+app.use("/generaladmission", admissiongeneral);
 // app.use("/ticket", ticketRoutes);
 
 /* SERVER */

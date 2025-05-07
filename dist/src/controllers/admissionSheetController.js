@@ -15,16 +15,6 @@ const prisma = new client_1.PrismaClient();
 const createAdmissionSheet = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { nic, name, age, gender, phone, wardNo, reason, pressure, weight, bht, streetAddress, city, stateProvince, postalCode, country, livingStatus, } = req.body;
-        // const existingAdmissionSheet = await prisma.admissionSheet.findUnique({
-        //   where: {
-        //     nic,
-        //   },
-        // });
-        // if (existingAdmissionSheet) {
-        //   return res.status(400).json({
-        //     message: "AdmissionSheet already exists",
-        //   });
-        // }
         const newAdmissionSheet = yield prisma.admissionSheet.create({
             data: {
                 nic,
