@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getNumberOfAdmissionBooksToday = exports.deleteAdmissionBook = exports.updateAdmissionBook = exports.getAllAdmissionBooksforNic = exports.getrelatedAdmissionBookbyBHT = exports.getAdmissionBooks = exports.createAdmissionBook = void 0;
+exports.getDischargeCounts = exports.getNumberOfAdmissionBooksToday = exports.deleteAdmissionBook = exports.updateAdmissionBook = exports.getAllAdmissionBooksforNic = exports.getrelatedAdmissionBookbyBHT = exports.getAdmissionBooks = exports.createAdmissionBook = void 0;
 const client_1 = require("@prisma/client");
 const prisma = new client_1.PrismaClient();
 const createAdmissionBook = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -182,3 +182,28 @@ const getNumberOfAdmissionBooksToday = (req, res) => __awaiter(void 0, void 0, v
     }
 });
 exports.getNumberOfAdmissionBooksToday = getNumberOfAdmissionBooksToday;
+const getDischargeCounts = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0); // Start of today
+        const tomorrow = new Date(today);
+        tomorrow.setDate(today.getDate() + 1); // Start of tomorrow
+        const dischargeCounts = yield prisma.admissionbook.groupBy({
+            by: ["dischargeDate"],
+            _count: {
+                dischargeDate: true,
+            },
+            where: {
+                dischargeDate: {
+                    gte: today,
+                    lt: tomorrow,
+                },
+            },
+        });
+        res.status(200).json(dischargeCounts);
+    }
+    catch (error) {
+        res.status(400).json({ message: error.message });
+    }
+});
+exports.getDischargeCounts = getDischargeCounts;

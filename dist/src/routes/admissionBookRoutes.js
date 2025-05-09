@@ -10,11 +10,12 @@ const permissionMiddleware_1 = __importDefault(require("../middleware/permission
 const { hasPermission, canAccessPatient } = permissionMiddleware_1.default;
 const { verifyToken } = authMiddleware_1.default;
 const router = (0, express_1.Router)();
+router.get("/noofadmissionbookstoday", admissionBookController_1.getNumberOfAdmissionBooksToday);
+router.get("/getdischargecounts", admissionBookController_1.getDischargeCounts);
 router.get("/bht", verifyToken, hasPermission(["getrelatedAdmissionBookbyBHT"]), admissionBookController_1.getrelatedAdmissionBookbyBHT);
 router.get("/", verifyToken, hasPermission(["getAdmissionBooks"]), admissionBookController_1.getAdmissionBooks);
 router.post("/", verifyToken, hasPermission(["createAdmissionBook"]), admissionBookController_1.createAdmissionBook);
 router.get("/:nic", verifyToken, hasPermission(["getAllAdmissionBooksforNic"]), admissionBookController_1.getAllAdmissionBooksforNic);
-router.get("/noofadmissionbookstoday", admissionBookController_1.getNumberOfAdmissionBooksToday);
 router.put("/:nic/:bht", verifyToken, hasPermission(["updateAdmissionBook"]), admissionBookController_1.updateAdmissionBook);
 router.delete("/:nic/:bht", verifyToken, hasPermission(["deleteAdmissionBook"]), admissionBookController_1.deleteAdmissionBook);
 exports.default = router;

@@ -4,6 +4,7 @@ import {
   deleteAdmissionBook,
   getAdmissionBooks,
   getAllAdmissionBooksforNic,
+  getDischargeCounts,
   getNumberOfAdmissionBooksToday,
   getrelatedAdmissionBookbyBHT,
   updateAdmissionBook,
@@ -13,6 +14,12 @@ import permissionMiddleware from "../middleware/permissionMiddleware";
 const { hasPermission, canAccessPatient } = permissionMiddleware;
 const { verifyToken } = authMiddleware;
 const router = Router();
+router.get(
+  "/noofadmissionbookstoday",
+
+  getNumberOfAdmissionBooksToday
+);
+router.get("/getdischargecounts", getDischargeCounts);
 router.get(
   "/bht",
   verifyToken,
@@ -36,11 +43,6 @@ router.get(
   verifyToken,
   hasPermission(["getAllAdmissionBooksforNic"]),
   getAllAdmissionBooksforNic
-);
-router.get(
-  "/noofadmissionbookstoday",
-
-  getNumberOfAdmissionBooksToday
 );
 
 router.put(

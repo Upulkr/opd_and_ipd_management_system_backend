@@ -215,3 +215,30 @@ export const getNumberOfAdmissionBooksToday = async (
     res.status(400).json({ message: error.message });
   }
 };
+
+export const getDischargeCounts = async (req: Request, res: Response) => {
+  try {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // Start of today
+
+    const tomorrow = new Date(today);
+    tomorrow.setDate(today.getDate() + 1); // Start of tomorrow
+
+    const dischargeCounts = await prisma.admissionbook.groupBy({
+      by: ["dischargeDate"],
+      _count: {
+        dischargeDate: true,
+      },
+      where: {
+        dischargeDate: {
+          gte: today,
+          lt: tomorrow,
+        },
+      },
+    });
+
+    res.status(200).json(dischargeCounts);
+  } catch (error: any) {
+    res.status(400).json({ message: error.message });
+  }
+};
