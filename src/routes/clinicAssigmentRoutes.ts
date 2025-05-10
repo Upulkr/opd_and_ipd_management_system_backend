@@ -5,6 +5,7 @@ import {
   getAllClinicAssigments,
   getAllClinicAssigmentsForTable,
   getPatientDetailsByClinicName,
+  getWeeklyClinincVisits,
   updateClinicAssigment,
 } from "../controllers/clinicAssigmnentController";
 import authMiddleware from "../middleware/authMiddleware";
@@ -12,6 +13,7 @@ import permissionMiddleware from "../middleware/permissionMiddleware";
 const { hasPermission, canAccessPatient } = permissionMiddleware;
 const { verifyToken } = authMiddleware;
 const router = Router();
+router.get("/getWeeklyclinincvisits", getWeeklyClinincVisits);
 
 router.get(
   "/",

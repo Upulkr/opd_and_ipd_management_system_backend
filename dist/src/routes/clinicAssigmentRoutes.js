@@ -10,6 +10,7 @@ const permissionMiddleware_1 = __importDefault(require("../middleware/permission
 const { hasPermission, canAccessPatient } = permissionMiddleware_1.default;
 const { verifyToken } = authMiddleware_1.default;
 const router = (0, express_1.Router)();
+router.get("/getWeeklyclinincvisits", clinicAssigmnentController_1.getWeeklyClinincVisits);
 router.get("/", verifyToken, hasPermission(["getAllClinicAssigments"]), clinicAssigmnentController_1.getAllClinicAssigments);
 router.post("/", verifyToken, hasPermission(["createClinicAssigment"]), clinicAssigmnentController_1.createClinicAssigment);
 router.put("/:id", verifyToken, hasPermission(["updateClinicAssigment"]), clinicAssigmnentController_1.updateClinicAssigment);

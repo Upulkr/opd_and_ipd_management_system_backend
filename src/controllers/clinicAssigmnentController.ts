@@ -167,3 +167,44 @@ export const getPatientDetailsByClinicName = async (
     res.status(500).json({ message: `Error getting clinics:${error.message}` });
   }
 };
+
+export const getWeeklyClinincVisits = async (req: Request, res: Response) => {
+  try {
+    const clicnicDates: Array<{ createdAt: Date }> =
+      await prisma.$queryRaw`SELECT "createdAt"
+        FROM "clinicAssignment"
+        WHERE "createdAt" >= CURRENT_DATE - INTERVAL '7 days';`;
+
+    // Step 1: Prepare base array for all days
+    const allDays = [
+      "Sunday",
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+    ];
+    const weeklyData: { day: string; count: number }[] = allDays.map((day) => ({
+      day,
+      count: 0,
+    }));
+
+    // Step 2: Count actual clinic visits
+    clicnicDates.forEach(({ createdAt }) => {
+      const dayName = new Intl.DateTimeFormat("en-US", {
+        weekday: "long",
+      }).format(createdAt);
+      const dayEntry = weeklyData.find((d) => d.day === dayName);
+      if (dayEntry) {
+        dayEntry.count += 1;
+      }
+    });
+
+    res.status(200).json({ weeklyData });
+  } catch (error: any) {
+    res
+      .status(500)
+      .json({ message: `Error getting clinics: ${error.message}` });
+  }
+};

@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getPatientDetailsByClinicName = exports.getAllClinicAssigmentsForTable = exports.deleteClinicAssigment = exports.updateClinicAssigment = exports.getClinicAssigmentById = exports.getAllClinicAssigments = exports.createClinicAssigment = void 0;
+exports.getWeeklyClinincVisits = exports.getPatientDetailsByClinicName = exports.getAllClinicAssigmentsForTable = exports.deleteClinicAssigment = exports.updateClinicAssigment = exports.getClinicAssigmentById = exports.getAllClinicAssigments = exports.createClinicAssigment = void 0;
 const client_1 = require("@prisma/client");
 const prisma = new client_1.PrismaClient();
 BigInt.prototype.toJSON = function () {
@@ -172,3 +172,41 @@ const getPatientDetailsByClinicName = (req, res) => __awaiter(void 0, void 0, vo
     }
 });
 exports.getPatientDetailsByClinicName = getPatientDetailsByClinicName;
+const getWeeklyClinincVisits = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const clicnicDates = yield prisma.$queryRaw `SELECT "createdAt"
+        FROM "clinicAssignment"
+        WHERE "createdAt" >= CURRENT_DATE - INTERVAL '7 days';`;
+        // Step 1: Prepare base array for all days
+        const allDays = [
+            "Sunday",
+            "Monday",
+            "Tuesday",
+            "Wednesday",
+            "Thursday",
+            "Friday",
+            "Saturday",
+        ];
+        const weeklyData = allDays.map((day) => ({
+            day,
+            count: 0,
+        }));
+        // Step 2: Count actual clinic visits
+        clicnicDates.forEach(({ createdAt }) => {
+            const dayName = new Intl.DateTimeFormat("en-US", {
+                weekday: "long",
+            }).format(createdAt);
+            const dayEntry = weeklyData.find((d) => d.day === dayName);
+            if (dayEntry) {
+                dayEntry.count += 1;
+            }
+        });
+        res.status(200).json({ weeklyData });
+    }
+    catch (error) {
+        res
+            .status(500)
+            .json({ message: `Error getting clinics: ${error.message}` });
+    }
+});
+exports.getWeeklyClinincVisits = getWeeklyClinincVisits;
