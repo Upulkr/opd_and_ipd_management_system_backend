@@ -39,7 +39,8 @@ app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
 app.use(morgan("common"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cors());
+app.use(cors()); // Enables CORS for all requests
+app.options("*", cors());
 app.use(
   session({
     secret: process.env.SESSION_SECRET || "default_secret",
