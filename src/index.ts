@@ -51,7 +51,7 @@ app.use(
 );
 
 /* ROUTES */
-app.get("/", (req, res) => {
+app.get("/*", (req, res) => {
   res.send("This is home route");
 });
 app.use("/admissionbook", admissionBookRoutes);
