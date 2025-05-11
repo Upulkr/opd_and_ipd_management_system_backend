@@ -5,7 +5,7 @@ import {
   getNumberOfOutPatientsToday,
   getOutPatientByNic,
   getStaffMemebers,
-} from "../controllers/OutPatientController"; // Ensure the casing matches the actual file name
+} from "../controllers/OutpatientController"; // Ensure the casing matches the actual file name
 import permissionMiddleware from "../middleware/permissionMiddleware";
 import authMiddleware from "../middleware/authMiddleware";
 const { hasPermission, canAccessPatient } = permissionMiddleware;
