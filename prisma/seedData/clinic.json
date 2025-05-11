@@ -1,0 +1,47 @@
+[
+  {
+    "id": 202,
+    "name": "Cardiology Clinic",
+    "doctorName": "Dr. John Heartman",
+    "location": "Room 201, Colombo General Hospital",
+    "sheduledAt": "2024-01-25T09:00:00Z",
+    "createdAt": "2024-01-20T08:00:00Z",
+    "updatedAt": "2024-01-20T08:00:00Z"
+  },
+  {
+    "id": 602,
+    "name": "General Medicine Clinic",
+    "doctorName": "Dr. Sarah Medwin",
+    "location": "Room 305, Matara District Hospital",
+    "sheduledAt": "2024-01-26T10:30:00Z",
+    "createdAt": "2024-01-20T09:15:00Z",
+    "updatedAt": "2024-01-20T09:15:00Z"
+  },
+  {
+    "id": 803,
+    "name": "Diabetes Clinic",
+    "doctorName": "Dr. Kevin Glucose",
+    "location": "Room 402, Galle Teaching Hospital",
+    "sheduledAt": "2024-01-27T11:00:00Z",
+    "createdAt": "2024-01-20T10:30:00Z",
+    "updatedAt": "2024-01-20T10:30:00Z"
+  },
+  {
+    "id": 704,
+    "name": "Obstetrics Clinic",
+    "doctorName": "Dr. Emily Mathews",
+    "location": "Room 101, Negombo Hospital",
+    "sheduledAt": "2024-01-28T13:00:00Z",
+    "createdAt": "2024-01-20T11:45:00Z",
+    "updatedAt": "2024-01-20T11:45:00Z"
+  },
+  {
+    "id": 905,
+    "name": "Orthopedic Clinic",
+    "doctorName": "Dr. Peter Bones",
+    "location": "Room 209, Kandy General Hospital",
+    "sheduledAt": "2024-01-29T14:30:00Z",
+    "createdAt": "2024-01-20T13:00:00Z",
+    "updatedAt": "2024-01-20T13:00:00Z"
+  }
+]

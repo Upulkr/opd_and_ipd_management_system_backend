@@ -1,0 +1,52 @@
+[
+  {
+    "id": 1,
+    "clinicId": 201,
+    "nic": "945678123V",
+    "location": "Ratmalana Community Center",
+    "clinicName": "Mobile Health Screening",
+    "sheduledAt": "2024-02-01T09:00:00Z",
+    "createdAt": "2024-01-20T08:30:00Z",
+    "updatedAt": "2024-01-20T08:30:00Z"
+  },
+  {
+    "id": 2,
+    "clinicId": 202,
+    "nic": "856974123V",
+    "location": "Kaduwela Town Hall",
+    "clinicName": "Diabetes Screening Camp",
+    "sheduledAt": "2024-02-03T09:00:00Z",
+    "createdAt": "2024-01-20T09:45:00Z",
+    "updatedAt": "2024-01-20T09:45:00Z"
+  },
+  {
+    "id": 3,
+    "clinicId": 203,
+    "nic": "901234567V",
+    "location": "Homagama Central School",
+    "clinicName": "Children's Health Camp",
+    "sheduledAt": "2024-02-05T08:30:00Z",
+    "createdAt": "2024-01-20T10:15:00Z",
+    "updatedAt": "2024-01-20T10:15:00Z"
+  },
+  {
+    "id": 4,
+    "clinicId": 204,
+    "nic": "878901234V",
+    "location": "Maharagama Community Hall",
+    "clinicName": "Women's Health Clinic",
+    "sheduledAt": "2024-02-07T09:30:00Z",
+    "createdAt": "2024-01-20T11:00:00Z",
+    "updatedAt": "2024-01-20T11:00:00Z"
+  },
+  {
+    "id": 5,
+    "clinicId": 205,
+    "nic": "934567890V",
+    "location": "Pannipitiya Temple Ground",
+    "clinicName": "Senior Citizens Health Camp",
+    "sheduledAt": "2024-02-10T09:00:00Z",
+    "createdAt": "2024-01-20T13:30:00Z",
+    "updatedAt": "2024-01-20T13:30:00Z"
+  }
+]

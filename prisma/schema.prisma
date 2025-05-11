@@ -11,75 +11,262 @@ datasource db {
 enum Role {
   DOCTOR
   NURSE
-  PATIENT
-  LABTECHNICIAN
+  PHARMACIST
+  ADMIN
 }
 
 model User {
-  nic      Int    @id @unique
-  name     String
-  email    String @unique
-  password String
-  role     Role
+  id                     Int       @id @default(autoincrement())
+  email                  String    @unique
+  username               String    @unique
+  password               String
+  phoneNumber            String    @unique
+  role                   Role      @default(NURSE)
+  nic                    String    @unique
+  registrationNumber     String    @unique
+  department             String?
+  isEmailVerified        Boolean   @default(false)
+  emailVerificationToken String?   @unique
+  emailTokenExpires      DateTime?
+  createdAt              DateTime  @default(now())
+}
+
+model Patient {
+  nic          String @id @unique
+  name         String
+  age          String
+  gender       String
+  livingStatus String
+  phone        String
+
+  reason        String?
+  city          String
+  stateProvince String
+  postalCode    String
+  country       String
+  streetAddress String
+
+  createdAt         DateTime                 @default(now())
+  updatedAt         DateTime                 @updatedAt
+  admissionsheet    AdmissionSheet[]
+  admissionbook     Admissionbook[]
+  labtest           Labtest[]
+  drugChart         DrugChart[]
+  outPatient        OutPatientFrom[]
+  mobileclinic      MobileclinicAssignment[]
+  clinic            clinicAssignment[]
+  diseasePrediction DiseasePrediction[]
+  medicalreport     medicalreport[]
+}
+
+model DiseasePrediction {
+  id         Int      @id @default(autoincrement())
+  nic        String
+  disease    String
+  prediction String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  Patient    Patient  @relation(fields: [nic], references: [nic])
 }
 
 model AdmissionSheet {
+  id            Int       @id @default(autoincrement())
   bht           Int       @unique
-  nic           Int       @id @unique
+  nic           String
+  livingStatus  String
   name          String
-  age           Int
+  age           String
   gender        String
-  address       String
-  phone         Int
-  wardNo        Int
+  city          String
+  stateProvince String
+  postalCode    String
+  country       String
+  streetAddress String
+  phone         String
+  wardNo        String
   reason        String
-  pressure      Int
-  weight        Int
-  ticket        Ticket    @relation(fields: [nic], references: [nic])
+  pressure      String
+  weight        String
+  diagnose      String?
+  Patient       Patient?  @relation(fields: [nic], references: [nic])
   dischargeDate DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
 }
 
 model Admissionbook {
-  nic           Int       @id
-  bht           Int       @unique
-  name          String
-  dailyno       Int
-  yearlyno      Int
-  address       String
-  age           Int
-  admittedDate  DateTime
-  reason        String
-  allergies     String
-  transin       String
-  transout      String
-  direct        String
-  dischargeDate DateTime?
-}
-
-model Ticket {
-  nic            Int              @id
-  bht            Int              @unique
-  admissionsheet AdmissionSheet[]
-  labtest        Labtest[]
-  drugChart      drugChart[]
+  id               Int       @id @default(autoincrement())
+  bht              Int       @unique
+  nic              String
+  name             String
+  phone            String
+  livingStatus     String
+  dailyno          Int?
+  yearlyno         Int?
+  city             String
+  stateProvince    String
+  postalCode       String
+  country          String
+  streetAddress    String
+  age              String
+  admittedDate     DateTime?
+  reason           String
+  allergies        String[]
+  transferCategory String
+  wardNo           String
+  dischargeDate    DateTime?
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+  Patient          Patient?  @relation(fields: [nic], references: [nic])
 }
 
 model Labtest {
-  nic    Int      @id
-  bht    Int      @unique
-  testno Int
-  date   DateTime
-  test   String
-  result String
-  ticket Ticket   @relation(fields: [nic], references: [nic])
+  id      Int      @id @default(autoincrement())
+  nic     String   @unique
+  bht     Int      @unique
+  testno  Int
+  date    DateTime
+  test    String
+  result  String
+  Patient Patient? @relation(fields: [nic], references: [nic])
 }
 
-model drugChart {
-  nic       Int      @id
+model DrugChart {
+  id        Int      @id @default(autoincrement())
   bht       Int      @unique
+  nic       String   @unique
   name      String
   dose      String
   frequency String
   date      DateTime
-  ticket    Ticket   @relation(fields: [nic], references: [nic])
+  Patient   Patient? @relation(fields: [nic], references: [nic])
+}
+
+model Ward {
+  wardId       Int     @id @default(autoincrement())
+  wardNo       String  @unique
+  wardName     String
+  noOfBeds     Int
+  noOfUsedBeds Int
+  noOfFreeBeds Int
+  noOfPatients Int
+  telephone    String
+  noffdoctors  Int
+  nofNurses    Int
+  drugs        Drugs[] @relation("WardDrugs")
+}
+
+model Drugs {
+  drugId        Int    @id @default(autoincrement())
+  drugName      String
+  unit          String
+  totalQuantity Int
+  usedQuantity  Int?
+
+  expiryDate DateTime?
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+
+  wards Ward[] @relation("WardDrugs")
+}
+
+model OutPatientFrom {
+  id            Int      @id @default(autoincrement())
+  nic           String
+  name          String
+  age           String?
+  gender        String?
+  livingStatus  String?
+  phone         String?
+  description   String?
+  reason        String?
+  city          String?
+  stateProvince String?
+  postalCode    String?
+  country       String?
+  streetAddress String?
+  prescriptions Json?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  Patient       Patient? @relation(fields: [nic], references: [nic])
+}
+
+model DrugAllocation {
+  id            Int     @id @default(autoincrement())
+  drugId        Int     @unique
+  drugName      String
+  totalQuantity Int
+  wardName      String
+  unit          String?
+
+  usedQuantity Int?      @default(0)
+  dateGiven    DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+}
+
+model clinic {
+  id         Int      @id @default(autoincrement())
+  name       String
+  doctorName String
+  location   String
+  sheduledAt DateTime
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model clinicAssignment {
+  id         Int      @id @default(autoincrement())
+  clinicId   Int
+  nic        String
+  clinicName String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  Patient    Patient? @relation(fields: [nic], references: [nic])
+}
+
+model MobileclinicAssignment {
+  id         Int      @id @default(autoincrement())
+  clinicId   Int
+  nic        String
+  location   String
+  clinicName String
+  sheduledAt DateTime
+  status     String   @default("pending")
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  Patient    Patient? @relation(fields: [nic], references: [nic])
+}
+
+model WardAssignment {
+  id             Int      @id @default(autoincrement())
+  registrationId Int?
+  nic            Int?     @unique
+  ward           String?
+  role           String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model surgery {
+  id                 Int      @id @default(autoincrement())
+  patientName        String
+  PatientNic         String
+  AssignedDoctor     String
+  ScheduledDate      DateTime
+  PatientPhonenUmber String
+  surgeryName        String
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+}
+
+model medicalreport {
+  id          Int      @id @default(autoincrement())
+  PatientNic  String
+  reportType  String
+  documentUrl String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  Patient     Patient? @relation(fields: [PatientNic], references: [nic])
 }

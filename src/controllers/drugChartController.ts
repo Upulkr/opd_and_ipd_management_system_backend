@@ -47,7 +47,7 @@ export const getrelatedDrugChart = async (req: Request, res: Response) => {
     }
     const drugChart = await prisma.drugChart.findUnique({
       where: {
-        nic: Number(nic),
+        nic,
         bht: Number(bht),
       },
     });
@@ -66,7 +66,7 @@ export const getAllDrugChartByNic = async (req: Request, res: Response) => {
     }
     const drugChart = await prisma.drugChart.findMany({
       where: {
-        nic: Number(nic),
+        nic,
       },
     });
     res.status(200).json(drugChart);
@@ -85,7 +85,7 @@ export const deleteDrugChart = async (req: Request, res: Response) => {
     }
     const drugChart = await prisma.drugChart.delete({
       where: {
-        nic: Number(nic),
+        nic,
         bht: Number(bht),
       },
     });
@@ -106,7 +106,7 @@ export const updateDrugChart = async (req: Request, res: Response) => {
     const { dose, frequency, date } = req.body;
     const updatedDrugChart = await prisma.drugChart.update({
       where: {
-        nic: Number(nic),
+        nic,
         bht: Number(bht),
       },
       data: {

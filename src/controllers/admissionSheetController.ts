@@ -9,14 +9,20 @@ export const createAdmissionSheet = async (req: Request, res: Response) => {
       name,
       age,
       gender,
-      address,
+
       phone,
       wardNo,
       reason,
       pressure,
       weight,
-      ticket,
+
       bht,
+      streetAddress,
+      city,
+      stateProvince,
+      postalCode,
+      country,
+      livingStatus,
     } = req.body;
 
     const newAdmissionSheet = await prisma.admissionSheet.create({
@@ -25,14 +31,20 @@ export const createAdmissionSheet = async (req: Request, res: Response) => {
         name,
         age,
         gender,
-        address,
+
         phone,
         wardNo,
         reason,
         pressure,
         weight,
-        ticket,
-        bht,
+
+        bht: Number(bht),
+        streetAddress,
+        city,
+        stateProvince,
+        postalCode,
+        country,
+        livingStatus,
       },
     });
     res.status(201).json({
@@ -53,30 +65,31 @@ export const updateAdmissionSheet = async (req: Request, res: Response) => {
       name,
       age,
       gender,
-      address,
+      bht,
       phone,
       wardNo,
       reason,
       pressure,
       weight,
-      ticket,
+      livingStatus,
     } = req.body;
 
     const updatedAdmissionSheet = await prisma.admissionSheet.update({
       where: {
         nic: nic,
+        bht: Number(bht),
       },
       data: {
         age,
         name,
         gender,
-        address,
+
         phone,
         wardNo,
         reason,
         pressure,
         weight,
-        ticket,
+        livingStatus,
       },
     });
     res.status(200).json({
@@ -109,7 +122,7 @@ export const deleteAdmissionSheet = async (req: Request, res: Response) => {
     }
     const deletedAdmissionSheet = await prisma.admissionSheet.delete({
       where: {
-        nic: Number(nic),
+        nic,
         bht: Number(bht),
       },
     });
@@ -135,7 +148,7 @@ export const getAllAdmissionSheetByNic = async (
     }
     const admissionSheet = await prisma.admissionSheet.findMany({
       where: {
-        nic: Number(nic),
+        nic,
       },
     });
     res.status(200).json(admissionSheet);
@@ -145,22 +158,83 @@ export const getAllAdmissionSheetByNic = async (
     });
   }
 };
-export const getrelatedAdmissionSheet = async (req: Request, res: Response) => {
+
+export const getrelatedAdmissionSheetByBht = async (
+  req: Request,
+  res: Response
+) => {
   try {
-    const { nic, bht } = req.params;
-    if (!nic && !bht) {
-      return res.status(400).json({ message: "nic is required" });
+    const { bht } = req.query;
+
+    if (!bht) {
+      return res.status(400).json({ message: "BHT is required" });
     }
+
+    // Try findFirst instead of findUnique if bht is not a unique field
     const admissionSheet = await prisma.admissionSheet.findUnique({
       where: {
-        nic: Number(nic),
         bht: Number(bht),
       },
     });
-    res.status(200).json(admissionSheet);
+
+    if (!admissionSheet) {
+      return res
+        .status(404)
+        .json({ message: "No admission sheet found for the given BHT" });
+    }
+
+    res.status(200).json({ admissionSheet });
+  } catch (error) {
+    console.error("Error fetching admission sheet:", error);
+    res.status(500).json({
+      message: `Error getting admission sheet: ${(error as any).message}`,
+    });
+  }
+};
+
+export const getNumberOfAdmissionSheetsperYear = async (
+  req: Request,
+  res: Response
+) => {
+  try {
+    const result = await prisma.$queryRaw`
+      SELECT count(name) 
+      FROM "AdmissionSheet"
+      WHERE EXTRACT(YEAR FROM "createdAt") = EXTRACT(YEAR FROM CURRENT_DATE);
+    `;
+
+    // Convert result to handle BigInt
+    const NoOfAdmissionSheetsPerYear = (
+      result as { count: bigint }[]
+    )[0]?.count.toString(); // Convert BigInt to string
+
+    res.status(200).json({ NoOfAdmissionSheetsPerYear });
   } catch (error) {
     res.status(500).json({
-      message: `Error getting AdmissionSheet: ${(error as any).message}`,
+      message: `Error getting number of admission sheets per year: ${
+        (error as any).message
+      }`,
+    });
+  }
+};
+
+export const getNumberOfAdmissionSheetsperDay = async (
+  req: Request,
+  res: Response
+) => {
+  try {
+    const result = await prisma.$queryRaw`SELECT count(name)
+FROM "AdmissionSheet"
+WHERE DATE_TRUNC('day', "createdAt") =CURRENT_DATE;`;
+    const NoOfAdmissionSheetsPerDay = (
+      result as { count: bigint }[]
+    )[0]?.count.toString(); // Convert BigInt to string
+    res.status(200).json({ NoOfAdmissionSheetsPerDay });
+  } catch (error) {
+    res.status(500).json({
+      message: `Error getting number of admission sheets per year: ${
+        (error as any).message
+      }`,
     });
   }
 };

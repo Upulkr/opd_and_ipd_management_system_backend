@@ -1,0 +1,20 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const clinicAssigmnentController_1 = require("../controllers/clinicAssigmnentController");
+const authMiddleware_1 = __importDefault(require("../middleware/authMiddleware"));
+const permissionMiddleware_1 = __importDefault(require("../middleware/permissionMiddleware"));
+const { hasPermission, canAccessPatient } = permissionMiddleware_1.default;
+const { verifyToken } = authMiddleware_1.default;
+const router = (0, express_1.Router)();
+router.get("/getWeeklyclinincvisits", clinicAssigmnentController_1.getWeeklyClinincVisits);
+router.get("/", verifyToken, hasPermission(["getAllClinicAssigments"]), clinicAssigmnentController_1.getAllClinicAssigments);
+router.post("/", verifyToken, hasPermission(["createClinicAssigment"]), clinicAssigmnentController_1.createClinicAssigment);
+router.put("/:id", verifyToken, hasPermission(["updateClinicAssigment"]), clinicAssigmnentController_1.updateClinicAssigment);
+router.delete("/:id", verifyToken, hasPermission(["deleteClinicAssigment"]), clinicAssigmnentController_1.deleteClinicAssigment);
+router.get("/getAllClinicAssigmentsfortable", verifyToken, hasPermission(["getAllClinicAssigmentsForTable"]), clinicAssigmnentController_1.getAllClinicAssigmentsForTable);
+router.get("/getPatientDetailsByClinicName/:clinicName", verifyToken, hasPermission(["getPatientDetailsByClinicName"]), clinicAssigmnentController_1.getPatientDetailsByClinicName);
+exports.default = router;
