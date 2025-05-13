@@ -52,9 +52,6 @@ app.use((0, express_session_1.default)({
     cookie: { secure: false, maxAge: 24 * 60 * 60 * 1000 },
 }));
 /* ROUTES */
-app.get("/*", (req, res) => {
-    res.send("This is home route");
-});
 app.use("/admissionbook", admissionBookRoutes_1.default);
 app.use("/admissionsheet", admissionSheetRoutes_1.default);
 app.use("/drugChart", drugChartRoutes_1.default);
@@ -82,4 +79,7 @@ app.use("/generaladmission", admiisionRoutes_1.default);
 const port = Number(process.env.PORT) || 8000;
 app.listen(port, "0.0.0.0", () => {
     console.log(`Server running on part ${port}`);
+});
+app.get("/", (req, res) => {
+    res.send("This is home route");
 });
