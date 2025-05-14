@@ -40,17 +40,17 @@ app.use(morgan("common"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.use(
-  cors({
-    origin: [
-      "http://localhost:5173",
-      "https://opd-and-ipd-management-system-client.vercel.app",
-    ],
-    credentials: true, // If you're using cookies or auth headers
-  })
-);
-app.options("*", cors());
-app.use(cors()); // Enables CORS for all requests
+const corsOptions = {
+  origin: [
+    "http://localhost:5173",
+    "https://opd-and-ipd-management-system-client.vercel.app",
+  ],
+  credentials: true,
+};
+
+app.use(cors(corsOptions));
+app.options("*", cors(corsOptions));
+
 app.use(
   session({
     secret: process.env.SESSION_SECRET || "default_secret",
