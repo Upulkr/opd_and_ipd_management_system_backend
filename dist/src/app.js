@@ -77,9 +77,10 @@ app.use("/generaladmission", admiisionRoutes_1.default);
 // app.use("/ticket", ticketRoutes);
 /* SERVER */
 const port = Number(process.env.PORT) || 8000;
-app.listen(port, "0.0.0.0", () => {
-    console.log(`Server running on part ${port}`);
-});
-app.get("/*", (req, res) => {
+// app.listen(port, "0.0.0.0", () => {
+//   console.log(Server running on part ${port});
+// });
+app.get("/", (req, res) => {
     res.send("This is home route");
 });
+exports.default = app;
