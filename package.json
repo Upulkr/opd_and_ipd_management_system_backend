@@ -4,9 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon --watch src --ext ts --exec ts-node src/app.ts",
-    "build": "rimraf dist && tsc",
-    "start": "node dist/lambda.js"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "rimraf dist && npx tsc",
+    "start": "npm run build && node dist/index.js",
+    "dev": "nodemon --watch src --ext ts --exec ts-node src/index.ts",
+    "seed": "ts-node prisma/seed.ts"
   },
   "keywords": [],
   "author": "",
