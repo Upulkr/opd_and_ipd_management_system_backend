@@ -59,16 +59,7 @@ app.use(
     cookie: { secure: false, maxAge: 24 * 60 * 60 * 1000 },
   })
 );
-const corsOptions = {
-  origin: [
-    "http://localhost:5173",
-    "https://opd-and-ipd-management-system-client.vercel.app",
-  ],
-  credentials: true,
-};
 
-app.use(cors(corsOptions));
-app.options("*", cors(corsOptions));
 /* ROUTES */
 
 app.use("/admissionbook", admissionBookRoutes);
