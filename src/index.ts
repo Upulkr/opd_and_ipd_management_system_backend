@@ -81,6 +81,6 @@ const port = Number(process.env.PORT) || 8000;
 app.listen(port, "0.0.0.0", () => {
   console.log(`Server running on part ${port}`);
 });
-app.get("/*", (req, res) => {
+app.get("/", (req, res) => {
   res.send("This is home route");
 });
