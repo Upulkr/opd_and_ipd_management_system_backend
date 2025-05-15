@@ -46,6 +46,8 @@ const corsOptions = {
     "https://main.d1rnqxbp4u27qa.amplifyapp.com",
   ],
   credentials: false,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type"],
 };
 
 app.use(cors(corsOptions));
