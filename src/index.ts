@@ -43,7 +43,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 const corsOptions = {
   origin: [
     "http://localhost:5173",
-    "https://main.d1rnqxbp4u27qa.amplifyapp.com/",
+    "https://main.d1rnqxbp4u27qa.amplifyapp.com",
   ],
   credentials: false,
 };
