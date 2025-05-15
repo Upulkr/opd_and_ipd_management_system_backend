@@ -43,8 +43,15 @@ app.use(helmet_1.default.crossOriginResourcePolicy({ policy: "cross-origin" }));
 app.use((0, morgan_1.default)("common"));
 app.use(body_parser_1.default.json());
 app.use(body_parser_1.default.urlencoded({ extended: false }));
-app.use((0, cors_1.default)()); // Enables CORS for all requests
-app.options("*", (0, cors_1.default)());
+const corsOptions = {
+    origin: [
+        "http://localhost:5173",
+        "https://opd-and-ipd-management-system-client.vercel.app",
+    ],
+    credentials: true,
+};
+app.use((0, cors_1.default)(corsOptions));
+app.options("*", (0, cors_1.default)(corsOptions));
 app.use((0, express_session_1.default)({
     secret: process.env.SESSION_SECRET || "default_secret",
     resave: false,
@@ -77,10 +84,9 @@ app.use("/generaladmission", admiisionRoutes_1.default);
 // app.use("/ticket", ticketRoutes);
 /* SERVER */
 const port = Number(process.env.PORT) || 8000;
-// app.listen(port, "0.0.0.0", () => {
-//   console.log(Server running on part ${port});
-// });
+app.listen(port, "0.0.0.0", () => {
+    console.log(`Server running on part ${port}`);
+});
 app.get("/", (req, res) => {
     res.send("This is home route");
 });
-exports.default = app;
