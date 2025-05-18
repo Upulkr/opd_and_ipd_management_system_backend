@@ -116,7 +116,7 @@ const authController = {
   verifyEmail: async (req: Request, res: Response) => {
     try {
       const { token } = req.params;
-      console.log("token++++++++", token);
+
       const user = await prisma.user.findUnique({
         where: { emailVerificationToken: token },
       });
@@ -259,6 +259,62 @@ const authController = {
       }
       res.json({ message: "Logged out successfully" });
     });
+  },
+
+  changePassword: async (req: Request, res: Response) => {
+    try {
+      const { userId } = req.params;
+      const { oldPassword, newPassword } = req.body;
+
+      const user = await prisma.user.findUnique({
+        where: { id: Number(userId) },
+      });
+
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
+
+      const isMatch = await bcrypt.compare(oldPassword, user.password);
+      if (!isMatch) {
+        return res.status(401).json({ message: "Invalid old password" });
+      }
+
+      const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+      await prisma.user.update({
+        where: { id: Number(userId) },
+        data: { password: hashedPassword },
+      });
+
+      const mailOptions = {
+        from: process.env.EMAIL_USER,
+        to: user.email,
+        subject: "Password Change Notification",
+        html: `
+          <p>Hello ${user.username},</p>
+          <p>You have successfully changed your password.</p>
+          <p>If you did not initiate this change, please contact the system administrator immediately.</p>
+          <p>Thank you.</p>
+        `,
+      };
+
+      try {
+        await transporter.sendMail(mailOptions);
+      } catch (emailError) {
+        console.error("Failed to send email:", emailError);
+        return res.status(500).json({
+          message: "Password updated but failed to send notification email",
+          error: (emailError as Error).message,
+        });
+      }
+
+      return res.status(200).json({ message: "Password changed successfully" });
+    } catch (error: any) {
+      console.error("Password change error:", error);
+      return res
+        .status(500)
+        .json({ message: "Error changing password", error: error.message });
+    }
   },
 };
 

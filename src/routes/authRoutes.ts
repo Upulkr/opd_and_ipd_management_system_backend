@@ -8,5 +8,10 @@ router.get("/verify-email/:token", authController.verifyEmail);
 router.post("/resend-verification", authController.resendVerificationEmail);
 router.post("/login", authController.login);
 router.post("/logout", authController.logout);
+router.put(
+  "/update-password/:userId",
+  authMiddleware.verifyToken,
+  authController.changePassword
+);
 
 export default router;

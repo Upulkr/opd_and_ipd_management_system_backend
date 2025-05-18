@@ -68,13 +68,14 @@ export const getMedicalReportByNicandType = async (
   res: Response
 ) => {
   const { nic: PatientNic, doctype: reportType } = req.params;
+
   // Log the PatientNic received in the request
   if (!PatientNic || !reportType) {
     return res
       .status(400)
       .json({ message: "Patient Nic and reportType are required" });
   }
-
+  console.log("reportType", reportType);
   try {
     const medicalReport = await prisma.medicalreport.findMany({
       where: {
@@ -82,6 +83,9 @@ export const getMedicalReportByNicandType = async (
         reportType,
       },
     });
+    if (!medicalReport || medicalReport.length === 0) {
+      return res.status(404).json({ message: "No medical report found" });
+    }
     console.log("medicalReport", medicalReport); // Log the fetched medical report
     if (!medicalReport || medicalReport.length === 0) {
       return res.status(404).json({ message: "No medical report found" });
