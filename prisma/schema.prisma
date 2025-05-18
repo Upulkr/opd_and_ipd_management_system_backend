@@ -242,7 +242,7 @@ model MobileclinicAssignment {
 
 model WardAssignment {
   id             Int      @id @default(autoincrement())
-  registrationId Int?
+  registrationId String?
   nic            Int?     @unique
   ward           String?
   role           String?

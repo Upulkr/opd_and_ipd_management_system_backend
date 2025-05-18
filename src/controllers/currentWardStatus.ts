@@ -104,3 +104,18 @@ FROM "Ward"    WHERE "wardNo" IN (${Prisma.join(wardNos)});
     });
   }
 };
+
+export const getWardNames = async (req: Request, res: Response) => {
+  try {
+    const wardNames = await prisma.ward.findMany({
+      select: {
+        wardName: true,
+      },
+    });
+    res.status(200).json(wardNames);
+  } catch (error: any) {
+    res
+      .status(500)
+      .json({ message: `Error getting ward names: ${error.message}` });
+  }
+};

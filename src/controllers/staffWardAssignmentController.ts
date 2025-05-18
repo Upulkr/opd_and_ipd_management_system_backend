@@ -5,10 +5,17 @@ const prisma = new PrismaClient();
 export const createStaffAssignment = async (req: Request, res: Response) => {
   try {
     const { registrationId, nic, ward, role } = req.body;
-    console.log("registrationId", registrationId);
+    const isUserExists = await prisma.user.findUnique({
+      where: {
+        registrationNumber: registrationId,
+      },
+    });
+    if (!isUserExists) {
+      return res.status(400).json({ error: "User does not exist." });
+    }
     const isRegistrationIdExists = await prisma.wardAssignment.findFirst({
       where: {
-        registrationId: Number(registrationId),
+        registrationId: registrationId,
       },
     });
     if (isRegistrationIdExists) {
@@ -16,7 +23,7 @@ export const createStaffAssignment = async (req: Request, res: Response) => {
     }
     const newStaffAssignment = await prisma.wardAssignment.create({
       data: {
-        registrationId: Number(registrationId),
+        registrationId: registrationId,
         nic,
         ward,
         role,
@@ -71,7 +78,7 @@ export const getStaffAssignmentsByRegisterId = async (
   try {
     const staffAssignments = await prisma.wardAssignment.findMany({
       where: {
-        registrationId: Number(registrationId),
+        registrationId: registrationId,
       },
     });
     res.status(200).json(staffAssignments);
