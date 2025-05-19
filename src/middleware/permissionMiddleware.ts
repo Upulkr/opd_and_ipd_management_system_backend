@@ -244,6 +244,13 @@ const rolePermissions = {
     "update_prescription_status",
     "manage_medication_inventory",
     "view_medication_history",
+    "updateDrug",
+    "getAllDrugs",
+    "addNewDrug",
+    "deleteDrug",
+    "getDrugAllocationbyWardName",
+    "createNewDrugAllocation",
+    "getDrugById",
   ],
   PATIENT: [
     "view_own_records",
