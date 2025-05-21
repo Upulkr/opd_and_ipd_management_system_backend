@@ -18,7 +18,7 @@ export const addNewDrug = async (req: Request, res: Response) => {
     });
 
     if (checkIfDrugExists) {
-      return res.status(400).json({ message: "Drug already exists" });
+      return res.status(400).json({ message: "Drug already exists, add expire date to the medicine and resubmi. ex Insulin_05jun25 " });
     }
 
     const newDrug = await prisma.drugs.create({
