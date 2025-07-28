@@ -117,7 +117,15 @@ export const getAllClinicAssigmentsForTable = async (
   res: Response
 ) => {
   try {
-    const clinicAssigments = await prisma.$queryRaw`SELECT 
+    const clinicAssigments = await prisma.$queryRaw<
+      Array<{
+        noOfpatients: number;
+        clinicName: string;
+        location: string;
+        doctorName: string;
+        sheduledAt: Date;
+      }>
+    >`SELECT 
     count(nic) as noOfpatients,
     ca."clinicName",
     cl."location",
@@ -137,7 +145,11 @@ GROUP BY
     cl."location", 
     cl."doctorName", 
     cl."sheduledAt";
-`;
+`;   
+    if (clinicAssigments.length === 0) {
+      return res.status(404).json({ message: "No future clinic assigments found" });
+    }
+ 
     res.status(200).json({
       clinicAssigments,
       message: "Clinic Assigments retrieved successfully!",

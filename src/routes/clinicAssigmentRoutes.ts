@@ -41,7 +41,7 @@ router.delete(
 );
 
 router.get(
-  "/getAllClinicAssigmentsfortable",
+  "/getallclinicassigmentsfortable",
   verifyToken,
   hasPermission(["getAllClinicAssigmentsForTable"]),
   getAllClinicAssigmentsForTable
