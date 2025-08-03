@@ -11,6 +11,7 @@ type WardSummary = {
   noOfBeds: number;
   noOfUsedBeds: number;
   wardName: string;
+  wardNo: string;
 };
 
 export const changeBedStatusForInpatientTable = async (
@@ -70,6 +71,22 @@ export const getAllWardBedsCount = async (req: Request, res: Response) => {
       percentage: parseFloat(
         ((ward.noOfUsedBeds / ward.noOfBeds) * 100).toFixed(2)
       ),
+    }));
+
+    res.status(200).json(wardArray);
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching ward details" });
+  }
+};
+export const getAllWarNoAndWardNAme = async (req: Request, res: Response) => {
+  try {
+    const wardDetails = await prisma.$queryRaw<WardSummary[]>`
+    select "wardNo","wardName" from "Ward"
+  `;
+
+    const wardArray = wardDetails.map((ward) => ({
+      wardNo: ward.wardNo,
+      wardName: ward.wardName,
     }));
 
     res.status(200).json(wardArray);

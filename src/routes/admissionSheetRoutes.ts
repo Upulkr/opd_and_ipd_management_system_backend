@@ -1,5 +1,6 @@
 import { Router } from "express";
 import {
+  checkBHTisExists,
   createAdmissionSheet,
   deleteAdmissionSheet,
   getAdmissionSheets,
@@ -58,5 +59,6 @@ router.get(
   hasPermission(["getAdmissionSheets"]),
   getAdmissionSheets
 );
+router.get("/bhtexist/:bht", checkBHTisExists);  
 
 export default router;

@@ -238,3 +238,27 @@ WHERE DATE_TRUNC('day', "createdAt") =CURRENT_DATE;`;
     });
   }
 };
+
+
+export const checkBHTisExists=async(req:Request,res:Response)=>{
+  try {
+    const { bht } = req.params;
+    if (!bht) {
+      return res.status(400).json({ message: "BHT is required" });
+    }
+    const admissionSheet = await prisma.admissionSheet.findUnique({
+      where: {
+        bht: Number(bht),
+      },
+    });
+    if (!admissionSheet) {
+      return res.status(404).json({ message: "No admission sheet found for the given BHT" });
+    }
+    res.status(200).json(true);
+  } catch (error) {
+    console.error("Error fetching admission sheet:", error);
+    res.status(500).json({
+      message: `Error getting admission sheet: ${(error as any).message}`,
+    });
+  }
+}

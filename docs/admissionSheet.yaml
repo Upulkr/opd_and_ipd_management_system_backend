@@ -1,0 +1,154 @@
+openapi: 3.0.0
+info:
+  title: AdmissionSheet API
+  version: 1.0.0
+  description: API for managing hospital admission sheets
+
+# Global security setup (all routes require token)
+security:
+  - bearerAuth: []
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+paths:
+  /admissionsheet:
+    get:
+      summary: Get all AdmissionSheet entries
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: List of AdmissionSheets
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    nic:
+                      type: string
+                    name:
+                      type: string
+                    age:
+                      type: integer
+                    gender:
+                      type: string
+                    phone:
+                      type: string
+                    wardNo:
+                      type: string
+                    reason:
+                      type: string
+                    pressure:
+                      type: string
+                    weight:
+                      type: string
+                    bht:
+                      type: integer
+                    streetAddress:
+                      type: string
+                    city:
+                      type: string
+                    stateProvince:
+                      type: string
+                    postalCode:
+                      type: string
+                    country:
+                      type: string
+                    livingStatus:
+                      type: string
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+
+    post:
+      summary: Create a new AdmissionSheet entry
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - nic
+                - name
+                - age
+                - gender
+                - phone
+                - wardNo
+                - reason
+                - pressure
+                - weight
+                - bht
+                - streetAddress
+                - city
+                - stateProvince
+                - postalCode
+                - country
+                - livingStatus
+              properties:
+                nic:
+                  type: string
+                name:
+                  type: string
+                age:
+                  type: integer
+                gender:
+                  type: string
+                phone:
+                  type: string
+                wardNo:
+                  type: string
+                reason:
+                  type: string
+                pressure:
+                  type: string
+                weight:
+                  type: string
+                bht:
+                  type: integer
+                streetAddress:
+                  type: string
+                city:
+                  type: string
+                stateProvince:
+                  type: string
+                postalCode:
+                  type: string
+                country:
+                  type: string
+                livingStatus:
+                  type: string
+      responses:
+        '201':
+          description: AdmissionSheet Created Successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  newAdmissionSheet:
+                    type: object
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
