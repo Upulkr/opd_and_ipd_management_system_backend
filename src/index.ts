@@ -35,18 +35,18 @@ import yaml from "js-yaml";
 import swaggerUi from "swagger-ui-express";import path from "path";
 const app = express();
 
-app.use("/docs", express.static(path.join(__dirname, "../docs")));
-const swaggerUiOptions = {
-  explorer: true, // search bar enabled
-  swaggerOptions: {
-    urls: [
-      { url: "/docs/admissionBook.yaml", name: "Admission Book API" },
-      { url: "/docs/admissionSheet.yaml", name: "Admission Sheet API" },
-    ],
-  },
-};
+// app.use("/docs", express.static(path.join(__dirname, "../docs")));
+// const swaggerUiOptions = {
+//   explorer: true, // search bar enabled
+//   swaggerOptions: {
+//     urls: [
+//       { url: "/docs/admissionBook.yaml", name: "Admission Book API" },
+//       { url: "/docs/admissionSheet.yaml", name: "Admission Sheet API" },
+//     ],
+//   },
+// };
 
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(null, swaggerUiOptions));
+// app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(null, swaggerUiOptions));
 
 dotenv.config();
 app.use(express.json());
