@@ -56,6 +56,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 const corsOptions = {
   origin: [
     "https://opdipdcare.web.lk",
+    "https://www.opdipdcare.web.lk",
     "http://localhost:5173",
     "https://main.d1rnqxbp4u27qa.amplifyapp.com",
   ],
