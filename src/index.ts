@@ -32,20 +32,22 @@ import wardBedsStatus from "./routes/wardBedsController";
 import getWardBedsDetails from "./routes/wardDetailsDashboardRoute";
 const app = express();
 
-// app.use("/docs", express.static(path.join(__dirname, "../docs")));
-// const swaggerUiOptions = {
-//   explorer: true, // search bar enabled
-//   swaggerOptions: {
-//     urls: [
-//       { url: "/docs/admissionBook.yaml", name: "Admission Book API" },
-//       { url: "/docs/admissionSheet.yaml", name: "Admission Sheet API" },
-//     ],
-//   },
-// };
-
-// app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(null, swaggerUiOptions));
-
 dotenv.config();
+const corsOptions = {
+  origin: [
+    "https://opdipdcare.web.lk",
+    "https://www.opdipdcare.web.lk", // <-- ADD THIS IF YOU USE www VERSION
+    "http://localhost:5173",
+    "https://main.d1rnqxbp4u27qa.amplifyapp.com",
+  ],
+  credentials: true,
+  allowedHeaders: ["Content-Type", "Authorization"],
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+};
+
+app.use(cors(corsOptions)); // CORS FIRST
+app.options("*", cors(corsOptions)); // Enable preflight requests
+
 app.use(express.json());
 app.use(helmet());
 app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
@@ -53,20 +55,27 @@ app.use(morgan("common"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-const corsOptions = {
-  origin: [
-    "https://opdipdcare.web.lk",
-    "https://www.opdipdcare.web.lk",
-    "http://localhost:5173",
-    "https://main.d1rnqxbp4u27qa.amplifyapp.com",
-  ],
-  credentials: true,
-  allowedHeaders: ["Content-Type", "Authorization"], // allow it always
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // optional but recommended
-};
+// app.use(express.json());
+// app.use(helmet());
+// app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
+// app.use(morgan("common"));
+// app.use(bodyParser.json());
+// app.use(bodyParser.urlencoded({ extended: false }));
 
-app.use(cors(corsOptions));
-app.options("*", cors(corsOptions));
+// const corsOptions = {
+//   origin: [
+//     "https://opdipdcare.web.lk",
+//     "https://www.opdipdcare.web.lk",
+//     "http://localhost:5173",
+//     "https://main.d1rnqxbp4u27qa.amplifyapp.com",
+//   ],
+//   credentials: true,
+//   allowedHeaders: ["Content-Type", "Authorization"], // allow it always
+//   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // optional but recommended
+// };
+
+// app.use(cors(corsOptions));
+// app.options("*", cors(corsOptions));
 
 app.use(
   session({
