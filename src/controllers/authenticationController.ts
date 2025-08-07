@@ -23,8 +23,8 @@ const transporter = nodemailer.createTransport({
   port: 465,
   secure: true,
   auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASSWORD,
+    user: "upulkr4@gmail.com",
+    pass: "pwyf vcsx fvxg oiln",
   },
 });
 
@@ -82,6 +82,9 @@ const authController = {
           emailTokenExpires: tokenExpires,
         },
       });
+     
+ 
+
       // Send verification email
       const verificationLink = `${process.env.FRONTEND_URL}/auth/verify-email/${verificationToken}`;
       const mailOptions = {
