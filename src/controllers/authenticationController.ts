@@ -20,8 +20,8 @@ interface CustomSession {
 const transporter = nodemailer.createTransport({
   service: "gmail",
   host: "smtp.gmail.com",
-  port: 465,
-  secure: true,
+  port: 587, // Or 465 for SSL/TLS
+  secure: false, // true for 465, false for other ports (like 587)
   auth: {
     user: "upulkr4@gmail.com",
     pass: "pwyf vcsx fvxg oiln",
