@@ -4,4 +4,5 @@ const wardBedsController_1 = require("../controllers/wardBedsController");
 const express_1 = require("express");
 const router = (0, express_1.Router)();
 router.get("/", wardBedsController_1.getAllWardBedsCount);
+router.get("/wardnames", wardBedsController_1.getAllWarNoAndWardNAme);
 exports.default = router;

@@ -15,6 +15,6 @@ router.get("/", verifyToken, hasPermission(["getAllClinicAssigments"]), clinicAs
 router.post("/", verifyToken, hasPermission(["createClinicAssigment"]), clinicAssigmnentController_1.createClinicAssigment);
 router.put("/:id", verifyToken, hasPermission(["updateClinicAssigment"]), clinicAssigmnentController_1.updateClinicAssigment);
 router.delete("/:id", verifyToken, hasPermission(["deleteClinicAssigment"]), clinicAssigmnentController_1.deleteClinicAssigment);
-router.get("/getAllClinicAssigmentsfortable", verifyToken, hasPermission(["getAllClinicAssigmentsForTable"]), clinicAssigmnentController_1.getAllClinicAssigmentsForTable);
+router.get("/getallclinicassigmentsfortable", verifyToken, hasPermission(["getAllClinicAssigmentsForTable"]), clinicAssigmnentController_1.getAllClinicAssigmentsForTable);
 router.get("/getPatientDetailsByClinicName/:clinicName", verifyToken, hasPermission(["getPatientDetailsByClinicName"]), clinicAssigmnentController_1.getPatientDetailsByClinicName);
 exports.default = router;

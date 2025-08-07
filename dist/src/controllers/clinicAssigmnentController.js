@@ -145,6 +145,9 @@ GROUP BY
     cl."doctorName", 
     cl."sheduledAt";
 `;
+        if (clinicAssigments.length === 0) {
+            return res.status(404).json({ message: "No future clinic assigments found" });
+        }
         res.status(200).json({
             clinicAssigments,
             message: "Clinic Assigments retrieved successfully!",

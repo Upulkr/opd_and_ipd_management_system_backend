@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getNumberOfAdmissionSheetsperDay = exports.getNumberOfAdmissionSheetsperYear = exports.getrelatedAdmissionSheetByBht = exports.getAllAdmissionSheetByNic = exports.deleteAdmissionSheet = exports.getAdmissionSheets = exports.updateAdmissionSheet = exports.createAdmissionSheet = void 0;
+exports.checkBHTisExists = exports.getNumberOfAdmissionSheetsperDay = exports.getNumberOfAdmissionSheetsperYear = exports.getrelatedAdmissionSheetByBht = exports.getAllAdmissionSheetByNic = exports.deleteAdmissionSheet = exports.getAdmissionSheets = exports.updateAdmissionSheet = exports.createAdmissionSheet = void 0;
 const client_1 = require("@prisma/client");
 const prisma = new client_1.PrismaClient();
 const createAdmissionSheet = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -197,3 +197,27 @@ WHERE DATE_TRUNC('day', "createdAt") =CURRENT_DATE;`;
     }
 });
 exports.getNumberOfAdmissionSheetsperDay = getNumberOfAdmissionSheetsperDay;
+const checkBHTisExists = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { bht } = req.params;
+        if (!bht) {
+            return res.status(400).json({ message: "BHT is required" });
+        }
+        const admissionSheet = yield prisma.admissionSheet.findUnique({
+            where: {
+                bht: Number(bht),
+            },
+        });
+        if (!admissionSheet) {
+            return res.status(404).json({ message: "No admission sheet found for the given BHT" });
+        }
+        res.status(200).json(true);
+    }
+    catch (error) {
+        console.error("Error fetching admission sheet:", error);
+        res.status(500).json({
+            message: `Error getting admission sheet: ${error.message}`,
+        });
+    }
+});
+exports.checkBHTisExists = checkBHTisExists;

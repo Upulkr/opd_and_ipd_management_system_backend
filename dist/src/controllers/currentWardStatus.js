@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getCurrentWardStatus = void 0;
+exports.getWardNames = exports.getCurrentWardStatus = void 0;
 const client_1 = require("@prisma/client");
 const client_2 = require("@prisma/client");
 const prisma = new client_1.PrismaClient();
@@ -85,3 +85,19 @@ FROM "Ward"    WHERE "wardNo" IN (${client_2.Prisma.join(wardNos)});
     }
 });
 exports.getCurrentWardStatus = getCurrentWardStatus;
+const getWardNames = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const wardNames = yield prisma.ward.findMany({
+            select: {
+                wardName: true,
+            },
+        });
+        res.status(200).json(wardNames);
+    }
+    catch (error) {
+        res
+            .status(500)
+            .json({ message: `Error getting ward names: ${error.message}` });
+    }
+});
+exports.getWardNames = getWardNames;

@@ -78,6 +78,7 @@ const getMedicalReportByNicandType = (req, res) => __awaiter(void 0, void 0, voi
             .status(400)
             .json({ message: "Patient Nic and reportType are required" });
     }
+    console.log("reportType", reportType);
     try {
         const medicalReport = yield prisma.medicalreport.findMany({
             where: {
@@ -85,6 +86,9 @@ const getMedicalReportByNicandType = (req, res) => __awaiter(void 0, void 0, voi
                 reportType,
             },
         });
+        if (!medicalReport || medicalReport.length === 0) {
+            return res.status(404).json({ message: "No medical report found" });
+        }
         console.log("medicalReport", medicalReport); // Log the fetched medical report
         if (!medicalReport || medicalReport.length === 0) {
             return res.status(404).json({ message: "No medical report found" });

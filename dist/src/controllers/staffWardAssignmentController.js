@@ -15,10 +15,17 @@ const prisma = new client_1.PrismaClient();
 const createStaffAssignment = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { registrationId, nic, ward, role } = req.body;
-        console.log("registrationId", registrationId);
+        const isUserExists = yield prisma.user.findUnique({
+            where: {
+                registrationNumber: registrationId,
+            },
+        });
+        if (!isUserExists) {
+            return res.status(400).json({ error: "User does not exist." });
+        }
         const isRegistrationIdExists = yield prisma.wardAssignment.findFirst({
             where: {
-                registrationId: Number(registrationId),
+                registrationId: registrationId,
             },
         });
         if (isRegistrationIdExists) {
@@ -26,7 +33,7 @@ const createStaffAssignment = (req, res) => __awaiter(void 0, void 0, void 0, fu
         }
         const newStaffAssignment = yield prisma.wardAssignment.create({
             data: {
-                registrationId: Number(registrationId),
+                registrationId: registrationId,
                 nic,
                 ward,
                 role,
@@ -81,7 +88,7 @@ const getStaffAssignmentsByRegisterId = (req, res) => __awaiter(void 0, void 0, 
     try {
         const staffAssignments = yield prisma.wardAssignment.findMany({
             where: {
-                registrationId: Number(registrationId),
+                registrationId: registrationId,
             },
         });
         res.status(200).json(staffAssignments);

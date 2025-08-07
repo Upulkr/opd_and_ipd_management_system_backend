@@ -18,4 +18,5 @@ router.delete("/:nic/:bht", verifyToken, hasPermission(["deleteAdmissionSheet"])
 router.get("/:nic", admissionSheetController_1.getAllAdmissionSheetByNic);
 router.put("/:nic/:bht", verifyToken, hasPermission(["updateAdmissionSheet"]), admissionSheetController_1.updateAdmissionSheet);
 router.get("/", verifyToken, hasPermission(["getAdmissionSheets"]), admissionSheetController_1.getAdmissionSheets);
+router.get("/bhtexist/:bht", admissionSheetController_1.checkBHTisExists);
 exports.default = router;

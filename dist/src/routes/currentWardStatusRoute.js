@@ -11,4 +11,5 @@ const { hasPermission, canAccessPatient } = permissionMiddleware_1.default;
 const { verifyToken } = authMiddleware_1.default;
 const router = (0, express_1.Router)();
 router.get("/", verifyToken, hasPermission(["getCurrentWardStatus"]), currentWardStatus_1.getCurrentWardStatus);
+router.get("/wardnames", currentWardStatus_1.getWardNames);
 exports.default = router;

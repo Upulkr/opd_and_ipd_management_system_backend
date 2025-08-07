@@ -24,7 +24,7 @@ const addNewDrug = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             },
         });
         if (checkIfDrugExists) {
-            return res.status(400).json({ message: "Drug already exists" });
+            return res.status(400).json({ message: "Drug already exists, add expire date to the medicine and resubmi. ex Insulin_05jun25 " });
         }
         const newDrug = yield prisma.drugs.create({
             data: {

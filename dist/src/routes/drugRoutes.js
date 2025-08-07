@@ -14,6 +14,7 @@ router.put("/:drugId", verifyToken, hasPermission(["updateDrug"]), drugControlle
 router.get("/", verifyToken, hasPermission(["getAllDrugs"]), drugController_1.getAllDrugs);
 router.post("/", verifyToken, hasPermission(["addNewDrug"]), drugController_1.addNewDrug);
 router.delete("/:drugId", verifyToken, hasPermission(["deleteDrug"]), drugController_1.deleteDrug);
+router.get("/getdrugbyid/:drugId", verifyToken, hasPermission(["getDrugById"]), drugController_1.getDrugById);
 router.get("/getdrugallocationbywardname/:wardName", verifyToken, hasPermission(["getDrugAllocationbyWardName"]), drugController_1.getDrugAllocationbyWardName);
 router.post("/createdrugallocation", verifyToken, hasPermission(["createNewDrugAllocation"]), drugController_1.createNewDrugAllocation);
 exports.default = router;

@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getAllWardBedsCount = exports.changeBedStatusForInpatientTable = void 0;
+exports.getAllWarNoAndWardNAme = exports.getAllWardBedsCount = exports.changeBedStatusForInpatientTable = void 0;
 const client_1 = require("@prisma/client");
 const prisma = new client_1.PrismaClient();
 BigInt.prototype.toJSON = function () {
@@ -56,3 +56,19 @@ const getAllWardBedsCount = (req, res) => __awaiter(void 0, void 0, void 0, func
     }
 });
 exports.getAllWardBedsCount = getAllWardBedsCount;
+const getAllWarNoAndWardNAme = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const wardDetails = yield prisma.$queryRaw `
+    select "wardNo","wardName" from "Ward"
+  `;
+        const wardArray = wardDetails.map((ward) => ({
+            wardNo: ward.wardNo,
+            wardName: ward.wardName,
+        }));
+        res.status(200).json(wardArray);
+    }
+    catch (error) {
+        res.status(500).json({ message: "Error fetching ward details" });
+    }
+});
+exports.getAllWarNoAndWardNAme = getAllWarNoAndWardNAme;
