@@ -1,18 +1,22 @@
 import { PrismaClient } from "@prisma/client";
 import { Request, Response } from "express";
 
+// Initialize Prisma Client.
 const prisma = new PrismaClient();
 
+/**
+ * Controller to create a new Lab Test record.
+ */
 export const createLabtest = async (req: Request, res: Response) => {
   try {
     const { nic, bht, testno, date, test, result } = req.body;
 
-    // Validate input
+    // Validate input.
     if (!nic || !bht || !testno || !date || !test || !result) {
       return res.status(400).json({ error: "All fields are required." });
     }
 
-    // Create the labtest in the database
+    // Create the labtest in the database.
     const labtest = await prisma.labtest.create({
       data: {
         nic,
@@ -24,7 +28,7 @@ export const createLabtest = async (req: Request, res: Response) => {
       },
     });
 
-    // Return the created labtest
+    // Return the created labtest.
     res.status(201).json({
       message: "Lab test created successfully!",
       labtest,
@@ -38,12 +42,15 @@ export const createLabtest = async (req: Request, res: Response) => {
   }
 };
 
+/**
+ * Retrieves all lab tests.
+ */
 export const getAllLabtests = async (req: Request, res: Response) => {
   try {
-    // Fetch all lab tests from the database
+    // Fetch all lab tests from the database.
     const labtests = await prisma.labtest.findMany();
 
-    // Return the list of lab tests
+    // Return the list of lab tests.
     res.status(200).json({
       message: "Lab tests fetched successfully!",
       labtests,
@@ -57,6 +64,9 @@ export const getAllLabtests = async (req: Request, res: Response) => {
   }
 };
 
+/**
+ * Retrieves all lab tests for a specific NIC.
+ */
 export const getAllLabtestByNic = async (req: Request, res: Response) => {
   try {
     const { nic } = req.params;
@@ -77,6 +87,9 @@ export const getAllLabtestByNic = async (req: Request, res: Response) => {
       .json({ message: `Error getting labtest: ${error.message}` });
   }
 };
+/**
+ * Retrieves a related lab test by NIC and BHT.
+ */
 export const getrelatedLabtest = async (req: Request, res: Response) => {
   try {
     const { nic, bht } = req.params;
@@ -99,6 +112,10 @@ export const getrelatedLabtest = async (req: Request, res: Response) => {
   }
 };
 
+/**
+ * Deletes lab tests.
+ * Note: Uses deleteMany, which is suitable if multiple tests can associate with one NIC/BHT combo or for safety.
+ */
 export const deleteLabtest = async (req: Request, res: Response) => {
   try {
     const { nic, bht } = req.params;
@@ -119,6 +136,9 @@ export const deleteLabtest = async (req: Request, res: Response) => {
   }
 };
 
+/**
+ * Updates a lab test record.
+ */
 export const updateLabtest = async (req: Request, res: Response) => {
   try {
     const { nic } = req.params;
@@ -129,6 +149,7 @@ export const updateLabtest = async (req: Request, res: Response) => {
     if (!bht || !testno || !date || !test || !result) {
       return res.status(400).json({ error: "All fields are required." });
     }
+    // Updating using updateMany since unique constraints might not be strictly on just NIC for a single record update in this scheme.
     const labtest = await prisma.labtest.updateMany({
       where: {
         nic,

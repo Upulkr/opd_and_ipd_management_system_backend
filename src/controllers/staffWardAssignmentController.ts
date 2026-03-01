@@ -2,9 +2,16 @@ import { Request, Response } from "express";
 import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
+
+/**
+ * Creates a new Staff Assignment for a Ward.
+ * Validates existence of user and checks for duplicate assignments.
+ */
 export const createStaffAssignment = async (req: Request, res: Response) => {
   try {
     const { registrationId, nic, ward, role } = req.body;
+
+    // Check if the user exists based on registration ID.
     const isUserExists = await prisma.user.findUnique({
       where: {
         registrationNumber: registrationId,
@@ -13,6 +20,8 @@ export const createStaffAssignment = async (req: Request, res: Response) => {
     if (!isUserExists) {
       return res.status(400).json({ error: "User does not exist." });
     }
+
+    // Check if this registration ID is already assigned to a ward.
     const isRegistrationIdExists = await prisma.wardAssignment.findFirst({
       where: {
         registrationId: registrationId,
@@ -21,6 +30,8 @@ export const createStaffAssignment = async (req: Request, res: Response) => {
     if (isRegistrationIdExists) {
       return res.status(400).json({ error: " Already assigned." });
     }
+
+    // Create the new assignment.
     const newStaffAssignment = await prisma.wardAssignment.create({
       data: {
         registrationId: registrationId,
@@ -38,6 +49,10 @@ export const createStaffAssignment = async (req: Request, res: Response) => {
   }
 };
 
+/**
+ * Updates an existing Staff Assignment by ID.
+ * Allows moving staff to a different ward.
+ */
 export const updateStaffAssignment = async (req: Request, res: Response) => {
   const { staffId: id } = req.params;
 
@@ -56,6 +71,10 @@ export const updateStaffAssignment = async (req: Request, res: Response) => {
   }
 };
 
+/**
+ * Deletes a Staff Assignment by ID.
+ * Removes the staff member from the ward.
+ */
 export const deleteStaffAssignment = async (req: Request, res: Response) => {
   const { staffId: id } = req.params;
   try {
@@ -70,9 +89,12 @@ export const deleteStaffAssignment = async (req: Request, res: Response) => {
   }
 };
 
+/**
+ * Retrieves all assignments for a specific Registration ID (Staff ID).
+ */
 export const getStaffAssignmentsByRegisterId = async (
   req: Request,
-  res: Response
+  res: Response,
 ) => {
   const { registrationId } = req.params;
   try {
@@ -87,6 +109,9 @@ export const getStaffAssignmentsByRegisterId = async (
   }
 };
 
+/**
+ * Retrieves all staff assignments across all wards.
+ */
 export const getAllStaffAssignments = async (req: Request, res: Response) => {
   try {
     const staffAssignments = await prisma.wardAssignment.findMany();
@@ -96,6 +121,10 @@ export const getAllStaffAssignments = async (req: Request, res: Response) => {
   }
 };
 
+/**
+ * Retrieves aggregated counts of staff roles grouped by ward.
+ * Uses PostgreSQL FILTER clause to count doctors, nurses, and pharmacists separately per ward.
+ */
 export const getStaffCountGroupByWard = async (req: Request, res: Response) => {
   try {
     const staffCountGroupByWard = await prisma.$queryRaw`

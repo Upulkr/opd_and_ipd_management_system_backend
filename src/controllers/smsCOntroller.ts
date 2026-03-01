@@ -19,17 +19,22 @@ interface ScheduleSMSBody {
 const scheduledJobs = new Map<string, schedule.Job>();
 
 // Initialize Twilio client
+// Initialize Twilio client using credentials from environment variables.
 const twilioClient = new Twilio(
   process.env.TWILIO_ACCOUNT_SID,
-  process.env.TWILIO_AUTH_TOKEN
+  process.env.TWILIO_AUTH_TOKEN,
 );
 
+/**
+ * Schedules an SMS to be sent to a list of phone numbers.
+ * Uses 'node-schedule' to trigger the sending process after a 1-minute delay.
+ */
 export const scheduleSMS = async (req: Request, res: Response) => {
   try {
     const { phoneNumbers, message, scheduleTime, jobId }: ScheduleSMSBody =
       req.body;
 
-    // Validate input
+    // Validate input: ensure phoneNumbers list is not empty and other fields are present.
     console.log("phoneNumbers", phoneNumbers);
     if (
       !phoneNumbers ||
@@ -42,41 +47,42 @@ export const scheduleSMS = async (req: Request, res: Response) => {
       return res.status(400).json({ error: "Missing required fields" });
     }
 
-    // Ensure 'from' number is valid
+    // Ensure 'from' number is set in environment variables.
     const fromPhoneNumber = process.env.TWILIO_PHONE_NUMBER;
     if (!fromPhoneNumber) {
       return res.status(500).json({ error: "Twilio phone number is not set" });
     }
 
-    // Create scheduled job
+    // Create a scheduled job.
+    // The scheduling logic here sets the execution time to 1 minute from now for demonstration/testing purposes.
     const job = schedule.scheduleJob(
       jobId,
       new Date(Date.now() + 1 * 60 * 1000),
       async () => {
         try {
-          // Send SMS to each phone number
+          // Send SMS to each phone number concurrently.
           const messagePromises = phoneNumbers.map((phoneNumber) =>
             twilioClient.messages.create({
               body: message,
               from: fromPhoneNumber,
-              to: "+94720979028", // Use correct recipient phone numbers
-            })
+              to: "+94720979028", // HARDCODED for testing safety! In production, use 'phoneNumber'.
+            }),
           );
 
           await Promise.all(messagePromises);
           console.log(
-            `Successfully sent SMS to ${phoneNumbers.length} recipients`
+            `Successfully sent SMS to ${phoneNumbers.length} recipients`,
           );
 
-          // Remove completed job from storage
+          // Remove completed job from the in-memory map.
           scheduledJobs.delete(jobId);
         } catch (error) {
           console.error("Error sending scheduled SMS:", error);
         }
-      }
+      },
     );
 
-    // Store job reference
+    // Store job reference to allow cancellation if needed.
     scheduledJobs.set(jobId, job);
 
     res.json({
@@ -91,6 +97,10 @@ export const scheduleSMS = async (req: Request, res: Response) => {
   }
 };
 
+/**
+ * Cancels a scheduled SMS job.
+ * Looks up the job ID in the `scheduledJobs` map and cancels it if found.
+ */
 export const cancelScheduledSMS = async (req: Request, res: Response) => {
   try {
     const { jobId } = req.params;
@@ -109,8 +119,12 @@ export const cancelScheduledSMS = async (req: Request, res: Response) => {
   }
 };
 
+/**
+ * Retrieves a list of all currently scheduled SMS jobs.
+ */
 export const getScheduledSMS = async (req: Request, res: Response) => {
   try {
+    // Map existing jobs to a simplified format.
     const jobs = Array.from(scheduledJobs.keys()).map((jobId) => ({
       jobId,
       nextInvocation: scheduledJobs.get(jobId)?.nextInvocation(),

@@ -1,15 +1,16 @@
 import { Request, Response } from "express";
 import nodemailer from "nodemailer";
 import crypto from "crypto";
-
 // controllers/authController.js
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
 import { PrismaClient } from "@prisma/client";
 
+// Initialize Prisma Client for database interaction.
 const prisma = new PrismaClient();
 
+// Interface for extending the session object to include user details
 interface CustomSession {
   user?: {
     id: string;
@@ -17,21 +18,32 @@ interface CustomSession {
     username: string;
   };
 }
+
+// Nodemailer transport configuration for sending emails (e.g., verification, password change)
 const transporter = nodemailer.createTransport({
   service: "gmail",
   host: "smtp.gmail.com",
-  port: 587, 
-  secure: false, 
+  port: 587,
+  secure: false, // true for 465, false for other ports
   auth: {
-    user: "upulkr4@gmail.com",
-    pass: "pwyf vcsx fvxg oiln",
+    user: "upulkr4@gmail.com", // Sender's email address
+    pass: "pwyf vcsx fvxg oiln", // App password for authentication
   },
 });
 
+/**
+ * Generates a random cryptographic token for email verification.
+ * @returns {string} Hexadecimal string of the random bytes.
+ */
 const generateVerificationToken = () => {
   return crypto.randomBytes(32).toString("hex");
 };
+
 const authController = {
+  /**
+   * Handles user registration.
+   * Validates input, checks for existing users, hashes password, creates user, and sends verification email.
+   */
   signup: async (req: Request, res: Response) => {
     try {
       const {
@@ -44,6 +56,7 @@ const authController = {
         phoneNumber,
       } = req.body;
 
+      // Validate required fields
       if (
         !username ||
         !email ||
@@ -56,6 +69,7 @@ const authController = {
         return res.status(400).json({ message: "All fields are required" });
       }
 
+      // Check if user already exists based on email or username
       const existingUser = await prisma.user.findFirst({
         where: {
           OR: [{ email }, { username }],
@@ -66,14 +80,21 @@ const authController = {
         return res.status(400).json({ message: "User already exists" });
       }
 
+      // Hash password before saving to ensure security.
+      // bcrypt.hash uses a salt round of 10.
       const hashedPassword = await bcrypt.hash(password, 10);
+
+      // Generate a verification token for email confirmation.
       const verificationToken = generateVerificationToken();
-      const tokenExpires = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24 hours
+      // Set expiration time to 24 hours from now.
+      const tokenExpires = new Date(Date.now() + 24 * 60 * 60 * 1000);
+
+      // Create new user record in database.
       const user = await prisma.user.create({
         data: {
           username,
           email,
-          password: hashedPassword,
+          password: hashedPassword, // Store hashed password, NEVER plain text.
           role,
           registrationNumber,
           nic,
@@ -82,11 +103,11 @@ const authController = {
           emailTokenExpires: tokenExpires,
         },
       });
-     
- 
 
-      // Send verification email
+      // Construct verification link to be sent via email.
       const verificationLink = `${process.env.FRONTEND_URL}/auth/verify-email/${verificationToken}`;
+
+      // Configure email content.
       const mailOptions = {
         from: process.env.EMAIL_USER,
         to: email,
@@ -99,13 +120,18 @@ const authController = {
           <p>If you didn't create this account, please ignore this email.</p>
         `,
       };
+
+      // Send the email using Nodemailer.
       await transporter.sendMail(mailOptions);
+
+      // Return success response with User ID.
       res.status(200).json({
         message:
           "User created successfully. Please check your email for verification.",
         userId: user.id,
       });
     } catch (error: any) {
+      // Prisma error code P2002 indicates a unique constraint violation (e.g., duplicate email).
       if (error.code === "P2002") {
         return res
           .status(400)
@@ -116,10 +142,16 @@ const authController = {
         .json({ message: "Error creating user", error: error.message });
     }
   },
+
+  /**
+   * Verifies user's email address using the token.
+   * Checks validity and expiration of the token.
+   */
   verifyEmail: async (req: Request, res: Response) => {
     try {
       const { token } = req.params;
 
+      // Find user by verification token.
       const user = await prisma.user.findUnique({
         where: { emailVerificationToken: token },
       });
@@ -128,16 +160,19 @@ const authController = {
         return res.status(400).json({ message: "Invalid verification token" });
       }
 
+      // Check if already verified.
       if (user.isEmailVerified) {
         return res.status(400).json({ message: "Email already verified" });
       }
 
+      // Check if token has expired.
       if (user.emailTokenExpires && user.emailTokenExpires < new Date()) {
         return res
           .status(400)
           .json({ message: "Verification token has expired" });
       }
-      // Update user as verified
+
+      // Mark user as verified and clear token data (security practice).
       await prisma.user.update({
         where: { id: user.id },
         data: {
@@ -155,10 +190,15 @@ const authController = {
     }
   },
 
+  /**
+   * Resends the verification email if the user is not yet verified.
+   * Generates a new token and resets the expiration.
+   */
   resendVerificationEmail: async (req: Request, res: Response) => {
     try {
       const { email } = req.body;
 
+      // Find user by email
       const user = await prisma.user.findUnique({
         where: { email },
       });
@@ -171,9 +211,11 @@ const authController = {
         return res.status(400).json({ message: "Email already verified" });
       }
 
+      // Generate new token and expiration
       const verificationToken = generateVerificationToken();
       const tokenExpires = new Date(Date.now() + 24 * 60 * 60 * 1000);
 
+      // Update user with new token
       await prisma.user.update({
         where: { id: user.id },
         data: {
@@ -182,6 +224,7 @@ const authController = {
         },
       });
 
+      // Send new verification email
       const verificationLink = `${process.env.FRONTEND_URL}/auth/verify-email/${verificationToken}`;
       const mailOptions = {
         from: process.env.EMAIL_USER,
@@ -205,10 +248,16 @@ const authController = {
       });
     }
   },
+
+  /**
+   * Handles user login.
+   * Verifies credentials, checks email verification status, generates JWT, and sets session.
+   */
   login: async (req: Request, res: Response) => {
     try {
       const { email, password } = req.body;
 
+      // Find user by email.
       const user = await prisma.user.findUnique({
         where: { email },
       });
@@ -216,29 +265,39 @@ const authController = {
       if (!user) {
         return res.status(401).json({ message: "Invalid credentials" });
       }
+
+      // Ensure email is verified before allowing login.
       if (!user.isEmailVerified) {
         return res.status(401).json({
           message: "Please verify your email before logging in",
           userId: user.id,
         });
       }
+
+      // Verify password match using bcrypt.compare.
+      // This compares the plain text password with the hashed password from DB.
       const validPassword = await bcrypt.compare(password, user.password);
       if (!validPassword) {
         return res.status(401).json({ message: "Invalid credentials" });
       }
 
+      // Generate JWT (JSON Web Token).
+      // Contains userId and role in payload.
+      // Signed with a secret key and expires in 24h.
       const token = jwt.sign(
         { userId: user.id, role: user.role },
         process.env.JWT_SECRET as string,
-        { expiresIn: "24h" }
+        { expiresIn: "24h" },
       );
 
+      // Set user session data (if using session-based auth alongside or instead of JWT).
       (req.session as CustomSession).user = {
         id: user.id.toString(),
         role: user.role,
         username: user.username,
       };
 
+      // Return token and user info.
       res.status(200).json({
         token,
         user: {
@@ -253,6 +312,10 @@ const authController = {
     }
   },
 
+  /**
+   * Handles user logout.
+   * Destroys the current session.
+   */
   logout: (req: Request, res: Response) => {
     req.session.destroy((err: any) => {
       if (err) {
@@ -264,6 +327,9 @@ const authController = {
     });
   },
 
+  /**
+   * Changes the user's password.
+   */
   changePassword: async (req: Request, res: Response) => {
     try {
       const { userId } = req.params;
@@ -277,18 +343,22 @@ const authController = {
         return res.status(404).json({ message: "User not found" });
       }
 
+      // Verify if the old password provided matches the current one.
       const isMatch = await bcrypt.compare(oldPassword, user.password);
       if (!isMatch) {
         return res.status(401).json({ message: "Invalid old password" });
       }
 
+      // Hash the new password before storing.
       const hashedPassword = await bcrypt.hash(newPassword, 10);
 
+      // Update the password in the database.
       await prisma.user.update({
         where: { id: Number(userId) },
         data: { password: hashedPassword },
       });
 
+      // Send a notification email to inform the user of the change.
       const mailOptions = {
         from: process.env.EMAIL_USER,
         to: user.email,

@@ -1,16 +1,24 @@
 import { DrugAllocation } from ".prisma/client";
 import { Request, Response } from "express";
 import { PrismaClient } from "@prisma/client";
+
+// Initialize Prisma Client for database interaction.
 const prisma = new PrismaClient();
 
+/**
+ * Controller to add a new drug to the inventory.
+ */
 export const addNewDrug = async (req: Request, res: Response) => {
   try {
     const { drugName, unit, totalQuantity, expiryDate, remainingQuantity } =
       req.body;
 
+    // Validate required fields.
     if (!drugName || !unit || !totalQuantity || !expiryDate) {
       return res.status(400).json({ message: "All fields are required" });
     }
+
+    // Check if drug already exists by name.
     const checkIfDrugExists = await prisma.drugs.findFirst({
       where: {
         drugName,
@@ -18,9 +26,16 @@ export const addNewDrug = async (req: Request, res: Response) => {
     });
 
     if (checkIfDrugExists) {
-      return res.status(400).json({ message: "Drug already exists, add expire date to the medicine and resubmi. ex Insulin_05jun25 " });
+      // Suggest including expiry date in name for uniqueness if it's the same drug batch.
+      return res
+        .status(400)
+        .json({
+          message:
+            "Drug already exists, add expire date to the medicine and resubmi. ex Insulin_05jun25 ",
+        });
     }
 
+    // Create the new drug record.
     const newDrug = await prisma.drugs.create({
       data: {
         drugName,
@@ -35,6 +50,9 @@ export const addNewDrug = async (req: Request, res: Response) => {
   }
 };
 
+/**
+ * Retrieves all drugs from the inventory.
+ */
 export const getAllDrugs = async (req: Request, res: Response) => {
   try {
     const drugs = await prisma.drugs.findMany();
@@ -44,6 +62,9 @@ export const getAllDrugs = async (req: Request, res: Response) => {
   }
 };
 
+/**
+ * Deletes a drug from the inventory.
+ */
 export const deleteDrug = async (req: Request, res: Response) => {
   const { drugId } = req.params;
   try {
@@ -58,13 +79,19 @@ export const deleteDrug = async (req: Request, res: Response) => {
   }
 };
 
+/**
+ * Updates an existing drug's details.
+ */
 export const updateDrug = async (req: Request, res: Response) => {
   try {
     const { drugId } = req.params;
     console.log("drugId", drugId);
+
     if (!drugId) {
       return res.status(400).json({ error: "Drug ID is required." });
     }
+
+    // Check if the drug exists before attempting update.
     const checkIfDrugExists = await prisma.drugs.findUnique({
       where: {
         drugId: Number(drugId),
@@ -74,6 +101,8 @@ export const updateDrug = async (req: Request, res: Response) => {
     if (!checkIfDrugExists) {
       return res.status(400).json({ message: "Drug not found" });
     }
+
+    // Perform the update.
     const updatedDrug = await prisma.drugs.update({
       where: {
         drugId: Number(drugId),
@@ -88,6 +117,9 @@ export const updateDrug = async (req: Request, res: Response) => {
   }
 };
 
+/**
+ * Retrieves a single drug by its ID.
+ */
 export const getDrugById = async (req: Request, res: Response) => {
   const { drugId } = req.params;
   try {
@@ -102,6 +134,10 @@ export const getDrugById = async (req: Request, res: Response) => {
   }
 };
 
+/**
+ * Creates a new drug allocation for a ward.
+ * Handles inventory deduction from the main store and addition/update to the ward's allocation.
+ */
 export const createNewDrugAllocation = async (req: Request, res: Response) => {
   try {
     const {
@@ -115,6 +151,7 @@ export const createNewDrugAllocation = async (req: Request, res: Response) => {
       dateGiven,
     } = req.body;
 
+    // Validate inputs.
     if (!drugId || !drugName || !wardName || !totalQuantity) {
       return res.status(400).json({
         message:
@@ -122,6 +159,7 @@ export const createNewDrugAllocation = async (req: Request, res: Response) => {
       });
     }
 
+    // Check if there is already an allocation record for this drug in this ward.
     const existingAllocation = await prisma.drugAllocation.findFirst({
       where: {
         drugId,
@@ -130,6 +168,7 @@ export const createNewDrugAllocation = async (req: Request, res: Response) => {
     });
 
     if (existingAllocation) {
+      // Update existing allocation: increase quantity.
       const updatedAllocation = await prisma.drugAllocation.update({
         where: {
           id: existingAllocation.id,
@@ -140,6 +179,8 @@ export const createNewDrugAllocation = async (req: Request, res: Response) => {
           },
         },
       });
+
+      // Update main drug inventory: decrement total quantity and increment used quantity (distributed).
       await prisma.drugs.update({
         where: {
           drugId: Number(drugId),
@@ -158,6 +199,8 @@ export const createNewDrugAllocation = async (req: Request, res: Response) => {
         message: "Drug Allocation updated successfully!",
       });
     }
+
+    // Create new allocation record if none exists for this ward/drug.
     const newDrugAllocation = await prisma.drugAllocation.create({
       data: {
         drugId,
@@ -169,6 +212,8 @@ export const createNewDrugAllocation = async (req: Request, res: Response) => {
         dateGiven,
       },
     });
+
+    // Update main inventory.
     await prisma.drugs.update({
       where: {
         drugId: Number(drugId),
@@ -193,9 +238,12 @@ export const createNewDrugAllocation = async (req: Request, res: Response) => {
   }
 };
 
+/**
+ * Retrieves all drug allocations for a specific ward.
+ */
 export const getDrugAllocationbyWardName = async (
   req: Request,
-  res: Response
+  res: Response,
 ) => {
   try {
     const { wardName } = req.params;

@@ -3,6 +3,10 @@ import dayjs from "dayjs";
 import { Request, Response } from "express";
 const prisma = new PrismaClient();
 
+/**
+ * Creates a new surgery schedule.
+ * Handles extensive validation and conflict checking before creation.
+ */
 export const createSurgerySchedule = async (req: Request, res: Response) => {
   try {
     const {
@@ -12,6 +16,8 @@ export const createSurgerySchedule = async (req: Request, res: Response) => {
       ScheduledDate,
       PatientPhonenUmber,
     } = req.body;
+
+    // Validate required fields.
     if (
       !PatientNic ||
       !patientName ||
@@ -24,11 +30,14 @@ export const createSurgerySchedule = async (req: Request, res: Response) => {
       });
     }
 
+    // Date conversion: Standardize scheduled date to UTC with Asia/Colombo timezone consideration.
     const isoSheduledAt = new Date(ScheduledDate).toISOString();
     const utcSheduledAt = dayjs(isoSheduledAt)
       .tz("Asia/Colombo", true)
       .utc()
       .toDate();
+
+    // Verify patient registration exists.
     const checkPatientRegistered = await prisma.patient.findUnique({
       where: {
         nic: String(PatientNic),
@@ -40,7 +49,7 @@ export const createSurgerySchedule = async (req: Request, res: Response) => {
       });
     }
 
-    // Check if the patient is already scheduled for surgery on the same date
+    // Check if the patient is already scheduled for surgery on the same date (Conflict Detection).
     const existingSurgery = await prisma.surgery.findFirst({
       where: {
         PatientNic: String(PatientNic),
@@ -54,6 +63,7 @@ export const createSurgerySchedule = async (req: Request, res: Response) => {
       });
     }
 
+    // Proceed to create schedule if checks pass.
     if (checkPatientRegistered) {
       const surgerySchedule = await prisma.surgery.create({
         data: {
@@ -71,6 +81,10 @@ export const createSurgerySchedule = async (req: Request, res: Response) => {
   }
 };
 
+/**
+ * Updates an existing surgery schedule.
+ * Handles re-validation of data and date processing.
+ */
 export const updateSurgerySchedule = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
@@ -111,6 +125,7 @@ export const updateSurgerySchedule = async (req: Request, res: Response) => {
       });
     }
 
+    // Validate patient existence if NIC is being updated (commented out in original code, kept for reference).
     // If request includes a NIC and it's different, verify that patient exists
     // if (req.body.nic && req.body.nic !== existingSurgery.PatientNic) {
     //   const checkPatientRegistered = await prisma.patient.findUnique({
@@ -118,15 +133,12 @@ export const updateSurgerySchedule = async (req: Request, res: Response) => {
     //       nic: req.body.nic,
     //     },
     //   });
-
     //   if (!checkPatientRegistered) {
-    //     return res.status(404).json({
-    //       message: "Patient not registered",
-    //     });
+    //     return res.status(404).json({ message: "Patient not registered" });
     //   }
     // }
 
-    // Update the surgery schedule
+    // Update the surgery schedule with formatted date.
     const isoSheduledAt = new Date(ScheduledDate).toISOString();
     const utcSheduledAt = dayjs(isoSheduledAt)
       .tz("Asia/Colombo", true)
@@ -157,7 +169,7 @@ export const deleteSurgerySchedule = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
 
-    // Check if surgery schedule exists
+    // Check if surgery schedule exists before deletion.
     const existingSurgery = await prisma.surgery.findUnique({
       where: {
         id: parseInt(id),
@@ -170,7 +182,7 @@ export const deleteSurgerySchedule = async (req: Request, res: Response) => {
       });
     }
 
-    // Delete the surgery schedule
+    // Delete the surgery schedule.
     await prisma.surgery.delete({
       where: {
         id: parseInt(id),
@@ -187,6 +199,10 @@ export const deleteSurgerySchedule = async (req: Request, res: Response) => {
   }
 };
 
+/**
+ * Retrieves all surgery schedules, ordered by scheduled date in ascending order.
+ * This provides a timeline view of surgeries.
+ */
 export const getAllSurgerySchedules = async (_req: Request, res: Response) => {
   try {
     const surgeries = await prisma.surgery.findMany({

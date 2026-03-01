@@ -1,0 +1,13 @@
+OutpatientController.ts Description:
+
+1. Patient Validation & Registration: 
+   - Ensures a patient exists in the master `Patient` table before allowing the creation of a new outpatient record.
+   - Links the visit effectively to their NIC.
+
+2. Daily Operations & Filtering: 
+   - Provides endpoints to fetch outpatient records created specifically "today" (`getAllOutPatientsToday`).
+   - Counts today's visits (`getNumberOfOutPatientsToday`) to facilitate daily operational dashboards.
+
+3. History & Staffing: 
+   - Retrieves full outpatient history for a specific patient via their NIC (`getOutPatientByNic`).
+   - Fetches the list of staff members currently assigned to the "Outpatient" ward (`getStaffMemebers`).

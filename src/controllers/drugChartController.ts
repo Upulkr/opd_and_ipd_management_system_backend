@@ -1,15 +1,25 @@
+// Import Express types and Prisma Client.
 import { Request, Response } from "express";
 import { PrismaClient } from "@prisma/client";
 import { get } from "http";
+
+// Initialize Prisma.
 const prisma = new PrismaClient();
 
+/**
+ * Controller to create a new Drug Chart entry.
+ * Defines medication, dose, and frequency for a patient.
+ */
 export const createDrugChart = async (req: Request, res: Response) => {
   try {
     const { name, nic, bht, dose, frequency, date } = req.body;
 
+    // Validate all required fields.
     if (!name || !nic || !bht || !dose || !frequency || !date) {
       return res.status(400).json({ error: "All fields are required." });
     }
+
+    // Create new drug chart record.
     const newDrugChart = await prisma.drugChart.create({
       data: {
         name,
@@ -20,6 +30,7 @@ export const createDrugChart = async (req: Request, res: Response) => {
         date,
       },
     });
+    // Return 201 Created.
     res.status(201).json(newDrugChart);
   } catch (error) {
     res
@@ -28,6 +39,9 @@ export const createDrugChart = async (req: Request, res: Response) => {
   }
 };
 
+/**
+ * Retrieves all drug charts from the system.
+ */
 export const getDrugCharts = async (req: Request, res: Response) => {
   try {
     const drugCharts = await prisma.drugChart.findMany();
@@ -39,12 +53,16 @@ export const getDrugCharts = async (req: Request, res: Response) => {
   }
 };
 
+/**
+ * Retrieves a specific drug chart by NIC and BHT.
+ */
 export const getrelatedDrugChart = async (req: Request, res: Response) => {
   try {
     const { nic, bht } = req.params;
     if (!nic) {
       return res.status(400).json({ error: "NIC is required." });
     }
+    // Using findUnique to get a specific chart.
     const drugChart = await prisma.drugChart.findUnique({
       where: {
         nic,
@@ -58,6 +76,10 @@ export const getrelatedDrugChart = async (req: Request, res: Response) => {
       .json({ message: `Error getting DrugChart: ${error.message}` });
   }
 };
+/**
+ * Retrieves all drug charts for a specific NIC.
+ * Note: 'getAllDrugChartByNic' name is slightly misleading as it only filters by 'nic' but accepts 'bht' in params (unused in logic).
+ */
 export const getAllDrugChartByNic = async (req: Request, res: Response) => {
   try {
     const { nic, bht } = req.params;
@@ -77,6 +99,9 @@ export const getAllDrugChartByNic = async (req: Request, res: Response) => {
   }
 };
 
+/**
+ * Deletes a drug chart entry.
+ */
 export const deleteDrugChart = async (req: Request, res: Response) => {
   try {
     const { nic, bht } = req.params;
@@ -97,6 +122,10 @@ export const deleteDrugChart = async (req: Request, res: Response) => {
   }
 };
 
+/**
+ * Updates a drug chart entry.
+ * Can update dose, frequency, and date.
+ */
 export const updateDrugChart = async (req: Request, res: Response) => {
   try {
     const { nic, bht } = req.params;

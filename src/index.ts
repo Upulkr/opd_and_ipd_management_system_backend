@@ -1,17 +1,18 @@
+/* IMPORTS */
+// External dependencies
 import bodyParser from "body-parser";
 import cors from "cors";
 import dotenv from "dotenv";
 import express from "express";
 import helmet from "helmet";
 import morgan from "morgan";
-/* ROUTE IMPORTS */
+import session from "express-session";
 
-// import teamRoutes from "./routes/teamRoutes";
+/* ROUTE IMPORTS */
+// Routes for various features of the application
 import admissionBookRoutes from "./routes/admissionBookRoutes";
 import admissionSheetRoutes from "./routes/admissionSheetRoutes";
 import drugChartRoutes from "./routes/drugChartRoutes";
-// import userRoutes from "./routes/userRoutes";
-import session from "express-session";
 import outPatientRoutes from "./routes/OutPatientRoutes";
 import admissiongeneral from "./routes/admiisionRoutes";
 import authRoutes from "./routes/authRoutes";
@@ -30,68 +31,63 @@ import surgerySchedule from "./routes/surgeriesScheduleRoute";
 import userRoutes from "./routes/userRoutes";
 import wardBedsStatus from "./routes/wardBedsController";
 import getWardBedsDetails from "./routes/wardDetailsDashboardRoute";
+
+// Initialize the Express application
 const app = express();
 
+/**
+ * CONFIGURATIONS
+ * Load environment variables and set up middleware.
+ */
 dotenv.config();
+
+/**
+ * CORS Configuration
+ * Defines allowed origins, headers, and methods for cross-origin requests.
+ */
 const corsOptions = {
   origin: [
     "https://opdipdcare.web.lk",
-    "https://www.opdipdcare.web.lk", // <-- ADD THIS IF YOU USE www VERSION
+    "https://www.opdipdcare.web.lk",
     "http://localhost:5173",
     "https://main.d1rnqxbp4u27qa.amplifyapp.com",
+    "http://localhost:3000", 
   ],
   credentials: true,
   allowedHeaders: ["Content-Type", "Authorization"],
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
 };
 
-app.use(cors(corsOptions)); // CORS FIRST
-app.options("*", cors(corsOptions)); // Enable preflight requests
+app.use(cors(corsOptions)); // Enable CORS with specified options
+app.options("*", cors(corsOptions)); // Enable preflight requests for all routes
 
-app.use(express.json());
-app.use(helmet());
-app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
-app.use(morgan("common"));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+/* MIDDLEWARE SETUP */
+app.use(express.json()); // Parse JSON request bodies
+app.use(helmet()); // Set security HTTP headers
+app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" })); // Allow cross-origin resource sharing
+app.use(morgan("common")); // Log HTTP requests
+app.use(bodyParser.json()); // Parse JSON using body-parser
+app.use(bodyParser.urlencoded({ extended: false })); // Parse URL-encoded data
 
-// app.use(express.json());
-// app.use(helmet());
-// app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
-// app.use(morgan("common"));
-// app.use(bodyParser.json());
-// app.use(bodyParser.urlencoded({ extended: false }));
-
-// const corsOptions = {
-//   origin: [
-//     "https://opdipdcare.web.lk",
-//     "https://www.opdipdcare.web.lk",
-//     "http://localhost:5173",
-//     "https://main.d1rnqxbp4u27qa.amplifyapp.com",
-//   ],
-//   credentials: true,
-//   allowedHeaders: ["Content-Type", "Authorization"], // allow it always
-//   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // optional but recommended
-// };
-
-// app.use(cors(corsOptions));
-// app.options("*", cors(corsOptions));
-
+/**
+ * Session Configuration
+ * Sets up session management with a secret key.
+ */
 app.use(
   session({
     secret: process.env.SESSION_SECRET || "default_secret",
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: false, maxAge: 24 * 60 * 60 * 1000 },
+    cookie: { secure: false, maxAge: 24 * 60 * 60 * 1000 }, // 24 hours
   })
 );
 
-/* ROUTES */
+/* ROUTES REGISTRATION */
+// Registering all API routes with their respective paths
 
 app.use("/admissionbook", admissionBookRoutes);
 app.use("/admissionsheet", admissionSheetRoutes);
 app.use("/drugChart", drugChartRoutes);
-// app.use("/users", userRoutes);
 app.use("/patient", patientRoutes);
 app.use("/warddetails", currentWardDetails);
 app.use("/wardbedscontroller", wardBedsStatus);
@@ -110,13 +106,18 @@ app.use("/getusers", userRoutes);
 app.use("/surgery", surgerySchedule);
 app.use("/medicalreports", medicalReports);
 app.use("/generaladmission", admissiongeneral);
-// app.use("/ticket", ticketRoutes);
 
-/* SERVER */
+/* SERVER INITIALIZATION */
+// Define the port from environment variables or default to 8000
 const port = Number(process.env.PORT) || 8000;
+
+// Start the server and listen on the specified port
 app.listen(port, "0.0.0.0", () => {
-  console.log(`Server running on part ${port}`);
+  console.log(`Server running on port ${port}`);
 });
+
+// Basic home route for testing server status
 app.get("/", (req, res) => {
   res.send("This is home route");
 });
+

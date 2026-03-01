@@ -1,0 +1,109 @@
+1. OutpatientController.ts
+   - Manages outpatient records including creation, retrieval, and updates, ensuring patients are first registered in the master patient table.
+   - Provides specialized endpoints to filter outpatients by date (e.g., today's visits) and calculate daily statistics for operational dashboards.
+   - Handles data retrieval for specific patient history via NIC and fetches staff members assigned to the outpatient ward.
+
+2. admissionBookController.ts
+   - Handles the formal admission process (Admission Book), including generating consecutive daily and yearly admission numbers.
+   - Manages the creation and updating of admission records, linking them to existing AdmissionSheet entries via Bed Head Ticket (BHT) numbers.
+   - Provides functionality to discharge patients, updating their status and discharge dates, and retrieves admission history by NIC.
+
+3. admissionController.ts
+   - Aggregates data from both AdmissionSheet and AdmissionBook to provide a unified view of a patient's admission history.
+   - Acts as a bridge to fetch detailed admission records by ID, serving efficiently for frontend general detail views.
+   - Contains utility functions to link admission sheets with their corresponding book entries based on BHT and NIC.
+
+4. admissionSheetController.ts
+   - Manages the initial "Admission Sheet" creation, which captures the preliminary details required before a full admission.
+   - Generates unique, auto-incrementing BHT (Bed Head Ticket) numbers using raw SQL queries to ensure sequential integrity.
+   - Provides extensive search and filtering capabilities, allowing staff to find admission sheets by ID, NIC, or BHT.
+
+5. authenticationController.ts
+   - Secures user authentication flows including registration, login, and email verification using JWTs and bcrypt for password hashing.
+   - Manages secure password resets and change operations, ensuring only authorized users can modify account credentials.
+   - Validates user roles (Doctor, Nurse, Admin, etc.) during registration and login to enforce appropriate access control levels.
+
+6. clinicAssigmnentController.ts
+   - Manages the assignment of patients to specific clinics, linking patient NICs with clinic IDs.
+   - Executes complex raw SQL queries to aggregate clinic data for table views, including patient counts per clinic and doctor schedules.
+   - Provides endpoints to fetch detailed patient lists for specific clinics and verify successful assignments.
+
+7. clinicController.ts
+   - Handles the CRUD operations for clinic entities, including creating new clinics with specific locations and assigned doctors.
+   - Implements date handling logic to convert local scheduled times to standardized UTC formats for consistent database storage.
+   - Allows for the retrieval and management of clinic schedules, serving as the foundational data for patient assignments.
+
+8. currentWardStatus.ts
+   - Aggregates real-time data to provide a comprehensive snapshot of ward occupancy, including total beds, used beds, and free beds.
+   - Calculates daily statistics such as the number of admissions and discharges for the current day to aid in resource management.
+   - Combines data from multiple tables (Ward, Admissionbook) to generate a detailed status report for hospital administrators.
+
+9. diseasePredictionController.ts
+   - Manages the storage and retrieval of AI-generated disease predictions associated with patient profiles.
+   - Allows for the creation of new prediction records linked to a patient's NIC, supporting the decision support system.
+   - Provides endpoints to update or delete prediction history, ensuring the medical record stays current with the latest assessments.
+
+10. drugChartController.ts
+    - Manages the creation and retrieval of patient drug charts, tracking medication dosage, frequency, and administration dates.
+    - Links medication records to specific patients via NIC and BHT, ensuring accurate tracking of inpatient drug regimens.
+    - Supports updating and deleting drug chart entries, allowing medical staff to adjust prescriptions as patient needs evolve.
+
+11. drugController.ts
+    - Specific Controller for managing the central drug inventory, including adding new drugs, tracking quantities, and managing expiry dates.
+    - Handles the allocation of drugs to specific wards, automatically deducting from the main inventory and updating ward-specific stock.
+    - Provides validation to prevent duplicate drug entries and ensures inventory levels are accurately maintained across the hospital.
+
+12. labtestController.ts
+    - Manages laboratory test records, allowing for the creation and storage of test results linked to patient NICs and BHTs.
+    - Provides retrieval methods to fetch all lab tests for a specific patient, supporting both historical views and current admission data.
+    - Includes functionality to update test results and delete erroneous entries, serving as a repository for patient diagnostic data.
+
+13. medicalReportController.ts
+    - Handles the storage and retrieval of medical report metadata, linking document URLs (e.g., PDFs) to patient profiles.
+    - Allows fetching reports by type or specific patient NIC, giving doctors quick access to scanned history and external documents.
+    - Supports the deletion and management of these records, acting as a digital filing system for patient medical documents.
+
+14. mobileClinicController.ts
+    - Manages assignments and status updates for mobile clinic units, tracking patient visits in remote or mobile settings.
+    - Uses raw SQL to generate analytical data, such as monthly visit counts and patient demographics (age groups) for completed clinics.
+    - Extensive batch processing capabilities, allowing staff to mark multiple patient assignments as "completed" in a single operation.
+
+15. monthlyPatientVisitController.ts
+    - Logic for generating analytical reports on patient visits over the last six months.
+    - Uses advanced SQL queries to aggregate and group data from both outpatient and inpatient records by month.
+    - Formats the output for frontend charting libraries, providing a clear visual trend of hospital patient volume.
+
+16. patientController.ts
+    - Core controller for managing master patient profiles, handling registration (creation), updates, and deletion of patient demographics.
+    - Enforces uniqueness checks on National Identity Card (NIC) numbers to prevent duplicate patient records in the system.
+    - Provides search endpoints to quickly verify patient existence and retrieve full profile details for other modules.
+
+17. smsCOntroller.ts
+    - Integrates with the Twilio API to send SMS notifications, handling the external communication logic.
+    - Implements a job scheduling system using node-schedule to queue text messages for future delivery (e.g., reminders).
+    - Provides endpoints to manage these scheduled jobs, allowing for the listing and cancellation of pending SMS notifications.
+
+18. staffWardAssignmentController.ts
+    - Manages the roster of staff members (doctors, nurses) assigned to specific wards, ensuring proper staffing levels.
+    - Uses database filtering to prevent double-booking staff and validates user existence before assignment.
+    - Generates aggregated reports showing the count of different staff roles per ward, aiding in administrative resource planning.
+
+19. surgeryScheduleController.ts
+    - Manages the scheduling of surgeries, linking patients, doctors, and specific procedures to dates and times.
+    - Includes robust conflict detection to prevent scheduling multiple surgeries for the same patient on the same day.
+    - Validates all related entities (Patient, Doctor) before creation and handles time zone conversions for accurate scheduling.
+
+20. ticketController.ts
+    - *Currently inactive/commented out code* intended for a ticketing system, likely for queue management or support requests.
+    - The structure suggests future implementation of CRUD operations for tickets linked to patient NICs.
+    - Currently acts as a placeholder or deprecated module with no active runtime function.
+
+21. userController.ts
+    - User management beyond authentication, providing endpoints to retrieve lists of users by role (e.g., "Get All Doctors").
+    - Implementation includes commented-out sections for full CRUD operations (Create, Update, Delete) on system users.
+    - Primarily serves as a directory service for the frontend to populate dropdowns and lists of available medical staff.
+
+22. wardBedsController.ts
+    - Manages the real-time status of ward beds, specifically handling the logic when a patient is admitted (decrementing free beds).
+    - Executes raw SQL updates to ensure atomic changes to bed counts (noOfFreeBeds, noOfUsedBeds) and patient counts.
+    - Specific endpoints to visualize bed occupancy percentages across all wards, supporting bed management dashboards.

@@ -202,6 +202,10 @@ const prisma = new PrismaClient();
 //   }
 // };
 
+/**
+ * Retrieves all users with the role 'DOCTOR'.
+ * Returns selected fields: id, role, and username.
+ */
 export const getAllDoctors = async (req: Request, res: Response) => {
   try {
     const doctors = await prisma.user.findMany({

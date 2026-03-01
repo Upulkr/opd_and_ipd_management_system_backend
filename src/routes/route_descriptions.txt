@@ -1,0 +1,151 @@
+1. OutPatientRoutes.ts
+   - GET /getstaff: Fetches medical staff members currently assigned to the Outpatient ward.
+   - POST /: Creates a new outpatient record for a registered patient.
+   - GET /: Retrieves all outpatient records created during the current day (for daily views).
+   - GET /outpatientscount: Returns the total count of outpatient visits for the current day.
+   - GET /:nic: Retrieves the full outpatient visit history for a specific patient by NIC.
+
+2. admiisionRoutes.ts
+   - GET /generaldetails/:nic: Aggregates and returns general admission details (from both sheet and book) for a patient.
+   - GET /generaladmisionsheet/:id: Fetches a specific Admission Sheet by its unique ID.
+   - GET /generaladmisionbook/:id: Fetches a specific Admission Book entry by its unique ID.
+
+3. admissionBookRoutes.ts
+   - POST /: Creates a new formal admission entry in the Admission Book.
+   - GET /: Retrieves a list of all admission book entries.
+   - GET /:nic: Fetches all admission entries associated with a specific patient NIC.
+   - PUT /:nic/:bht: Updates an existing admission entry identified by NIC and BHT.
+   - DELETE /:nic/:bht: Deletes a specific admission entry.
+   - GET /noofadmissionbookstoday: Returns the count of admissions recorded today.
+   - GET /getdischargecounts: Retrieves statistics on patient discharges.
+
+4. admissionSheetRoutes.ts
+   - POST /: Creates a new preliminary Admission Sheet.
+   - GET /: Retrieves all generated admission sheets.
+   - GET /:nic: Fetches admission sheets for a specific patient NIC.
+   - PUT /:nic/:bht: Updates an existing admission sheet.
+   - DELETE /:nic/:bht: Deletes a specific admission sheet.
+   - GET /bht: Search for an admission sheet by Bed Head Ticket (BHT) number.
+   - GET /noOfAdmissionSheetsperday: Returns statistics on admission sheets created per day.
+   - GET /noOfAdmissionSheetsperyear: Returns statistics on admission sheets created per year.
+
+5. authRoutes.ts
+   - POST /signup: Registers a new user account (Doctor, Nurse, etc.).
+   - POST /login: Authenticates a user and returns a JWT access token.
+   - POST /logout: Logs out the current user and invalidates their session.
+   - GET /verify-email/:token: Verifies a user's email address using a token.
+   - POST /resend-verification: Resends the email verification link.
+   - PUT /update-password/:userId: Allows an authenticated user to update their password.
+
+6. clinicAssigmentRoutes.ts
+   - POST /: Assigns a patient to a specific clinic.
+   - GET /: Retrieves all active clinic assignments.
+   - PUT /:id: Updates details of an existing clinic assignment.
+   - DELETE /:id: Removes a clinic assignment.
+   - GET /getWeeklyclinincvisits: Provides statistical data on clinic visits for the week.
+   - GET /getallclinicassigmentsfortable: Fetches formatted assignment data suitable for tabular display.
+   - GET /getPatientDetailsByClinicName/:clinicName: Lists patients assigned to a specific clinic.
+
+7. clinicRoutes.ts
+   - POST /: Creates a new Clinic entity (managing location, doctor, etc.).
+   - GET /: Retrieves a list of all available clinics.
+   - PUT /:id: Updates details of a specific clinic.
+   - DELETE /:id: Deletes a clinic entity from the system.
+
+8. currentWardStatusRoute.ts
+   - GET /: Retrieves real-time status of all wards (beds used, free, etc.).
+   - GET /wardnames: Returns a list of all ward names in the hospital.
+
+9. diseasePredictionRoutes.ts
+   - POST /: Saves a new AI-generated disease prediction for a patient.
+   - GET /:nic: Retrieves prediction history for a specific patient.
+   - PUT /:nic: Updates an existing disease prediction record.
+   - DELETE /:nic: Deletes a disease prediction record.
+
+10. drugChartRoutes.ts
+    - POST /: Creates a new drug chart entry for a patient's medication regimen.
+    - GET /: Retrieves all drug charts in the system.
+    - GET /:nic: Fetches drug charts for a specific patient by NIC.
+    - GET /:nic/:bht: Fetches a specific drug chart linked to an admission (BHT).
+    - PUT /:nic: Updates a drug chart entry.
+    - DELETE /:nic: Deletes a drug chart entry.
+
+11. drugRoutes.ts
+    - POST /: Adds a new drug to the central inventory.
+    - GET /: Retrieves the list of all drugs and their stock levels.
+    - PUT /:drugId: Updates details of a specific drug (e.g., quantity, expiry).
+    - DELETE /:drugId: Removes a drug from the inventory.
+    - POST /createdrugallocation: Allocates a quantity of drugs to a specific ward.
+    - GET /getdrugallocationbywardname/:wardName: specific Lists drugs allocated to a specific ward.
+
+12. getMonthlyPatientVisitRoute.ts
+    - GET /: Retrieves aggregated data on patient visits over the last 6 months for charting.
+
+13. labtestRoutes.ts
+    - POST /: Records a new laboratory test result.
+    - GET /: Retrieves all lab test records.
+    - GET /:nic: Fetches all lab tests for a specific patient.
+    - GET /:nic/:bht: Fetches a specific lab test linked to an admission.
+    - PUT /:nic/:bht: Updates a lab test record.
+    - DELETE /:nic/:bht: Deletes a lab test record.
+
+14. medicalReportRoutes.ts
+    - POST /: Uploads/Creates a metadata record for a new medical report.
+    - GET /: Retrieves all medical reports.
+    - GET /getallbynic/:nic: Fetches all reports for a specific patient.
+    - GET /getbynicandtype/:nic/:doctype: Filters reports by patient and document type.
+
+15. mobileClinicRoutes.ts
+    - POST /: Creates a new assignment/visit for a mobile clinic.
+    - GET /: Retrieves all mobile clinic assignments.
+    - DELETE /: Deletes a mobile clinic assignment.
+    - GET /sheduled: Fetches scheduled mobile clinic visits for table views.
+    - PUT /markascompleted: Marks a mobile clinic visit as completed.
+    - GET /monthlyhomevisits: Returns monthly statistics for mobile clinic visits.
+
+16. patientRoutes.ts
+    - POST /: Registers a new patient in the master patient index.
+    - GET /: Retrieves a list of all registered patients.
+    - GET /:nic: Fetches full details of a specific patient by NIC.
+    - PUT /:nic: Updates an existing patient's profile.
+    - DELETE /:nic: Deletes a patient record.
+    - GET /isPatientexist/:nic: Utility route to check if a patient exists.
+
+17. protectedRoutes.ts
+    - Various endpoints (patients, prescriptions, appointments) serving as examples or placeholders for role-based access control tests.
+    - GET /patients: Example protected route for viewing patient lists.
+    - POST /prescriptions: Example protected route for creating prescriptions.
+
+18. smsRoutes.ts
+    - POST /schedule-sms: Schedules an SMS notification for a future time.
+    - GET /schedule-sms: Lists all currently scheduled SMS jobs.
+    - DELETE /schedule-sms/:jobId: Cancels a specific scheduled SMS job.
+
+19. staffWardAssignmemtRoute.ts
+    - POST /: Assigns a staff member to a ward.
+    - GET /: Retrieves all staff-ward assignments.
+    - PUT /:staffId: Updates a staff assignment.
+    - DELETE /:staffId: Removes a staff assignment.
+    - GET /getstaffcount: Returns counts of staff grouped by ward.
+    - GET /:registrationId: Fetches assignments for a specific staff member.
+
+20. surgeriesScheduleRoute.ts
+    - POST /createsurgeryschedule: Schedules a new surgery.
+    - GET /getallsurgeryschedule: Retrieves all scheduled surgeries.
+    - PUT /updatesurgeryschedule/:id: Updates a surgery schedule.
+    - DELETE /deletesurgeryschedule/:id: Cancels/Deletes a surgery schedule.
+    - GET /getsurgerybyid/:id: Fetches details of a specific surgery.
+
+21. ticketRoutes.ts
+    - (Commented Out) Intended for managing support/queue tickets (Create, Get, Delete).
+
+22. userRoutes.ts
+    - GET /getalldoctors: Retrieves a list of all users with the 'Doctor' role.
+    - (Other CRUD routes for users are currently commented out).
+
+23. wardBedsController.ts (Note: This file is in the routes folder but likely misnamed)
+    - PUT /:wardNo: Updates the bed status (free/used) for a specific ward, typically upon patient admission.
+
+24. wardDetailsDashboardRoute.ts
+    - GET /: Retrieves bed usage counts for all wards.
+    - GET /wardnames: Retrieves a simple list of ward names and numbers.
